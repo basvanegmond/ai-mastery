@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "lastActiveAt": "2026-06-16T14:13:26.059Z",
+  "domainProgress": {
+    "prompt_construction": {
+      "currentLevel": 3.55,
+      "xpTotal": 8
+    },
+    "output_evaluation": {
+      "currentLevel": 2.5,
+      "xpTotal": 0
+    },
+    "agentic_architecture": {
+      "currentLevel": 1.5,
+      "xpTotal": 0
+    },
+    "tool_selection": {
+      "currentLevel": 2,
+      "xpTotal": 0
+    },
+    "failure_diagnosis": {
+      "currentLevel": 2,
+      "xpTotal": 0
+    },
+    "multi_agent_orchestration": {
+      "currentLevel": 1,
+      "xpTotal": 0
+    },
+    "business_value_translation": {
+      "currentLevel": 3,
+      "xpTotal": 0
+    }
+  },
+  "exerciseHistory": [
+    {
+      "id": "e1f73162-60a7-4727-b423-d1401ece18b2",
+      "domain": "prompt_construction",
+      "type": "reflection",
+      "exerciseHash": "pc-1",
+      "promptSnapshot": "pc-1",
+      "userAnswer": "Broken down an action prompt into a structure outcome based prompt using goals and objectives for the Claude Code to achieve, confirm and iterate where needed.",
+      "correctAnswer": null,
+      "score": 0.8,
+      "starRating": 4,
+      "gradeEstimate": "A",
+      "reflection": "Broken down an action prompt into a structure outcome based prompt using goals and objectives for the Claude Code to achieve, confirm and iterate where needed.",
+      "weaknessTagsAddressed": [],
+      "createdAt": "2026-06-16T14:13:26.059Z"
+    }
+  ],
+  "weaknessTags": {
+    "prompt_construction": {},
+    "output_evaluation": {},
+    "agentic_architecture": {},
+    "tool_selection": {},
+    "failure_diagnosis": {},
+    "multi_agent_orchestration": {},
+    "business_value_translation": {}
+  },
+  "patternAnalyses": [],
+  "githubSha": ""
+}
