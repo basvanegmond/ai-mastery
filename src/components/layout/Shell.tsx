@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react'
 import { useMasteryStore } from '../../store/masteryStore'
 
-export type Tab = 'dashboard' | 'train' | 'import' | 'settings'
+export type Tab = 'overview' | 'quick' | 'full' | 'import' | 'settings'
 
 interface ShellProps {
   children: (activeTab: Tab, theme: 'dark' | 'light') => React.ReactNode
 }
 
 const NAV_ITEMS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: '◉' },
-  { id: 'train', label: 'Train', icon: '⚡' },
-  { id: 'import', label: 'Import', icon: '↑' },
-  { id: 'settings', label: 'Settings', icon: '⚙' },
+  { id: 'overview',  label: 'Overview',  icon: '◉' },
+  { id: 'quick',     label: 'Quick',     icon: '⚡' },
+  { id: 'full',      label: 'Full',      icon: '◎' },
+  { id: 'import',    label: 'Import',    icon: '↑' },
+  { id: 'settings',  label: 'Settings',  icon: '⚙' },
 ]
 
 export function Shell({ children }: ShellProps) {
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard')
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
+  const [activeTab, setActiveTab] = useState<Tab>('overview')
+  const [theme, setTheme] = useState<'dark' | 'light'>('light')
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
   const syncStatus = useMasteryStore((s) => s.syncStatus)
   const syncFromGithub = useMasteryStore((s) => s.syncFromGithub)
@@ -31,7 +32,7 @@ export function Shell({ children }: ShellProps) {
   }, [])
 
   useEffect(() => {
-    document.documentElement.classList.toggle('light', theme === 'light')
+    document.documentElement.classList.toggle('dark', theme === 'dark')
   }, [theme])
 
   // Sync from GitHub on first load if token is available
@@ -58,8 +59,8 @@ export function Shell({ children }: ShellProps) {
           className="flex flex-col gap-2 p-4 w-52 shrink-0 border-r"
           style={{
             background: 'var(--surface)',
-            borderColor: 'rgba(255,255,255,0.06)',
-            boxShadow: '2px 0 12px rgba(0,0,0,0.3)',
+            borderColor: 'var(--bg2)',
+            boxShadow: '2px 0 12px rgba(0,0,0,0.06)',
           }}
         >
           <div className="mb-6 px-2">
@@ -86,7 +87,7 @@ export function Shell({ children }: ShellProps) {
               style={{
                 boxShadow: activeTab === item.id ? 'var(--neo-inset)' : 'var(--neo-raised)',
                 background: 'var(--surface)',
-                color: activeTab === item.id ? 'var(--text-primary)' : 'var(--text-secondary)',
+                color: activeTab === item.id ? 'var(--gold)' : 'var(--text-secondary)',
                 fontFamily: 'DM Mono, monospace',
               }}
             >
@@ -121,17 +122,17 @@ export function Shell({ children }: ShellProps) {
             className="flex items-center justify-between px-4 py-3 sticky top-0 z-10"
             style={{
               background: 'var(--surface)',
-              borderBottom: '1px solid rgba(255,255,255,0.06)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              borderBottom: '1px solid var(--bg2)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
             }}
           >
-            <h1 className="text-base" style={{ fontFamily: 'Syne, sans-serif' }}>AI Mastery</h1>
+            <h1 className="text-base" style={{ fontFamily: 'Syne, sans-serif', color: 'var(--text-primary)' }}>AI Mastery</h1>
             <div className="flex items-center gap-3">
               <span className={`text-xs ${syncColor}`}>{syncDot}</span>
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className="text-base px-2 py-1 rounded-lg transition-neo"
-                style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)' }}
+                style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)', color: 'var(--text-secondary)' }}
               >
                 {theme === 'dark' ? '☀' : '◑'}
               </button>
@@ -150,23 +151,23 @@ export function Shell({ children }: ShellProps) {
           className="fixed bottom-0 left-0 right-0 flex border-t z-10"
           style={{
             background: 'var(--surface)',
-            borderColor: 'rgba(255,255,255,0.06)',
-            boxShadow: '0 -2px 12px rgba(0,0,0,0.3)',
+            borderColor: 'var(--bg2)',
+            boxShadow: '0 -2px 8px rgba(0,0,0,0.06)',
           }}
         >
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className="flex-1 flex flex-col items-center gap-1 py-3 text-xs transition-neo"
+              className="flex-1 flex flex-col items-center gap-0.5 py-2 transition-neo"
               style={{
-                color: activeTab === item.id ? 'var(--text-primary)' : 'var(--text-muted)',
+                color: activeTab === item.id ? 'var(--gold)' : 'var(--text-muted)',
                 fontFamily: 'DM Mono, monospace',
                 background: activeTab === item.id ? 'var(--bg2)' : 'transparent',
               }}
             >
-              <span className="text-base">{item.icon}</span>
-              <span>{item.label}</span>
+              <span style={{ fontSize: '14px' }}>{item.icon}</span>
+              <span style={{ fontSize: '10px' }}>{item.label}</span>
             </button>
           ))}
         </nav>

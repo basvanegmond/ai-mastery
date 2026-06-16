@@ -1,7 +1,23 @@
+import { useState } from 'react'
 import { useMasteryStore } from '../../store/masteryStore'
 import { DOMAINS } from '../../lib/domains'
 import { RadarChart } from './RadarChart'
 import { DomainCard } from './DomainCard'
+
+const TIPS = [
+  { cmd: '/compact', text: 'Compress context and continue longer Claude Code sessions without losing progress.' },
+  { cmd: 'Shift+Enter', text: 'Add a newline in Claude web chat without sending the message.' },
+  { cmd: '@filename', text: 'Reference a specific file in Claude Code without copy/pasting its contents.' },
+  { cmd: 'CLAUDE.md', text: 'Add a CLAUDE.md to your project root — instructions there apply automatically to every session.' },
+  { cmd: 'claude --continue', text: 'Resume the most recent Claude Code session from the terminal without losing context.' },
+  { cmd: '/clear', text: 'Reset conversation context in Claude Code while keeping your session open.' },
+  { cmd: 'Projects', text: 'Use the Projects tab in Claude web for ongoing work — context persists across conversations.' },
+  { cmd: '#memory', text: 'Type # mid-conversation in Claude Code to give a quick memory hint without breaking flow.' },
+  { cmd: 'Extended thinking', text: 'Add "think step by step before answering" to unlock deeper reasoning on hard problems.' },
+  { cmd: 'Drag & drop', text: 'Drag files or images directly into the Claude web chat instead of copying content.' },
+  { cmd: '/init', text: 'Run /init in Claude Code to auto-generate a CLAUDE.md based on your codebase structure.' },
+  { cmd: 'Tool use', text: 'Claude can call tools in parallel — structure requests to ask for multiple independent things at once.' },
+]
 
 function daysSince(iso: string): number {
   return Math.floor((Date.now() - new Date(iso).getTime()) / 86400000)
@@ -16,6 +32,7 @@ function startOfWeek(): Date {
 
 export function Dashboard() {
   const store = useMasteryStore()
+  const [tipIndex, setTipIndex] = useState(0)
   const daysSinceLast = daysSince(store.lastActiveAt)
   const weekStart = startOfWeek()
 
@@ -41,6 +58,8 @@ export function Dashboard() {
     ])
   )
 
+  const tip = TIPS[tipIndex]
+
   return (
     <div className="space-y-6">
       {/* Inactivity banner */}
@@ -48,8 +67,8 @@ export function Dashboard() {
         <div
           className="rounded-xl px-4 py-3 text-sm flex items-center gap-3"
           style={{
-            background: 'rgba(240,192,64,0.1)',
-            border: '1px solid rgba(240,192,64,0.3)',
+            background: 'var(--gold-dim)',
+            border: '1px solid var(--gold)',
             color: 'var(--gold)',
             fontFamily: 'DM Mono, monospace',
           }}
@@ -88,6 +107,43 @@ export function Dashboard() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Did you know */}
+      <div
+        className="rounded-xl px-5 py-4 flex items-center gap-4"
+        style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
+      >
+        <div className="flex-1 min-w-0">
+          <div className="text-xs mb-1" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}>
+            did you know
+          </div>
+          <span
+            className="text-xs px-2 py-0.5 rounded mr-2"
+            style={{ background: 'var(--gold-dim)', color: 'var(--gold)', fontFamily: 'DM Mono, monospace' }}
+          >
+            {tip.cmd}
+          </span>
+          <span className="text-xs" style={{ color: 'var(--text-secondary)', fontFamily: 'DM Mono, monospace' }}>
+            {tip.text}
+          </span>
+        </div>
+        <div className="flex gap-2 shrink-0">
+          <button
+            onClick={() => setTipIndex((tipIndex - 1 + TIPS.length) % TIPS.length)}
+            className="px-2 py-1 rounded-lg text-xs transition-neo"
+            style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)', color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}
+          >
+            ←
+          </button>
+          <button
+            onClick={() => setTipIndex((tipIndex + 1) % TIPS.length)}
+            className="px-2 py-1 rounded-lg text-xs transition-neo"
+            style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)', color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}
+          >
+            →
+          </button>
+        </div>
       </div>
 
       {/* Radar + domain cards */}
@@ -139,7 +195,7 @@ export function Dashboard() {
                           key={tag}
                           className="text-xs px-2 py-0.5 rounded"
                           style={{
-                            background: 'rgba(240,192,64,0.15)',
+                            background: 'var(--gold-dim)',
                             color: 'var(--gold)',
                             fontFamily: 'DM Mono, monospace',
                           }}

@@ -9,8 +9,9 @@ export default function App() {
     <Shell>
       {(activeTab) => {
         switch (activeTab) {
-          case 'dashboard': return <Dashboard />
-          case 'train':     return <TrainingMode />
+          case 'overview':  return <Dashboard />
+          case 'quick':     return <TrainingMode forcedMode="quick" />
+          case 'full':      return <TrainingMode forcedMode="full" />
           case 'import':    return <ImportScreen />
           case 'settings':  return <SettingsScreen />
         }

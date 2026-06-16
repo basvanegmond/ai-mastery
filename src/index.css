@@ -1,46 +1,72 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700&display=swap');
 @import "tailwindcss";
 
-/* ── Dark neomorphic theme (default) ── */
+/* ── Light bordeaux theme (default) ── */
 :root {
-  --bg: #1a1a2e;
-  --bg2: #16213e;
-  --surface: #1e2040;
+  --bg: #f0f0f2;
+  --bg2: #e8e8ea;
+  --surface: #f4f4f6;
 
-  --neo-light: rgba(255, 255, 255, 0.06);
-  --neo-dark: rgba(0, 0, 0, 0.4);
-  --neo-raised: 4px 4px 10px var(--neo-dark), -3px -3px 8px var(--neo-light);
-  --neo-inset: inset 3px 3px 8px var(--neo-dark), inset -2px -2px 6px var(--neo-light);
+  --neo-light: rgba(255, 255, 255, 0.85);
+  --neo-dark: rgba(158, 152, 172, 0.55);
+  --neo-raised: 5px 5px 12px var(--neo-dark), -4px -4px 10px var(--neo-light);
+  --neo-inset: inset 4px 4px 10px var(--neo-dark), inset -3px -3px 8px var(--neo-light);
   --neo-flat: none;
 
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #1e1826;
+  --text-secondary: #4a4460;
+  --text-muted: #8a85a0;
 
-  --gold: #f0c040;
-  --gold-dim: rgba(240, 192, 64, 0.3);
-  --accent: #6c8ebf;
-  --danger: #e05c5c;
-  --success: #5cb85c;
+  --gold: #7D1D3F;
+  --gold-dim: rgba(125, 29, 63, 0.12);
+  --accent: #9B4060;
+  --danger: #c0392b;
+  --success: #2a6e4a;
+
+  /* Radar tokens — light */
+  --radar-grid: rgba(0, 0, 0, 0.07);
+  --radar-axis: rgba(0, 0, 0, 0.05);
+  --radar-baseline-fill: rgba(0, 0, 0, 0.02);
+  --radar-baseline-stroke: rgba(0, 0, 0, 0.14);
+  --radar-label: #8a85a0;
+  --radar-legend: #6a6480;
+  --radar-current-fill: rgba(125, 29, 63, 0.1);
+  --radar-current-stroke: #7D1D3F;
 
   --radius: 14px;
   --radius-sm: 8px;
 }
 
-/* ── Light neomorphic theme ── */
-.light {
-  --bg: #e8ecef;
-  --bg2: #dde1e5;
-  --surface: #e0e4e8;
+/* ── Dark theme (opt-in) ── */
+.dark {
+  --bg: #1a1520;
+  --bg2: #14101a;
+  --surface: #1e192a;
 
-  --neo-light: rgba(255, 255, 255, 0.7);
-  --neo-dark: rgba(163, 177, 198, 0.6);
-  --neo-raised: 5px 5px 12px var(--neo-dark), -4px -4px 10px var(--neo-light);
-  --neo-inset: inset 4px 4px 10px var(--neo-dark), inset -3px -3px 8px var(--neo-light);
+  --neo-light: rgba(255, 255, 255, 0.05);
+  --neo-dark: rgba(0, 0, 0, 0.4);
+  --neo-raised: 4px 4px 10px var(--neo-dark), -3px -3px 8px var(--neo-light);
+  --neo-inset: inset 3px 3px 8px var(--neo-dark), inset -2px -2px 6px var(--neo-light);
 
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-primary: #e8e0f0;
+  --text-secondary: #a09ab8;
+  --text-muted: #6a6480;
+
+  --gold: #c0547a;
+  --gold-dim: rgba(192, 84, 122, 0.18);
+  --accent: #d06090;
+  --danger: #e05c5c;
+  --success: #5cb85c;
+
+  /* Radar tokens — dark */
+  --radar-grid: rgba(255, 255, 255, 0.08);
+  --radar-axis: rgba(255, 255, 255, 0.07);
+  --radar-baseline-fill: rgba(255, 255, 255, 0.03);
+  --radar-baseline-stroke: rgba(255, 255, 255, 0.2);
+  --radar-label: rgba(148, 163, 184, 0.9);
+  --radar-legend: rgba(148, 163, 184, 0.7);
+  --radar-current-fill: rgba(192, 84, 122, 0.12);
+  --radar-current-stroke: #c0547a;
 }
 
 *, *::before, *::after {

@@ -101,9 +101,9 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
         {exercise.question}
       </div>
 
-      {/* Options */}
+      {/* Options — cap at 4 in case API returns extra */}
       <div className="space-y-2">
-        {exercise.options.map((opt) => {
+        {exercise.options.slice(0, 4).map((opt) => {
           const isCorrect = opt.id === exercise.correctAnswer
           const isSelected = opt.id === selected
 

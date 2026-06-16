@@ -58,7 +58,7 @@ export function RadarChart({ domainProgress, size = 280 }: RadarChartProps) {
             key={ri}
             points={ringPoints}
             fill="none"
-            stroke={isTarget ? 'rgba(108,142,191,0.5)' : 'rgba(255,255,255,0.08)'}
+            stroke={isTarget ? 'rgba(108,142,191,0.5)' : 'var(--radar-grid)'}
             strokeWidth={isTarget ? '0.5' : '0.3'}
             strokeDasharray={isTarget ? '1,1' : undefined}
           />
@@ -75,7 +75,7 @@ export function RadarChart({ domainProgress, size = 280 }: RadarChartProps) {
             y1={CENTER}
             x2={x}
             y2={y}
-            stroke="rgba(255,255,255,0.07)"
+            stroke="var(--radar-axis)"
             strokeWidth="0.3"
           />
         )
@@ -84,8 +84,8 @@ export function RadarChart({ domainProgress, size = 280 }: RadarChartProps) {
       {/* Baseline polygon */}
       <polygon
         points={polygonPoints(baselineValues)}
-        fill="rgba(255,255,255,0.03)"
-        stroke="rgba(255,255,255,0.2)"
+        fill="var(--radar-baseline-fill)"
+        stroke="var(--radar-baseline-stroke)"
         strokeWidth="0.5"
         strokeDasharray="1.5,1"
       />
@@ -102,8 +102,8 @@ export function RadarChart({ domainProgress, size = 280 }: RadarChartProps) {
       {/* Current polygon */}
       <polygon
         points={polygonPoints(currentValues)}
-        fill="rgba(240,192,64,0.12)"
-        stroke="rgba(240,192,64,0.9)"
+        fill="var(--radar-current-fill)"
+        stroke="var(--radar-current-stroke)"
         strokeWidth="0.8"
       />
 
@@ -119,7 +119,7 @@ export function RadarChart({ domainProgress, size = 280 }: RadarChartProps) {
             textAnchor="middle"
             dominantBaseline="middle"
             fontSize="3.8"
-            fill="rgba(148,163,184,0.9)"
+            fill="var(--radar-label)"
             style={{ fontFamily: 'DM Mono, monospace' }}
           >
             {d.shortLabel}
@@ -137,7 +137,7 @@ export function RadarChart({ domainProgress, size = 280 }: RadarChartProps) {
             x={CENTER + r + 0.5}
             y={CENTER}
             fontSize="3"
-            fill={isTarget ? 'rgba(108,142,191,0.8)' : 'rgba(100,116,139,0.6)'}
+            fill={isTarget ? 'rgba(108,142,191,0.8)' : 'var(--radar-legend)'}
             dominantBaseline="middle"
             style={{ fontFamily: 'DM Mono, monospace' }}
           >
@@ -148,12 +148,12 @@ export function RadarChart({ domainProgress, size = 280 }: RadarChartProps) {
 
       {/* Legend */}
       <g transform="translate(2, 92)">
-        <line x1="0" y1="0" x2="5" y2="0" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" strokeDasharray="1.5,1"/>
-        <text x="6" y="0" fontSize="2.5" fill="rgba(148,163,184,0.7)" dominantBaseline="middle" style={{ fontFamily: 'DM Mono, monospace' }}>baseline</text>
+        <line x1="0" y1="0" x2="5" y2="0" stroke="var(--radar-baseline-stroke)" strokeWidth="0.5" strokeDasharray="1.5,1"/>
+        <text x="6" y="0" fontSize="2.5" fill="var(--radar-legend)" dominantBaseline="middle" style={{ fontFamily: 'DM Mono, monospace' }}>baseline</text>
         <line x1="20" y1="0" x2="25" y2="0" stroke="rgba(108,142,191,0.6)" strokeWidth="0.5" strokeDasharray="1.5,1"/>
-        <text x="26" y="0" fontSize="2.5" fill="rgba(148,163,184,0.7)" dominantBaseline="middle" style={{ fontFamily: 'DM Mono, monospace' }}>target</text>
-        <line x1="41" y1="0" x2="46" y2="0" stroke="rgba(240,192,64,0.9)" strokeWidth="0.8"/>
-        <text x="47" y="0" fontSize="2.5" fill="rgba(148,163,184,0.7)" dominantBaseline="middle" style={{ fontFamily: 'DM Mono, monospace' }}>current</text>
+        <text x="26" y="0" fontSize="2.5" fill="var(--radar-legend)" dominantBaseline="middle" style={{ fontFamily: 'DM Mono, monospace' }}>target</text>
+        <line x1="41" y1="0" x2="46" y2="0" stroke="var(--radar-current-stroke)" strokeWidth="0.8"/>
+        <text x="47" y="0" fontSize="2.5" fill="var(--radar-legend)" dominantBaseline="middle" style={{ fontFamily: 'DM Mono, monospace' }}>current</text>
       </g>
     </svg>
   )

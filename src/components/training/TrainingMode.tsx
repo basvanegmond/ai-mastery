@@ -7,37 +7,44 @@ import { useMasteryStore } from '../../store/masteryStore'
 
 type Mode = 'quick' | 'full'
 
-export function TrainingMode() {
-  const [mode, setMode] = useState<Mode>('quick')
+interface TrainingModeProps {
+  forcedMode?: Mode
+}
+
+export function TrainingMode({ forcedMode }: TrainingModeProps) {
+  const [localMode, setLocalMode] = useState<Mode>('quick')
   const [activeDomain, setActiveDomain] = useState<DomainKey>('prompt_construction')
   const store = useMasteryStore()
 
+  const mode = forcedMode ?? localMode
   const domainDef = DOMAIN_MAP[activeDomain]
   const workerConfigured = !!import.meta.env.VITE_WORKER_URL
 
   return (
     <div className="space-y-5">
-      {/* Mode toggle */}
-      <div
-        className="flex rounded-xl p-1"
-        style={{ background: 'var(--bg2)', boxShadow: 'var(--neo-inset)' }}
-      >
-        {(['quick', 'full'] as Mode[]).map((m) => (
-          <button
-            key={m}
-            onClick={() => setMode(m)}
-            className="flex-1 py-2 rounded-lg text-sm transition-neo"
-            style={{
-              boxShadow: mode === m ? 'var(--neo-raised)' : 'none',
-              background: mode === m ? 'var(--surface)' : 'transparent',
-              color: mode === m ? 'var(--text-primary)' : 'var(--text-muted)',
-              fontFamily: 'DM Mono, monospace',
-            }}
-          >
-            {m === 'quick' ? '⚡ Quick' : '◎ Full'}
-          </button>
-        ))}
-      </div>
+      {/* Mode toggle — only when not forced by tab */}
+      {!forcedMode && (
+        <div
+          className="flex rounded-xl p-1"
+          style={{ background: 'var(--bg2)', boxShadow: 'var(--neo-inset)' }}
+        >
+          {(['quick', 'full'] as Mode[]).map((m) => (
+            <button
+              key={m}
+              onClick={() => setLocalMode(m)}
+              className="flex-1 py-2 rounded-lg text-sm transition-neo"
+              style={{
+                boxShadow: mode === m ? 'var(--neo-raised)' : 'none',
+                background: mode === m ? 'var(--surface)' : 'transparent',
+                color: mode === m ? 'var(--text-primary)' : 'var(--text-muted)',
+                fontFamily: 'DM Mono, monospace',
+              }}
+            >
+              {m === 'quick' ? '⚡ Quick' : '◎ Full'}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Domain pills */}
       <div className="flex gap-2 overflow-x-auto pb-1">
@@ -92,7 +99,7 @@ export function TrainingMode() {
                 key={tag}
                 className="text-xs px-2 py-0.5 rounded"
                 style={{
-                  background: 'rgba(240,192,64,0.1)',
+                  background: 'var(--gold-dim)',
                   color: 'var(--gold)',
                   fontFamily: 'DM Mono, monospace',
                 }}
@@ -109,8 +116,8 @@ export function TrainingMode() {
         <div
           className="rounded-xl p-3 text-xs"
           style={{
-            background: 'rgba(240,192,64,0.1)',
-            border: '1px solid rgba(240,192,64,0.3)',
+            background: 'var(--gold-dim)',
+            border: '1px solid var(--gold)',
             color: 'var(--gold)',
             fontFamily: 'DM Mono, monospace',
           }}

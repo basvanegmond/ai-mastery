@@ -62,6 +62,8 @@ export function FullExercise({ domain }: FullExerciseProps) {
   const [stars, setStars] = useState(0)
   const [grade, setGrade] = useState<GradeLabel | null>(null)
   const [submitted, setSubmitted] = useState(false)
+  const [submittedStars, setSubmittedStars] = useState(0)
+  const [submittedGrade, setSubmittedGrade] = useState<GradeLabel | null>(null)
 
   const exercises = FULL_EXERCISES.filter((e) => e.domain === domain)
   const completedIds = new Set(
@@ -74,6 +76,18 @@ export function FullExercise({ domain }: FullExerciseProps) {
     setStars(0)
     setGrade(null)
     setSubmitted(false)
+    setSubmittedStars(0)
+    setSubmittedGrade(null)
+  }
+
+  function handleNextExercise() {
+    const currentIndex = exercises.findIndex((e) => e.id === activeId)
+    const next = exercises.slice(currentIndex + 1).find((e) => !completedIds.has(e.id))
+    if (next) {
+      handleSelect(next.id)
+    } else {
+      setActiveId(null)
+    }
   }
 
   async function handleSubmit() {
@@ -96,15 +110,17 @@ export function FullExercise({ domain }: FullExerciseProps) {
     }
 
     addExerciseEntry(entry)
+    setSubmittedStars(stars)
+    setSubmittedGrade(grade)
     setSubmitted(true)
   }
 
   const domainDef = DOMAIN_MAP[domain]
   const difficultyColor = { Easy: 'var(--success)', Medium: 'var(--gold)', Hard: 'var(--danger)' }
+  const remaining = exercises.filter((e) => !completedIds.has(e.id) && e.id !== activeId).length
 
   return (
     <div className="space-y-4">
-      {/* Exercise list */}
       <div className="space-y-2">
         {exercises.map((ex) => {
           const done = completedIds.has(ex.id)
@@ -124,9 +140,9 @@ export function FullExercise({ domain }: FullExerciseProps) {
                 }}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span style={{ color: 'var(--text-primary)' }}>{ex.task}</span>
+                  <span style={{ color: done ? 'var(--text-muted)' : 'var(--text-primary)' }}>{ex.task}</span>
                   <div className="flex items-center gap-2 shrink-0">
-                    {done && <span style={{ color: 'var(--success)' }}>✓</span>}
+                    {done && <span style={{ color: 'var(--success)', fontSize: '12px' }}>✓</span>}
                     <span
                       className="text-xs px-2 py-0.5 rounded"
                       style={{
@@ -136,6 +152,7 @@ export function FullExercise({ domain }: FullExerciseProps) {
                     >
                       {ex.difficulty}
                     </span>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '11px' }}>{active ? '▾' : '▸'}</span>
                   </div>
                 </div>
               </button>
@@ -147,79 +164,129 @@ export function FullExercise({ domain }: FullExerciseProps) {
                   style={{ background: 'var(--bg2)', boxShadow: 'var(--neo-inset)' }}
                 >
                   <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}>
-                    Context: {ex.context}
+                    {ex.context}
                   </p>
 
-                  <textarea
-                    value={reflection}
-                    onChange={(e) => setReflection(e.target.value)}
-                    placeholder="What did you do, what did you observe, what did you learn?"
-                    rows={4}
-                    className="w-full rounded-lg p-3 text-sm resize-none outline-none"
-                    style={{
-                      background: 'var(--bg)',
-                      boxShadow: 'var(--neo-inset)',
-                      color: 'var(--text-primary)',
-                      fontFamily: 'DM Mono, monospace',
-                      border: 'none',
-                    }}
-                  />
-
-                  <div className="flex items-center gap-4">
-                    {/* Star rating */}
-                    <div className="flex gap-1">
-                      {[1, 2, 3, 4, 5].map((s) => (
+                  {submitted ? (
+                    /* Success state */
+                    <div
+                      className="rounded-xl p-4 space-y-3"
+                      style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span style={{ color: 'var(--success)', fontSize: '18px' }}>✓</span>
+                        <span className="text-sm font-medium" style={{ color: 'var(--text-primary)', fontFamily: 'DM Mono, monospace' }}>
+                          Logged
+                        </span>
+                        <span style={{ color: 'var(--gold)', fontFamily: 'DM Mono, monospace', fontSize: '13px' }}>
+                          {'★'.repeat(submittedStars)}
+                        </span>
+                        {submittedGrade && (
+                          <span
+                            className="text-xs px-2 py-0.5 rounded ml-1"
+                            style={{ background: 'var(--gold-dim)', color: 'var(--gold)', fontFamily: 'DM Mono, monospace' }}
+                          >
+                            {submittedGrade}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        {remaining > 0 && (
+                          <button
+                            onClick={handleNextExercise}
+                            className="flex-1 py-2 rounded-lg text-sm transition-neo"
+                            style={{
+                              boxShadow: 'var(--neo-raised)',
+                              background: 'var(--surface)',
+                              color: 'var(--gold)',
+                              fontFamily: 'DM Mono, monospace',
+                            }}
+                          >
+                            Next exercise → ({remaining} left)
+                          </button>
+                        )}
                         <button
-                          key={s}
-                          onClick={() => setStars(s)}
-                          className="text-lg transition-neo"
-                          style={{ color: s <= stars ? 'var(--gold)' : 'var(--text-muted)' }}
-                        >
-                          ★
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Grade estimate */}
-                    <div className="flex gap-1">
-                      {GRADES.map((g) => (
-                        <button
-                          key={g}
-                          onClick={() => setGrade(g === grade ? null : g)}
-                          className="text-xs px-2 py-1 rounded transition-neo"
+                          onClick={() => setActiveId(null)}
+                          className="py-2 px-4 rounded-lg text-sm transition-neo"
                           style={{
-                            boxShadow: grade === g ? 'var(--neo-inset)' : 'var(--neo-raised)',
+                            boxShadow: 'var(--neo-raised)',
                             background: 'var(--surface)',
-                            color: grade === g ? 'var(--text-primary)' : 'var(--text-muted)',
+                            color: 'var(--text-muted)',
                             fontFamily: 'DM Mono, monospace',
                           }}
                         >
-                          {g}
+                          Back to list
                         </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {submitted ? (
-                    <div className="text-xs" style={{ color: 'var(--success)', fontFamily: 'DM Mono, monospace' }}>
-                      ✓ Logged
+                      </div>
                     </div>
                   ) : (
-                    <button
-                      onClick={handleSubmit}
-                      disabled={stars === 0}
-                      className="w-full py-2 rounded-lg text-sm transition-neo"
-                      style={{
-                        boxShadow: stars > 0 ? 'var(--neo-raised)' : 'none',
-                        background: stars > 0 ? 'var(--surface)' : 'transparent',
-                        color: stars > 0 ? 'var(--text-primary)' : 'var(--text-muted)',
-                        fontFamily: 'DM Mono, monospace',
-                        border: stars === 0 ? '1px dashed rgba(255,255,255,0.1)' : 'none',
-                        cursor: stars > 0 ? 'pointer' : 'default',
-                      }}
-                    >
-                      log entry
-                    </button>
+                    <>
+                      <textarea
+                        value={reflection}
+                        onChange={(e) => setReflection(e.target.value)}
+                        placeholder="What did you do, what did you observe, what did you learn?"
+                        rows={4}
+                        className="w-full rounded-lg p-3 text-sm resize-none outline-none"
+                        style={{
+                          background: 'var(--bg)',
+                          boxShadow: 'var(--neo-inset)',
+                          color: 'var(--text-primary)',
+                          fontFamily: 'DM Mono, monospace',
+                          border: 'none',
+                        }}
+                      />
+
+                      <div className="flex items-center gap-4 flex-wrap">
+                        {/* Star rating */}
+                        <div className="flex gap-1">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <button
+                              key={s}
+                              onClick={() => setStars(s)}
+                              className="text-lg transition-neo"
+                              style={{ color: s <= stars ? 'var(--gold)' : 'var(--text-muted)' }}
+                            >
+                              ★
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Grade estimate */}
+                        <div className="flex gap-1">
+                          {GRADES.map((g) => (
+                            <button
+                              key={g}
+                              onClick={() => setGrade(g === grade ? null : g)}
+                              className="text-xs px-2 py-1 rounded transition-neo"
+                              style={{
+                                boxShadow: grade === g ? 'var(--neo-inset)' : 'var(--neo-raised)',
+                                background: 'var(--surface)',
+                                color: grade === g ? 'var(--gold)' : 'var(--text-muted)',
+                                fontFamily: 'DM Mono, monospace',
+                              }}
+                            >
+                              {g}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={handleSubmit}
+                        disabled={stars === 0}
+                        className="w-full py-2 rounded-lg text-sm transition-neo"
+                        style={{
+                          boxShadow: stars > 0 ? 'var(--neo-raised)' : 'none',
+                          background: stars > 0 ? 'var(--surface)' : 'transparent',
+                          color: stars > 0 ? 'var(--text-primary)' : 'var(--text-muted)',
+                          fontFamily: 'DM Mono, monospace',
+                          border: stars === 0 ? '1px dashed var(--text-muted)' : 'none',
+                          cursor: stars > 0 ? 'pointer' : 'default',
+                        }}
+                      >
+                        {stars === 0 ? 'rate to log →' : 'log entry'}
+                      </button>
+                    </>
                   )}
                 </div>
               )}
