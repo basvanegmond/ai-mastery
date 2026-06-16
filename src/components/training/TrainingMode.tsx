@@ -25,19 +25,19 @@ export function TrainingMode({ forcedMode }: TrainingModeProps) {
       {/* Mode toggle — only when not forced by tab */}
       {!forcedMode && (
         <div
-          className="flex rounded-xl p-1"
-          style={{ background: 'var(--bg2)', boxShadow: 'var(--neo-inset)' }}
+          className="inline-flex rounded-lg p-0.5"
+          style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}
         >
           {(['quick', 'full'] as Mode[]).map((m) => (
             <button
               key={m}
               onClick={() => setLocalMode(m)}
-              className="flex-1 py-2 rounded-lg text-sm transition-neo"
+              className="interactive px-4 py-1.5 rounded-md text-sm"
               style={{
-                boxShadow: mode === m ? 'var(--neo-raised)' : 'none',
                 background: mode === m ? 'var(--surface)' : 'transparent',
-                color: mode === m ? 'var(--text-primary)' : 'var(--text-muted)',
+                color: mode === m ? 'var(--gold)' : 'var(--text-muted)',
                 fontFamily: 'DM Mono, monospace',
+                border: mode === m ? '1px solid var(--border)' : '1px solid transparent',
               }}
             >
               {m === 'quick' ? '⚡ Quick' : '◎ Full'}
@@ -54,18 +54,18 @@ export function TrainingMode({ forcedMode }: TrainingModeProps) {
               e.domain === d.key &&
               new Date(e.createdAt) >= new Date(Date.now() - 7 * 86400000)
           ).length
+          const active = activeDomain === d.key
 
           return (
             <button
               key={d.key}
               onClick={() => setActiveDomain(d.key)}
-              className="shrink-0 px-3 py-2 rounded-xl text-xs transition-neo"
+              className="interactive shrink-0 px-3 py-1.5 rounded-lg text-xs"
               style={{
-                boxShadow: activeDomain === d.key ? 'var(--neo-inset)' : 'var(--neo-raised)',
-                background: 'var(--surface)',
-                color: activeDomain === d.key ? d.color : 'var(--text-muted)',
+                background: active ? 'var(--active-bg)' : 'var(--surface)',
+                color: active ? d.color : 'var(--text-muted)',
                 fontFamily: 'DM Mono, monospace',
-                borderBottom: activeDomain === d.key ? `2px solid ${d.color}` : '2px solid transparent',
+                border: active ? `1px solid ${d.color}` : '1px solid var(--border)',
               }}
             >
               {d.shortLabel}
@@ -82,15 +82,14 @@ export function TrainingMode({ forcedMode }: TrainingModeProps) {
         {domainDef.description}
       </p>
 
-      {/* Top weakness tags for this domain */}
+      {/* Top weakness tags */}
       {(() => {
         const tags = Object.entries(store.weaknessTags[activeDomain] ?? {})
           .sort((a, b) => b[1] - a[1])
           .slice(0, 3)
-
         if (tags.length === 0) return null
         return (
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1.5">
             <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}>
               focus areas:
             </span>
@@ -102,6 +101,7 @@ export function TrainingMode({ forcedMode }: TrainingModeProps) {
                   background: 'var(--gold-dim)',
                   color: 'var(--gold)',
                   fontFamily: 'DM Mono, monospace',
+                  border: '1px solid var(--gold)',
                 }}
               >
                 {tag} ×{count}
@@ -114,7 +114,7 @@ export function TrainingMode({ forcedMode }: TrainingModeProps) {
       {/* Worker not configured warning */}
       {mode === 'quick' && !workerConfigured && (
         <div
-          className="rounded-xl p-3 text-xs"
+          className="rounded-lg p-3 text-xs"
           style={{
             background: 'var(--gold-dim)',
             border: '1px solid var(--gold)',

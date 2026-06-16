@@ -46,28 +46,37 @@ export function SettingsScreen() {
   }
 
   function handleManualSync() {
-    if (store.githubToken) {
-      store.syncFromGithub()
-    }
+    if (store.githubToken) store.syncFromGithub()
   }
 
   const workerUrl = import.meta.env.VITE_WORKER_URL as string | undefined
+
+  const sectionStyle = {
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
+    boxShadow: 'var(--card-shadow)',
+  }
+
+  const inputStyle = {
+    background: 'var(--bg2)',
+    border: '1px solid var(--border)',
+    color: 'var(--text-primary)',
+    fontFamily: 'DM Mono, monospace',
+    outline: 'none',
+  }
 
   return (
     <div className="space-y-6">
       <h2 className="text-base" style={{ fontFamily: 'Syne, sans-serif' }}>Settings</h2>
 
       {/* GitHub sync */}
-      <section
-        className="rounded-xl p-5 space-y-4"
-        style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
-      >
+      <section className="rounded-xl p-5 space-y-4" style={sectionStyle}>
         <div>
           <div className="text-sm font-medium mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'Syne, sans-serif' }}>
             GitHub sync
           </div>
           <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace', lineHeight: '1.6' }}>
-            Progress is saved to <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px' }}>data/progress.json</code> in this repository.
+            Progress is saved to <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border)' }}>data/progress.json</code> in this repository.
             Provide a GitHub Personal Access Token with <strong>contents: write</strong> scope on basvanegmond/ai-mastery.
           </p>
           <a
@@ -87,23 +96,17 @@ export function SettingsScreen() {
             value={tokenInput}
             onChange={(e) => setTokenInput(e.target.value)}
             placeholder="ghp_xxxxxxxxxxxx"
-            className="flex-1 rounded-lg px-3 py-2 text-sm outline-none"
-            style={{
-              background: 'var(--bg2)',
-              boxShadow: 'var(--neo-inset)',
-              color: 'var(--text-primary)',
-              fontFamily: 'DM Mono, monospace',
-              border: 'none',
-            }}
+            className="flex-1 rounded-lg px-3 py-2 text-sm"
+            style={inputStyle}
           />
           <button
             onClick={saveToken}
-            className="px-4 rounded-lg text-sm transition-neo"
+            className="interactive px-4 rounded-lg text-sm"
             style={{
-              boxShadow: 'var(--neo-raised)',
-              background: 'var(--surface)',
-              color: tokenSaved ? 'var(--success)' : 'var(--text-primary)',
+              background: tokenSaved ? 'var(--success)' : 'var(--gold)',
+              color: 'white',
               fontFamily: 'DM Mono, monospace',
+              border: 'none',
             }}
           >
             {tokenSaved ? '✓ saved' : 'save'}
@@ -127,10 +130,10 @@ export function SettingsScreen() {
           {store.githubToken && (
             <button
               onClick={handleManualSync}
-              className="text-xs px-3 py-1 rounded-lg transition-neo"
+              className="interactive text-xs px-3 py-1 rounded-lg"
               style={{
-                boxShadow: 'var(--neo-raised)',
-                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                background: 'transparent',
                 color: 'var(--text-muted)',
                 fontFamily: 'DM Mono, monospace',
               }}
@@ -147,10 +150,7 @@ export function SettingsScreen() {
       </section>
 
       {/* Cloudflare Worker */}
-      <section
-        className="rounded-xl p-5 space-y-3"
-        style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
-      >
+      <section className="rounded-xl p-5 space-y-3" style={sectionStyle}>
         <div className="text-sm font-medium" style={{ color: 'var(--text-primary)', fontFamily: 'Syne, sans-serif' }}>
           Claude API proxy
         </div>
@@ -162,27 +162,24 @@ export function SettingsScreen() {
           <span>{workerUrl ? `Configured: ${workerUrl}` : 'Not configured — Quick exercises disabled'}</span>
         </div>
         <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace', lineHeight: '1.6' }}>
-          Deploy the Cloudflare Worker from <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px' }}>cloudflare-worker/worker.js</code>, add your <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px' }}>ANTHROPIC_API_KEY</code> as a Worker secret, then add the Worker URL as <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px' }}>VITE_WORKER_URL</code> in GitHub Actions secrets and rebuild.
+          Deploy <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border)' }}>cloudflare-worker/worker.js</code>, add your <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border)' }}>ANTHROPIC_API_KEY</code> as a Worker secret, then add the Worker URL as <code style={{ background: 'var(--bg2)', padding: '1px 4px', borderRadius: '3px', border: '1px solid var(--border)' }}>VITE_WORKER_URL</code> in Cloudflare Pages environment variables and redeploy.
         </p>
       </section>
 
       {/* Manual backup */}
-      <section
-        className="rounded-xl p-5 space-y-4"
-        style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
-      >
+      <section className="rounded-xl p-5 space-y-4" style={sectionStyle}>
         <div className="text-sm font-medium" style={{ color: 'var(--text-primary)', fontFamily: 'Syne, sans-serif' }}>
           Manual backup
         </div>
 
         <button
           onClick={handleExport}
-          className="w-full py-2 rounded-lg text-sm transition-neo"
+          className="interactive w-full py-2 rounded-lg text-sm"
           style={{
-            boxShadow: 'var(--neo-raised)',
-            background: 'var(--surface)',
-            color: exportCopied ? 'var(--success)' : 'var(--text-primary)',
+            background: exportCopied ? 'var(--success)' : 'var(--surface)',
+            color: exportCopied ? 'white' : 'var(--text-primary)',
             fontFamily: 'DM Mono, monospace',
+            border: '1px solid var(--border)',
           }}
         >
           {exportCopied ? '✓ copied to clipboard' : 'Export JSON (copy to clipboard)'}
@@ -194,25 +191,18 @@ export function SettingsScreen() {
             onChange={(e) => setImportText(e.target.value)}
             placeholder="Paste exported JSON here to restore…"
             rows={4}
-            className="w-full rounded-lg p-3 text-xs resize-none outline-none"
-            style={{
-              background: 'var(--bg2)',
-              boxShadow: 'var(--neo-inset)',
-              color: 'var(--text-primary)',
-              fontFamily: 'DM Mono, monospace',
-              border: 'none',
-            }}
+            className="w-full rounded-lg p-3 text-xs resize-none"
+            style={inputStyle}
           />
           <button
             onClick={handleImport}
             disabled={!importText.trim()}
-            className="w-full py-2 rounded-lg text-sm transition-neo"
+            className="interactive w-full py-2 rounded-lg text-sm"
             style={{
-              boxShadow: importText ? 'var(--neo-raised)' : 'none',
-              background: importText ? 'var(--surface)' : 'transparent',
-              color: importDone ? 'var(--success)' : importText ? 'var(--text-primary)' : 'var(--text-muted)',
+              background: importText ? 'var(--gold)' : 'transparent',
+              color: importDone ? 'white' : importText ? 'white' : 'var(--text-muted)',
               fontFamily: 'DM Mono, monospace',
-              border: !importText ? '1px dashed rgba(255,255,255,0.1)' : 'none',
+              border: !importText ? '1px dashed var(--border)' : 'none',
             }}
           >
             {importDone ? '✓ imported' : 'Import JSON'}
@@ -221,10 +211,7 @@ export function SettingsScreen() {
       </section>
 
       {/* Stats */}
-      <section
-        className="rounded-xl p-5"
-        style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
-      >
+      <section className="rounded-xl p-5" style={sectionStyle}>
         <div className="text-sm font-medium mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'Syne, sans-serif' }}>
           Data summary
         </div>

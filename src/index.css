@@ -5,25 +5,25 @@
 :root {
   --bg: #f0f0f2;
   --bg2: #e8e8ea;
-  --surface: #f4f4f6;
-
-  --neo-light: rgba(255, 255, 255, 0.85);
-  --neo-dark: rgba(158, 152, 172, 0.55);
-  --neo-raised: 5px 5px 12px var(--neo-dark), -4px -4px 10px var(--neo-light);
-  --neo-inset: inset 4px 4px 10px var(--neo-dark), inset -3px -3px 8px var(--neo-light);
-  --neo-flat: none;
+  --surface: #ffffff;
 
   --text-primary: #1e1826;
   --text-secondary: #4a4460;
   --text-muted: #8a85a0;
 
   --gold: #7D1D3F;
-  --gold-dim: rgba(125, 29, 63, 0.12);
+  --gold-dim: rgba(125, 29, 63, 0.08);
   --accent: #9B4060;
   --danger: #c0392b;
   --success: #2a6e4a;
 
-  /* Radar tokens — light */
+  --border: rgba(0, 0, 0, 0.09);
+  --border-mid: rgba(0, 0, 0, 0.16);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --hover-bg: rgba(0, 0, 0, 0.04);
+  --active-bg: rgba(125, 29, 63, 0.08);
+
+  /* Radar tokens */
   --radar-grid: rgba(0, 0, 0, 0.07);
   --radar-axis: rgba(0, 0, 0, 0.05);
   --radar-baseline-fill: rgba(0, 0, 0, 0.02);
@@ -33,32 +33,32 @@
   --radar-current-fill: rgba(125, 29, 63, 0.1);
   --radar-current-stroke: #7D1D3F;
 
-  --radius: 14px;
-  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-sm: 6px;
 }
 
 /* ── Dark theme (opt-in) ── */
 .dark {
   --bg: #1a1520;
   --bg2: #14101a;
-  --surface: #1e192a;
-
-  --neo-light: rgba(255, 255, 255, 0.05);
-  --neo-dark: rgba(0, 0, 0, 0.4);
-  --neo-raised: 4px 4px 10px var(--neo-dark), -3px -3px 8px var(--neo-light);
-  --neo-inset: inset 3px 3px 8px var(--neo-dark), inset -2px -2px 6px var(--neo-light);
+  --surface: #201a2c;
 
   --text-primary: #e8e0f0;
   --text-secondary: #a09ab8;
   --text-muted: #6a6480;
 
   --gold: #c0547a;
-  --gold-dim: rgba(192, 84, 122, 0.18);
+  --gold-dim: rgba(192, 84, 122, 0.12);
   --accent: #d06090;
   --danger: #e05c5c;
   --success: #5cb85c;
 
-  /* Radar tokens — dark */
+  --border: rgba(255, 255, 255, 0.09);
+  --border-mid: rgba(255, 255, 255, 0.16);
+  --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  --hover-bg: rgba(255, 255, 255, 0.04);
+  --active-bg: rgba(192, 84, 122, 0.12);
+
   --radar-grid: rgba(255, 255, 255, 0.08);
   --radar-axis: rgba(255, 255, 255, 0.07);
   --radar-baseline-fill: rgba(255, 255, 255, 0.03);
@@ -94,16 +94,14 @@ h1, h2, h3 {
   margin: 0;
 }
 
-/* ── Neomorphic utility classes ── */
-.neo-raised   { box-shadow: var(--neo-raised); background: var(--surface); }
-.neo-inset    { box-shadow: var(--neo-inset);  background: var(--bg2); }
-.neo-flat     { background: transparent; }
+/* ── Interactive utility ── */
+.interactive {
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  cursor: pointer;
+}
+.interactive:active { transform: scale(0.985); transition: transform 0.08s ease; }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
-
-/* ── Transition helpers ── */
-.transition-neo { transition: box-shadow 0.15s ease, transform 0.1s ease; }
-.transition-neo:active { transform: scale(0.98); }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }

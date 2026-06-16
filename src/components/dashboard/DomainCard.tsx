@@ -24,7 +24,7 @@ export function DomainCard({ domain, progress, weeklyExercises }: DomainCardProp
   return (
     <div
       className="rounded-xl p-4"
-      style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
+      style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--card-shadow)' }}
     >
       <div className="flex items-start justify-between mb-3">
         <div>
@@ -48,14 +48,11 @@ export function DomainCard({ domain, progress, weeklyExercises }: DomainCardProp
       </div>
 
       {/* Progress bar */}
-      <div className="relative h-3 rounded-full overflow-hidden" style={{ background: 'var(--bg2)', boxShadow: 'var(--neo-inset)' }}>
+      <div className="relative h-2.5 rounded-full overflow-hidden" style={{ background: 'var(--bg2)' }}>
         {/* Baseline marker */}
         <div
           className="absolute top-0 bottom-0 w-px"
-          style={{
-            left: `${baselinePct}%`,
-            background: 'rgba(255,255,255,0.2)',
-          }}
+          style={{ left: `${baselinePct}%`, background: 'var(--border-mid)' }}
         />
         {/* Fill */}
         <div
@@ -87,7 +84,7 @@ export function DomainCard({ domain, progress, weeklyExercises }: DomainCardProp
         {/* Target marker */}
         <div
           className="absolute flex flex-col items-center"
-          style={{ left: `${targetPct}%`, transform: 'translateX(-50%)', top: '-18px' }}
+          style={{ left: `${targetPct}%`, transform: 'translateX(-50%)', top: '-16px' }}
         >
           <div className="w-px h-2" style={{ background: 'var(--gold)' }} />
           <span className="text-xs" style={{ color: 'var(--gold)', fontFamily: 'DM Mono, monospace', fontSize: '9px' }}>

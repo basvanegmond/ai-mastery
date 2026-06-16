@@ -35,46 +35,43 @@ export function Shell({ children }: ShellProps) {
     document.documentElement.classList.toggle('dark', theme === 'dark')
   }, [theme])
 
-  // Sync from GitHub on first load if token is available
   useEffect(() => {
     if (githubToken) syncFromGithub()
     touchLastActive()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const syncDot =
-    syncStatus === 'syncing' ? '○'
-    : syncStatus === 'error' || syncStatus === 'conflict' ? '●'
-    : '●'
   const syncColor =
-    syncStatus === 'syncing' ? 'text-[var(--gold)]'
-    : syncStatus === 'error' || syncStatus === 'conflict' ? 'text-[var(--danger)]'
-    : githubToken ? 'text-[var(--success)]'
-    : 'text-[var(--text-muted)]'
+    syncStatus === 'syncing' ? 'var(--gold)'
+    : syncStatus === 'error' || syncStatus === 'conflict' ? 'var(--danger)'
+    : githubToken ? 'var(--success)'
+    : 'var(--text-muted)'
+
+  const syncLabel =
+    syncStatus === 'syncing' ? 'syncing…'
+    : syncStatus === 'conflict' ? 'conflict'
+    : syncStatus === 'error' ? 'sync error'
+    : githubToken ? 'synced'
+    : 'local only'
 
   return (
     <div className="flex h-full min-h-screen" style={{ background: 'var(--bg)' }}>
       {/* Side nav — desktop */}
       {isDesktop && (
         <nav
-          className="flex flex-col gap-2 p-4 w-52 shrink-0 border-r"
+          className="flex flex-col gap-1 p-4 w-52 shrink-0"
           style={{
             background: 'var(--surface)',
-            borderColor: 'var(--bg2)',
-            boxShadow: '2px 0 12px rgba(0,0,0,0.06)',
+            borderRight: '1px solid var(--border)',
           }}
         >
-          <div className="mb-6 px-2">
+          <div className="mb-6 px-2 pt-1">
             <h1 className="text-lg leading-tight" style={{ fontFamily: 'Syne, sans-serif', color: 'var(--text-primary)' }}>
-              AI<br />Mastery
+              AI Mastery
             </h1>
-            <div className="flex items-center gap-1 mt-1">
-              <span className={`text-xs ${syncColor}`}>{syncDot}</span>
-              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                {syncStatus === 'syncing' ? 'syncing…'
-                  : syncStatus === 'conflict' ? 'conflict'
-                  : syncStatus === 'error' ? 'sync error'
-                  : githubToken ? 'synced'
-                  : 'local only'}
+            <div className="flex items-center gap-1.5 mt-1">
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: syncColor, display: 'inline-block', flexShrink: 0 }} />
+              <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}>
+                {syncLabel}
               </span>
             </div>
           </div>
@@ -83,12 +80,12 @@ export function Shell({ children }: ShellProps) {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-neo text-left w-full"
+              className="interactive flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-left w-full"
               style={{
-                boxShadow: activeTab === item.id ? 'var(--neo-inset)' : 'var(--neo-raised)',
-                background: 'var(--surface)',
+                background: activeTab === item.id ? 'var(--active-bg)' : 'transparent',
                 color: activeTab === item.id ? 'var(--gold)' : 'var(--text-secondary)',
                 fontFamily: 'DM Mono, monospace',
+                borderLeft: activeTab === item.id ? '2px solid var(--gold)' : '2px solid transparent',
               }}
             >
               <span>{item.icon}</span>
@@ -96,14 +93,13 @@ export function Shell({ children }: ShellProps) {
             </button>
           ))}
 
-          <div className="mt-auto">
+          <div className="mt-auto pt-2" style={{ borderTop: '1px solid var(--border)' }}>
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs w-full transition-neo"
+              className="interactive flex items-center gap-2 px-3 py-2 rounded-lg text-xs w-full"
               style={{
-                boxShadow: 'var(--neo-raised)',
-                background: 'var(--surface)',
-                color: 'var(--text-secondary)',
+                background: 'transparent',
+                color: 'var(--text-muted)',
                 fontFamily: 'DM Mono, monospace',
               }}
             >
@@ -122,17 +118,16 @@ export function Shell({ children }: ShellProps) {
             className="flex items-center justify-between px-4 py-3 sticky top-0 z-10"
             style={{
               background: 'var(--surface)',
-              borderBottom: '1px solid var(--bg2)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              borderBottom: '1px solid var(--border)',
             }}
           >
-            <h1 className="text-base" style={{ fontFamily: 'Syne, sans-serif', color: 'var(--text-primary)' }}>AI Mastery</h1>
+            <h1 className="text-sm font-semibold" style={{ fontFamily: 'Syne, sans-serif', color: 'var(--text-primary)' }}>AI Mastery</h1>
             <div className="flex items-center gap-3">
-              <span className={`text-xs ${syncColor}`}>{syncDot}</span>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: syncColor, display: 'inline-block' }} />
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="text-base px-2 py-1 rounded-lg transition-neo"
-                style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)', color: 'var(--text-secondary)' }}
+                className="interactive text-sm px-2 py-1 rounded-lg"
+                style={{ color: 'var(--text-secondary)', background: 'transparent' }}
               >
                 {theme === 'dark' ? '☀' : '◑'}
               </button>
@@ -148,22 +143,22 @@ export function Shell({ children }: ShellProps) {
       {/* Bottom nav — mobile */}
       {!isDesktop && (
         <nav
-          className="fixed bottom-0 left-0 right-0 flex border-t z-10"
+          className="fixed bottom-0 left-0 right-0 flex z-10"
           style={{
             background: 'var(--surface)',
-            borderColor: 'var(--bg2)',
-            boxShadow: '0 -2px 8px rgba(0,0,0,0.06)',
+            borderTop: '1px solid var(--border)',
           }}
         >
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className="flex-1 flex flex-col items-center gap-0.5 py-2 transition-neo"
+              className="interactive flex-1 flex flex-col items-center gap-0.5 py-2"
               style={{
                 color: activeTab === item.id ? 'var(--gold)' : 'var(--text-muted)',
                 fontFamily: 'DM Mono, monospace',
-                background: activeTab === item.id ? 'var(--bg2)' : 'transparent',
+                background: activeTab === item.id ? 'var(--active-bg)' : 'transparent',
+                borderTop: activeTab === item.id ? '2px solid var(--gold)' : '2px solid transparent',
               }}
             >
               <span style={{ fontSize: '14px' }}>{item.icon}</span>

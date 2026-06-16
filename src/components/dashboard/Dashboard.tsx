@@ -103,7 +103,7 @@ export function Dashboard() {
           <div
             key={stat.label}
             className="rounded-xl p-4 text-center"
-            style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--card-shadow)' }}
           >
             <div
               className="text-2xl font-bold"
@@ -124,15 +124,15 @@ export function Dashboard() {
       {/* Did you know */}
       <div
         className="rounded-xl px-5 py-4 flex items-center gap-4"
-        style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
+        style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--card-shadow)' }}
       >
         <div className="flex-1 min-w-0">
-          <div className="text-xs mb-1" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}>
+          <div className="text-xs mb-1.5" style={{ color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}>
             did you know
           </div>
           <span
             className="text-xs px-2 py-0.5 rounded mr-2"
-            style={{ background: 'var(--gold-dim)', color: 'var(--gold)', fontFamily: 'DM Mono, monospace' }}
+            style={{ background: 'var(--gold-dim)', color: 'var(--gold)', fontFamily: 'DM Mono, monospace', border: '1px solid var(--gold)' }}
           >
             {tip.cmd}
           </span>
@@ -140,18 +140,18 @@ export function Dashboard() {
             {tip.text}
           </span>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex gap-1.5 shrink-0">
           <button
             onClick={() => setTipIndex((tipIndex - 1 + TIPS.length) % TIPS.length)}
-            className="px-2 py-1 rounded-lg text-xs transition-neo"
-            style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)', color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}
+            className="interactive px-2 py-1 rounded text-xs"
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)', background: 'transparent', fontFamily: 'DM Mono, monospace' }}
           >
             ←
           </button>
           <button
             onClick={() => setTipIndex((tipIndex + 1) % TIPS.length)}
-            className="px-2 py-1 rounded-lg text-xs transition-neo"
-            style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)', color: 'var(--text-muted)', fontFamily: 'DM Mono, monospace' }}
+            className="interactive px-2 py-1 rounded text-xs"
+            style={{ color: 'var(--text-muted)', border: '1px solid var(--border)', background: 'transparent', fontFamily: 'DM Mono, monospace' }}
           >
             →
           </button>
@@ -163,7 +163,7 @@ export function Dashboard() {
         {/* Radar */}
         <div
           className="rounded-xl p-6 flex items-center justify-center w-full lg:w-auto lg:shrink-0"
-          style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--card-shadow)' }}
         >
           <RadarChart domainProgress={store.domainProgress} size={320} />
         </div>
@@ -195,7 +195,7 @@ export function Dashboard() {
                 <div
                   key={finding.domain}
                   className="rounded-xl px-4 py-3"
-                  style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
+                  style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--card-shadow)' }}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-xs" style={{ color: 'var(--text-primary)', fontFamily: 'Syne, sans-serif' }}>
@@ -210,6 +210,7 @@ export function Dashboard() {
                             background: 'var(--gold-dim)',
                             color: 'var(--gold)',
                             fontFamily: 'DM Mono, monospace',
+                            border: '1px solid var(--gold)',
                           }}
                         >
                           {tag}

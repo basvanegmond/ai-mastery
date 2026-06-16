@@ -59,8 +59,8 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
   if (loading) {
     return (
       <div className="space-y-3 animate-pulse">
-        <div className="h-5 rounded" style={{ background: 'var(--bg2)', width: '80%' }} />
-        <div className="h-4 rounded" style={{ background: 'var(--bg2)', width: '60%' }} />
+        <div className="h-5 rounded-lg" style={{ background: 'var(--bg2)', width: '80%' }} />
+        <div className="h-4 rounded-lg" style={{ background: 'var(--bg2)', width: '60%' }} />
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="h-12 rounded-xl" style={{ background: 'var(--bg2)' }} />
         ))}
@@ -73,15 +73,15 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
       <div className="space-y-3">
         <div
           className="rounded-xl p-4 text-sm"
-          style={{ background: 'rgba(224,92,92,0.1)', border: '1px solid rgba(224,92,92,0.3)', color: 'var(--danger)' }}
+          style={{ background: 'rgba(192,57,43,0.06)', border: '1px solid rgba(192,57,43,0.3)', color: 'var(--danger)' }}
         >
           <div className="font-medium mb-1">Generation failed</div>
           <div className="text-xs opacity-80">{error}</div>
         </div>
         <button
           onClick={loadExercise}
-          className="w-full py-2 rounded-xl text-sm transition-neo"
-          style={{ boxShadow: 'var(--neo-raised)', background: 'var(--surface)', color: 'var(--text-primary)', fontFamily: 'DM Mono, monospace' }}
+          className="interactive w-full py-2 rounded-xl text-sm"
+          style={{ border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', fontFamily: 'DM Mono, monospace' }}
         >
           retry
         </button>
@@ -96,7 +96,7 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
       {/* Question */}
       <div
         className="rounded-xl p-4 text-sm leading-relaxed"
-        style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)', color: 'var(--text-primary)' }}
+        style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-primary)', boxShadow: 'var(--card-shadow)' }}
       >
         {exercise.question}
       </div>
@@ -108,16 +108,16 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
           const isSelected = opt.id === selected
 
           let bg = 'var(--surface)'
-          let border = 'transparent'
+          let border = 'var(--border)'
           let textColor = 'var(--text-secondary)'
-          let shadow = revealed ? 'var(--neo-flat)' : 'var(--neo-raised)'
 
           if (revealed) {
-            if (isCorrect) { bg = 'rgba(92,184,92,0.15)'; border = 'rgba(92,184,92,0.4)'; textColor = 'var(--success)' }
-            else if (isSelected) { bg = 'rgba(224,92,92,0.12)'; border = 'rgba(224,92,92,0.4)'; textColor = 'var(--danger)' }
+            if (isCorrect) { bg = 'rgba(42,110,74,0.08)'; border = 'var(--success)'; textColor = 'var(--success)' }
+            else if (isSelected) { bg = 'rgba(192,57,43,0.08)'; border = 'var(--danger)'; textColor = 'var(--danger)' }
           } else if (isSelected) {
-            shadow = 'var(--neo-inset)'
-            textColor = 'var(--text-primary)'
+            bg = 'var(--active-bg)'
+            border = 'var(--gold)'
+            textColor = 'var(--gold)'
           }
 
           return (
@@ -125,9 +125,8 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
               key={opt.id}
               onClick={() => !revealed && setSelected(opt.id)}
               disabled={revealed}
-              className="w-full text-left px-4 py-3 rounded-xl text-sm transition-neo"
+              className="interactive w-full text-left px-4 py-3 rounded-xl text-sm"
               style={{
-                boxShadow: shadow,
                 background: bg,
                 border: `1px solid ${border}`,
                 color: textColor,
@@ -147,12 +146,11 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
         <button
           onClick={handleReveal}
           disabled={!selected}
-          className="w-full py-3 rounded-xl text-sm font-medium transition-neo"
+          className="interactive w-full py-3 rounded-xl text-sm font-medium"
           style={{
-            boxShadow: selected ? 'var(--neo-raised)' : 'none',
-            background: selected ? 'var(--surface)' : 'transparent',
-            color: selected ? 'var(--text-primary)' : 'var(--text-muted)',
-            border: selected ? 'none' : '1px dashed rgba(255,255,255,0.1)',
+            background: selected ? 'var(--gold)' : 'transparent',
+            color: selected ? 'white' : 'var(--text-muted)',
+            border: selected ? 'none' : '1px dashed var(--border)',
             fontFamily: 'DM Mono, monospace',
             cursor: selected ? 'pointer' : 'default',
           }}
@@ -164,8 +162,8 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
           <div
             className="rounded-xl p-4 text-sm"
             style={{
-              background: 'var(--surface)',
-              boxShadow: 'var(--neo-inset)',
+              background: 'var(--bg2)',
+              border: '1px solid var(--border)',
               color: 'var(--text-secondary)',
               fontFamily: 'DM Mono, monospace',
               lineHeight: '1.6',
@@ -180,7 +178,7 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
                 <span
                   key={tag}
                   className="text-xs px-2 py-0.5 rounded"
-                  style={{ background: 'rgba(108,142,191,0.15)', color: 'var(--accent)', fontFamily: 'DM Mono, monospace' }}
+                  style={{ background: 'var(--gold-dim)', color: 'var(--gold)', fontFamily: 'DM Mono, monospace', border: '1px solid var(--gold)' }}
                 >
                   {tag}
                 </span>
@@ -190,9 +188,9 @@ export function QuickExercise({ domain }: QuickExerciseProps) {
 
           <button
             onClick={loadExercise}
-            className="w-full py-3 rounded-xl text-sm transition-neo"
+            className="interactive w-full py-3 rounded-xl text-sm"
             style={{
-              boxShadow: 'var(--neo-raised)',
+              border: '1px solid var(--border)',
               background: 'var(--surface)',
               color: 'var(--text-primary)',
               fontFamily: 'DM Mono, monospace',
