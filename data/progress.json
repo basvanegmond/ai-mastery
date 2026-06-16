@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T14:22:48.919Z",
+  "lastActiveAt": "2026-06-16T14:23:51.034Z",
   "domainProgress": {
     "prompt_construction": {
       "currentLevel": 3.7,
       "xpTotal": 44
     },
     "output_evaluation": {
-      "currentLevel": 2.5,
+      "currentLevel": 2.48,
       "xpTotal": 6
     },
     "agentic_architecture": {
@@ -32,6 +32,21 @@
     }
   },
   "exerciseHistory": [
+    {
+      "id": "599bf3fb-a98e-4dae-bd87-ee43065b36ec",
+      "domain": "output_evaluation",
+      "type": "choice",
+      "exerciseHash": "928733f4ad6782ef212433d1eb2efff6bfde395e0d9d76578ac9e35e4932960b",
+      "promptSnapshot": "AI churn analysis recommends discounting at-risk customers",
+      "userAnswer": "c",
+      "correctAnswer": "a",
+      "score": 0,
+      "weaknessTagsAddressed": [
+        "correlation-vs-causation",
+        "selection-bias"
+      ],
+      "createdAt": "2026-06-16T14:23:51.034Z"
+    },
     {
       "id": "1f5a2a30-2ab5-4cd6-be7f-d3f0c4707606",
       "domain": "prompt_construction",
@@ -133,5 +148,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "5457f59eceeaa5be401cc76565f9e3f5343e2215"
+  "githubSha": "65c9b056abff8a35cc0e3a4530cccc7f9ac37e28"
 }
