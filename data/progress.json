@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T14:28:50.034Z",
+  "lastActiveAt": "2026-06-16T20:04:31.024Z",
   "domainProgress": {
     "prompt_construction": {
-      "currentLevel": 3.7,
-      "xpTotal": 44
+      "currentLevel": 3.75,
+      "xpTotal": 54
     },
     "output_evaluation": {
       "currentLevel": 2.51,
@@ -32,6 +32,22 @@
     }
   },
   "exerciseHistory": [
+    {
+      "id": "d10e5f4c-e209-4a4a-a73b-364e767215d2",
+      "domain": "prompt_construction",
+      "type": "choice",
+      "exerciseHash": "24275fce20bc4e3ffa8f25ac24bb05698e51b7ca953fe3673b8bfa2d391f231d",
+      "promptSnapshot": "CFO of a mid-market manufacturing firm drafting a prompt to analyze working capital improvement opportunities",
+      "userAnswer": "b",
+      "correctAnswer": "b",
+      "score": 1,
+      "weaknessTagsAddressed": [
+        "scope-precision",
+        "output-format-specification",
+        "front-loaded-clarity"
+      ],
+      "createdAt": "2026-06-16T20:04:31.023Z"
+    },
     {
       "id": "f068a2e4-21f7-4492-b938-bf10cdaa827f",
       "domain": "output_evaluation",
@@ -175,5 +191,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "9b19b53a612ccb67d546dde5e404a71347bd2e38"
+  "githubSha": "a6b8cc1184cde19b788562932d3a6b499b380c13"
 }
