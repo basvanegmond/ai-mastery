@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T20:04:31.024Z",
+  "lastActiveAt": "2026-06-16T20:06:20.199Z",
   "domainProgress": {
     "prompt_construction": {
       "currentLevel": 3.75,
@@ -27,11 +27,26 @@
       "xpTotal": 0
     },
     "business_value_translation": {
-      "currentLevel": 3,
-      "xpTotal": 0
+      "currentLevel": 3.05,
+      "xpTotal": 10
     }
   },
   "exerciseHistory": [
+    {
+      "id": "db9a35df-86d0-4571-9f83-71b282c70929",
+      "domain": "business_value_translation",
+      "type": "choice",
+      "exerciseHash": "982c3f21206d55c384832e9f22984a9190fd9cb52234dc5566a2a49506bc7d9c",
+      "promptSnapshot": "AI-powered predictive maintenance capability for a mid-market industrial manufacturer board presentation",
+      "userAnswer": "b",
+      "correctAnswer": "b",
+      "score": 1,
+      "weaknessTagsAddressed": [
+        "capability-to-value translation",
+        "quantifying financial impact"
+      ],
+      "createdAt": "2026-06-16T20:06:20.199Z"
+    },
     {
       "id": "d10e5f4c-e209-4a4a-a73b-364e767215d2",
       "domain": "prompt_construction",
@@ -191,5 +206,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "a6b8cc1184cde19b788562932d3a6b499b380c13"
+  "githubSha": "50b6069d903898ea849d9db632b76f824999ebfe"
 }
