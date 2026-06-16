@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T14:26:34.919Z",
+  "lastActiveAt": "2026-06-16T14:28:50.034Z",
   "domainProgress": {
     "prompt_construction": {
       "currentLevel": 3.7,
       "xpTotal": 44
     },
     "output_evaluation": {
-      "currentLevel": 2.46,
-      "xpTotal": 6
+      "currentLevel": 2.51,
+      "xpTotal": 16
     },
     "agentic_architecture": {
       "currentLevel": 1.5,
@@ -32,6 +32,22 @@
     }
   },
   "exerciseHistory": [
+    {
+      "id": "f068a2e4-21f7-4492-b938-bf10cdaa827f",
+      "domain": "output_evaluation",
+      "type": "choice",
+      "exerciseHash": "029c1f468adb0d166195fed6f31fd4ccf2c7ba787e9485075f13ec9845567dbd",
+      "promptSnapshot": "AI pricing model recommends raising prices on top 20% of SaaS accounts",
+      "userAnswer": "b",
+      "correctAnswer": "b",
+      "score": 1,
+      "weaknessTagsAddressed": [
+        "surfacing-hidden-assumptions",
+        "data-representativeness",
+        "pressure-testing-extrapolation"
+      ],
+      "createdAt": "2026-06-16T14:28:50.034Z"
+    },
     {
       "id": "7c569895-e49d-40bf-8506-39f4d662416e",
       "domain": "output_evaluation",
@@ -159,5 +175,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "acf58cc0163f161e8dafb2e7e4b28792d1d2fe9c"
+  "githubSha": "9b19b53a612ccb67d546dde5e404a71347bd2e38"
 }
