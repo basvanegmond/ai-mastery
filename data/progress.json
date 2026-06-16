@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T14:23:51.034Z",
+  "lastActiveAt": "2026-06-16T14:26:34.919Z",
   "domainProgress": {
     "prompt_construction": {
       "currentLevel": 3.7,
       "xpTotal": 44
     },
     "output_evaluation": {
-      "currentLevel": 2.48,
+      "currentLevel": 2.46,
       "xpTotal": 6
     },
     "agentic_architecture": {
@@ -32,6 +32,17 @@
     }
   },
   "exerciseHistory": [
+    {
+      "id": "7c569895-e49d-40bf-8506-39f4d662416e",
+      "domain": "output_evaluation",
+      "type": "choice",
+      "exerciseHash": "a4fa24e052dd0c2f91723aa2cd8fb177269956e85beef0f9b072b127180d610d",
+      "promptSnapshot": "AI demand forecast recommends 40% inventory increase for hardware retailer ahead of Q4",
+      "userAnswer": "c",
+      "correctAnswer": "a",
+      "score": 0,
+      "createdAt": "2026-06-16T14:26:34.919Z"
+    },
     {
       "id": "599bf3fb-a98e-4dae-bd87-ee43065b36ec",
       "domain": "output_evaluation",
@@ -148,5 +159,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "65c9b056abff8a35cc0e3a4530cccc7f9ac37e28"
+  "githubSha": "acf58cc0163f161e8dafb2e7e4b28792d1d2fe9c"
 }
