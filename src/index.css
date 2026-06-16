@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700&display=swap');
+@import "tailwindcss";
+
+/* ── Dark neomorphic theme (default) ── */
+:root {
+  --bg: #1a1a2e;
+  --bg2: #16213e;
+  --surface: #1e2040;
+
+  --neo-light: rgba(255, 255, 255, 0.06);
+  --neo-dark: rgba(0, 0, 0, 0.4);
+  --neo-raised: 4px 4px 10px var(--neo-dark), -3px -3px 8px var(--neo-light);
+  --neo-inset: inset 3px 3px 8px var(--neo-dark), inset -2px -2px 6px var(--neo-light);
+  --neo-flat: none;
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --gold: #f0c040;
+  --gold-dim: rgba(240, 192, 64, 0.3);
+  --accent: #6c8ebf;
+  --danger: #e05c5c;
+  --success: #5cb85c;
+
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+/* ── Light neomorphic theme ── */
+.light {
+  --bg: #e8ecef;
+  --bg2: #dde1e5;
+  --surface: #e0e4e8;
+
+  --neo-light: rgba(255, 255, 255, 0.7);
+  --neo-dark: rgba(163, 177, 198, 0.6);
+  --neo-raised: 5px 5px 12px var(--neo-dark), -4px -4px 10px var(--neo-light);
+  --neo-inset: inset 4px 4px 10px var(--neo-dark), inset -3px -3px 8px var(--neo-light);
+
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: 'Syne', system-ui, sans-serif;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── Neomorphic utility classes ── */
+.neo-raised   { box-shadow: var(--neo-raised); background: var(--surface); }
+.neo-inset    { box-shadow: var(--neo-inset);  background: var(--bg2); }
+.neo-flat     { background: transparent; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
+
+/* ── Transition helpers ── */
+.transition-neo { transition: box-shadow 0.15s ease, transform 0.1s ease; }
+.transition-neo:active { transform: scale(0.98); }
