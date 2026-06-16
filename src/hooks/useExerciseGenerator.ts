@@ -53,7 +53,7 @@ Return ONLY valid JSON matching this schema (no markdown, no explanation outside
 ${EXERCISE_SCHEMA}`
 
         const text = await callClaude({
-          model: 'claude-opus-4-8',
+          model: 'claude-haiku-4-5-20251001',
           max_tokens: 1500,
           system,
           messages: [{ role: 'user', content: `Generate a ${type} exercise for ${domainDef.label}.` }],
