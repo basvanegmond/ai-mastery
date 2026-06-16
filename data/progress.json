@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T14:15:59.080Z",
+  "lastActiveAt": "2026-06-16T14:17:07.009Z",
   "domainProgress": {
     "prompt_construction": {
       "currentLevel": 3.65,
-      "xpTotal": 28
+      "xpTotal": 34
     },
     "output_evaluation": {
       "currentLevel": 2.5,
@@ -32,6 +32,21 @@
     }
   },
   "exerciseHistory": [
+    {
+      "id": "fc6ef847-d5ca-4673-84f2-423a89304ae3",
+      "domain": "prompt_construction",
+      "type": "reflection",
+      "exerciseHash": "pc-4",
+      "promptSnapshot": "pc-4",
+      "userAnswer": "Using a range of ready prepared MD files, market analysis and PRD, launching the development through a staged process.",
+      "correctAnswer": null,
+      "score": 0.6,
+      "starRating": 3,
+      "gradeEstimate": "B",
+      "reflection": "Using a range of ready prepared MD files, market analysis and PRD, launching the development through a staged process.",
+      "weaknessTagsAddressed": [],
+      "createdAt": "2026-06-16T14:17:07.009Z"
+    },
     {
       "id": "cfd5fced-ebcd-4a83-b39a-631eb23b0428",
       "domain": "prompt_construction",
@@ -88,5 +103,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "7b0cee9501f9fcd10000203c9d16636d95cd897c"
+  "githubSha": "3ac6e4885364261404623921857aa3db7e8828ab"
 }
