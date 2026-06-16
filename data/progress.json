@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T14:14:38.387Z",
+  "lastActiveAt": "2026-06-16T14:15:59.080Z",
   "domainProgress": {
     "prompt_construction": {
-      "currentLevel": 3.6,
-      "xpTotal": 18
+      "currentLevel": 3.65,
+      "xpTotal": 28
     },
     "output_evaluation": {
       "currentLevel": 2.5,
@@ -32,6 +32,21 @@
     }
   },
   "exerciseHistory": [
+    {
+      "id": "cfd5fced-ebcd-4a83-b39a-631eb23b0428",
+      "domain": "prompt_construction",
+      "type": "reflection",
+      "exerciseHash": "pc-3",
+      "promptSnapshot": "pc-3",
+      "userAnswer": "For the investigate AI model for Verdara, have Claude make decisions on the trade-offs of having a multi-model agent harness (1 Haiku (planner) > 4 Sonnet (SME agents) > 1 Opus summarising & advice agent. ",
+      "correctAnswer": null,
+      "score": 1,
+      "starRating": 5,
+      "gradeEstimate": "A+",
+      "reflection": "For the investigate AI model for Verdara, have Claude make decisions on the trade-offs of having a multi-model agent harness (1 Haiku (planner) > 4 Sonnet (SME agents) > 1 Opus summarising & advice agent. ",
+      "weaknessTagsAddressed": [],
+      "createdAt": "2026-06-16T14:15:59.080Z"
+    },
     {
       "id": "1007a559-9469-4f85-907c-c3a4f89faef4",
       "domain": "prompt_construction",
@@ -73,5 +88,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "a26495f91cbe1c2f17eb27c2e938898685f869e8"
+  "githubSha": "7b0cee9501f9fcd10000203c9d16636d95cd897c"
 }
