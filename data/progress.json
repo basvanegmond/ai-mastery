@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "lastActiveAt": "2026-06-16T14:20:35.418Z",
+  "lastActiveAt": "2026-06-16T14:22:48.919Z",
   "domainProgress": {
     "prompt_construction": {
-      "currentLevel": 3.65,
-      "xpTotal": 34
+      "currentLevel": 3.7,
+      "xpTotal": 44
     },
     "output_evaluation": {
       "currentLevel": 2.5,
@@ -32,6 +32,21 @@
     }
   },
   "exerciseHistory": [
+    {
+      "id": "1f5a2a30-2ab5-4cd6-be7f-d3f0c4707606",
+      "domain": "prompt_construction",
+      "type": "choice",
+      "exerciseHash": "7032e995438389f29b233958f32264e0305075d8f701413213284702bcda0cce",
+      "promptSnapshot": "VP of Operations requesting AI analysis of supplier performance data for quarterly review",
+      "userAnswer": "b",
+      "correctAnswer": "b",
+      "score": 1,
+      "weaknessTagsAddressed": [
+        "scope-precision",
+        "output-format-specification"
+      ],
+      "createdAt": "2026-06-16T14:22:48.919Z"
+    },
     {
       "id": "54dada6f-f344-47fd-9283-18cb58a23d24",
       "domain": "output_evaluation",
@@ -118,5 +133,5 @@
     "business_value_translation": {}
   },
   "patternAnalyses": [],
-  "githubSha": "e10accdd32e3992348373027cd8e66af2f20f986"
+  "githubSha": "5457f59eceeaa5be401cc76565f9e3f5343e2215"
 }
