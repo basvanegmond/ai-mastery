@@ -3,7 +3,7 @@ import { DEFAULT_MASTERY_DATA } from '../store/defaults'
 
 const REPO = 'basvanegmond/ai-mastery'
 const FILE_PATH = 'data/progress.json'
-const BRANCH = 'main'
+const BRANCH = 'ai-mastery-v1'
 
 function apiUrl() {
   return `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`

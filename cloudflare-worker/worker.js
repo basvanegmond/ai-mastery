@@ -6,10 +6,10 @@
  * 2. Add secret: ANTHROPIC_API_KEY (Worker → Settings → Variables → Secret)
  * 3. Copy the Worker URL (*.workers.dev) into GitHub Actions secret VITE_WORKER_URL
  *
- * The Worker is locked to the GitHub Pages origin to prevent abuse.
+ * The Worker is locked to the Cloudflare Pages origin to prevent abuse.
  */
 
-const ALLOWED_ORIGIN = 'https://basvanegmond.github.io'
+const ALLOWED_ORIGIN = 'https://ai-mastery-6ag.pages.dev'
 
 function corsHeaders(origin) {
   return {
