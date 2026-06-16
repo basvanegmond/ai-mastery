@@ -139,7 +139,7 @@ export function Shell({ children }: ShellProps) {
           </header>
         )}
 
-        <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="max-w-[1600px] mx-auto px-4 py-6 sm:px-6 lg:px-8">
           {children(activeTab, theme)}
         </div>
       </main>

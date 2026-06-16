@@ -91,17 +91,17 @@ export function Dashboard() {
       </div>
 
       {/* Radar + domain cards */}
-      <div className="lg:flex lg:gap-6">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start">
         {/* Radar */}
         <div
-          className="rounded-xl p-6 flex items-center justify-center mb-6 lg:mb-0 lg:shrink-0"
+          className="rounded-xl p-6 flex items-center justify-center w-full lg:w-auto lg:shrink-0"
           style={{ background: 'var(--surface)', boxShadow: 'var(--neo-raised)' }}
         >
-          <RadarChart domainProgress={store.domainProgress} size={260} />
+          <RadarChart domainProgress={store.domainProgress} size={320} />
         </div>
 
         {/* Domain progress bars */}
-        <div className="flex-1 space-y-3">
+        <div className="flex-1 w-full grid grid-cols-1 xl:grid-cols-2 gap-3">
           {DOMAINS.map((d) => (
             <DomainCard
               key={d.key}
