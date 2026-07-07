@@ -18,13 +18,21 @@ export interface Domain {
   id: string
   name: string
   description: string
-  target: number
+  target: number | null
   graded: boolean
   baselineHistory: Array<{
     score: number
     timestamp: string
     source: string
   }>
+}
+
+export interface ActivityEntry {
+  id: string
+  domainId: string
+  mode: 'quick' | 'full'
+  timestamp: string
+  score?: number
 }
 
 export interface AppState {
@@ -36,4 +44,25 @@ export interface AppState {
     domainsImproved: number
     averageRating: number
   }
+  recentActivity: ActivityEntry[]
+  meta: Record<string, unknown>
+}
+
+export type ExerciseType = 'choice' | 'sort' | 'rank'
+
+export interface ExerciseOption {
+  id: string
+  text: string
+  correct?: boolean
+  category?: string
+  rank?: number
+}
+
+export interface QuickExercise {
+  id: string
+  type: ExerciseType
+  domainId: string
+  question: string
+  options: ExerciseOption[]
+  explanation?: string
 }
