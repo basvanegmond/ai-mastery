@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
-import Train from './pages/Train'
+import Full from './pages/Full'
+import Quick from './pages/Quick'
 
 export default function App() {
   return (
@@ -9,7 +10,8 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/train" element={<Train />} />
+          <Route path="/quick" element={<Quick />} />
+          <Route path="/full" element={<Full />} />
         </Route>
       </Routes>
     </BrowserRouter>

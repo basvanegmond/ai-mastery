@@ -47,15 +47,14 @@ export function LoginForm({ onSuccess }: LoginFormProps): JSX.Element {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-canvas-sub px-4">
       <form
         onSubmit={(event) => void handleSubmit(event)}
-        className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-6"
+        className="w-full max-w-sm rounded-xl border border-edge bg-canvas p-8"
       >
-        <h1 className="text-lg font-semibold text-gray-900">AI Mastery</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Enter your passphrase to continue.
-        </p>
+        <h1 className="font-serif text-2xl text-ink">AI Mastery</h1>
+        <p className="mt-1 text-sm text-ink-sub">Enter your passphrase to continue.</p>
+
         <label htmlFor="passphrase" className="sr-only">
           Passphrase
         </label>
@@ -66,7 +65,7 @@ export function LoginForm({ onSuccess }: LoginFormProps): JSX.Element {
           onChange={(event) => setPassphrase(event.target.value)}
           placeholder="Passphrase"
           autoFocus
-          className="mt-4 w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
+          className="mt-5 w-full rounded-lg border border-edge bg-canvas-sub px-3 py-2.5 text-sm text-ink placeholder:text-ink-sub focus:border-trypan focus:outline-none focus:ring-2 focus:ring-trypan/20"
         />
         {error !== null && (
           <p className="mt-2 text-sm text-red-600" role="alert">
@@ -76,7 +75,7 @@ export function LoginForm({ onSuccess }: LoginFormProps): JSX.Element {
         <button
           type="submit"
           disabled={submitting || passphrase.length === 0}
-          className="mt-4 w-full rounded bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+          className="mt-4 w-full rounded-lg bg-trypan px-3 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
         >
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>

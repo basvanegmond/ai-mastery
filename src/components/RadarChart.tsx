@@ -5,10 +5,10 @@ interface RadarChartProps {
   radarScores: Record<string, number>
 }
 
-const SIZE = 320
-const CENTER = 160
-const MAX_RADIUS = 130
-const LABEL_RADIUS = 145
+const SIZE = 280
+const CENTER = 140
+const MAX_RADIUS = 110
+const LABEL_RADIUS = 126
 const MAX_SCORE = 5
 
 function polarToCart(
@@ -25,7 +25,6 @@ function scoreToRadius(score: number): number {
   return (Math.max(0, Math.min(MAX_SCORE, score)) / MAX_SCORE) * MAX_RADIUS
 }
 
-/** SVG points string for one polygon: a score per domain, vertices clockwise from top. */
 function polygonPoints(scores: number[]): string {
   const step = 360 / scores.length
   return scores
@@ -53,9 +52,24 @@ function labelAnchor(x: number): 'start' | 'middle' | 'end' {
   return 'middle'
 }
 
+// Short domain name for radar labels
+function shortName(name: string): string {
+  const map: Record<string, string> = {
+    'Prompt Construction': 'Prompts',
+    'Context Engineering': 'Context',
+    'Output Evaluation': 'Evaluation',
+    'Failure Diagnosis': 'Diagnosis',
+    'Tool Selection': 'Tools',
+    'Agentic Architecture': 'Architecture',
+    'Multi-Agent Orchestration': 'Orchestration',
+    'Business Value Translation': 'Biz Value',
+  }
+  return map[name] ?? name.split(' ').slice(0, 1).join(' ')
+}
+
 export function RadarChart({ domains, radarScores }: RadarChartProps): JSX.Element {
   if (domains.length === 0) {
-    return <p className="text-sm text-gray-500">No graded domains yet.</p>
+    return <p className="text-sm text-ink-sub">No graded domains yet.</p>
   }
 
   const step = 360 / domains.length
@@ -69,17 +83,17 @@ export function RadarChart({ domains, radarScores }: RadarChartProps): JSX.Eleme
   return (
     <svg
       viewBox={`0 0 ${SIZE} ${SIZE}`}
-      className="mx-auto w-full max-w-sm"
+      className="w-full"
       role="img"
       aria-label="Radar chart of current, baseline, and target scores per domain"
     >
-      {/* Concentric reference rings at scores 1–5 */}
+      {/* Reference rings */}
       {rings.map((ring) => (
         <polygon
           key={ring}
           points={polygonPoints(domains.map(() => ring))}
           fill="none"
-          stroke="#e5e7eb"
+          stroke="#E4E4EF"
           strokeWidth={1}
         />
       ))}
@@ -94,7 +108,7 @@ export function RadarChart({ domains, radarScores }: RadarChartProps): JSX.Eleme
             y1={CENTER}
             x2={end.x}
             y2={end.y}
-            stroke="#e5e7eb"
+            stroke="#E4E4EF"
             strokeWidth={1}
           />
         )
@@ -104,27 +118,27 @@ export function RadarChart({ domains, radarScores }: RadarChartProps): JSX.Eleme
       <polygon
         points={polygonPoints(baselineScores)}
         fill="none"
-        stroke="#9ca3af"
+        stroke="#9B9BB0"
         strokeWidth={1.5}
         strokeDasharray="4 3"
       />
 
-      {/* Target (dashed emerald) */}
+      {/* Target (dashed, lighter trypan blue) */}
       {hasAllTargets && (
         <polygon
-          points={polygonPoints(targets)}
+          points={polygonPoints(targets as number[])}
           fill="none"
-          stroke="#10b981"
+          stroke="#7C87E8"
           strokeWidth={1.5}
           strokeDasharray="4 3"
         />
       )}
 
-      {/* Current (solid amber) */}
+      {/* Current (solid trypan blue) */}
       <polygon
         points={polygonPoints(currentScores)}
-        fill="rgba(245, 158, 11, 0.15)"
-        stroke="#f59e0b"
+        fill="rgba(28, 5, 179, 0.10)"
+        stroke="#1C05B3"
         strokeWidth={2}
       />
 
@@ -138,10 +152,11 @@ export function RadarChart({ domains, radarScores }: RadarChartProps): JSX.Eleme
             y={pos.y}
             textAnchor={labelAnchor(pos.x)}
             dominantBaseline="middle"
-            fontSize={9}
-            fill="#4b5563"
+            fontSize={8}
+            fill="#6B6B8A"
+            fontFamily="Inter, system-ui, sans-serif"
           >
-            {domain.name}
+            {shortName(domain.name)}
           </text>
         )
       })}
