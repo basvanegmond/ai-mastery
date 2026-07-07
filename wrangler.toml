@@ -1,0 +1,12 @@
+name = "ai-mastery"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+[vars]
+DEFAULT_USER_ID = "bas"
+
+# Secrets (set via dashboard or wrangler secret put):
+# GITHUB_DATA_PAT
+# ANTHROPIC_API_KEY
+# APP_PASSPHRASE
+# AUTH_SIGNING_SECRET
