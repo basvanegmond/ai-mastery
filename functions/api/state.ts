@@ -83,6 +83,7 @@ const WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
 const DEFAULT_DOMAINS: Domain[] = [
   { id: 'prompt-construction', name: 'Prompt Construction', description: 'Front-load clarity, scope intent precisely, eliminate iterative correction loops', target: 4.0, graded: true, baselineHistory: [{ score: 3.5, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'context-engineering', name: 'Context Engineering', description: "Decide what's in the context window: what to include, exclude, and sequence for the task at hand", target: 4.0, graded: true, baselineHistory: [{ score: 2.0, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
   { id: 'output-evaluation', name: 'Output Evaluation', description: 'Challenge AI outputs, surface assumptions, pressure-test logic', target: 4.0, graded: true, baselineHistory: [{ score: 2.5, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
   { id: 'agentic-architecture', name: 'Agentic Architecture', description: 'Design agent systems: orchestrators, sub-agents, tool calls, failure modes', target: 4.0, graded: true, baselineHistory: [{ score: 1.5, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
   { id: 'tool-selection', name: 'Tool Selection', description: 'Deliberate mental model for when each tool wins and why', target: 3.8, graded: true, baselineHistory: [{ score: 2.0, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },

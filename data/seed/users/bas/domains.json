@@ -10,6 +10,16 @@
     ]
   },
   {
+    "id": "context-engineering",
+    "name": "Context Engineering",
+    "description": "Decide what's in the context window: what to include, exclude, and sequence for the task at hand",
+    "target": 4.0,
+    "graded": true,
+    "baselineHistory": [
+      { "score": 2.0, "timestamp": "2025-05-01T00:00:00Z", "source": "diagnostic-estimate" }
+    ]
+  },
+  {
     "id": "output-evaluation",
     "name": "Output Evaluation",
     "description": "Challenge AI outputs, surface assumptions, pressure-test logic",

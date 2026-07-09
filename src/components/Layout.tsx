@@ -1,6 +1,9 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { AppContext } from '../contexts/AppContext'
-import { useAppState } from '../hooks/useAppState'
+
+interface LayoutProps {
+  loading: boolean
+  error: string | null
+}
 
 type NavItem =
   | { to: string; label: string; icon: JSX.Element; disabled?: false }
@@ -49,113 +52,85 @@ const NAV_ITEMS: NavItem[] = [
   },
 ]
 
-export default function Layout(): JSX.Element {
-  const { state, loading, error, refetch } = useAppState()
-
-  if (loading && state === null) {
-    return (
-      <div
-        className="flex min-h-screen items-center justify-center bg-canvas-sub"
-        role="status"
-        aria-label="Loading"
-      >
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-edge border-t-trypan" />
-      </div>
-    )
-  }
-
-  if (state === null && error !== null) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-canvas-sub px-4">
-        <div className="text-center">
-          <p className="text-sm text-red-600">{error}</p>
-          <button
-            type="button"
-            onClick={refetch}
-            className="mt-3 rounded border border-edge px-3 py-2 text-sm text-ink-sub hover:bg-canvas"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    )
-  }
-
+export default function Layout({ loading, error }: LayoutProps): JSX.Element {
   return (
-    <AppContext.Provider value={{ state, refetch }}>
-      <div className="flex min-h-screen bg-canvas-sub">
-        {/* Sidebar */}
-        <aside className="fixed inset-y-0 left-0 flex w-48 flex-col border-r border-edge bg-canvas">
-          {/* Wordmark + sync */}
-          <div className="px-4 pt-5 pb-4">
-            <span className="text-[13px] font-semibold tracking-tight text-ink">
+    <div className="flex min-h-screen bg-canvas-sub">
+      {/* Sidebar */}
+      <aside className="fixed inset-y-0 left-0 flex w-48 flex-col bg-sidebar">
+        {/* Logo + wordmark + sync */}
+        <div className="flex items-center gap-2.5 px-4 pt-5 pb-4">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-gradient-to-br from-trypan to-[#0053EC] text-[10px] font-extrabold text-white">
+            AI
+          </div>
+          <div>
+            <span className="text-[13px] font-semibold tracking-tight text-white/90">
               AI Mastery
             </span>
-            <div className="mt-1.5 flex items-center gap-1.5">
+            <div className="mt-0.5 flex items-center gap-1.5">
               <span
                 className={`h-1.5 w-1.5 rounded-full ${
                   error !== null ? 'bg-red-400' : loading ? 'bg-amber-400' : 'bg-emerald-400'
                 }`}
                 aria-hidden="true"
               />
-              <span className="text-[10px] text-ink-sub">
+              <span className="text-[10px] text-white/35">
                 {error !== null ? 'sync error' : loading ? 'syncing' : 'synced'}
               </span>
             </div>
           </div>
+        </div>
 
-          {/* Nav */}
-          <nav aria-label="Main navigation" className="flex-1 px-2">
-            <ul className="space-y-0.5">
-              {NAV_ITEMS.map((item) => {
-                if (item.disabled) {
-                  return (
-                    <li key={item.label}>
-                      <span className="flex cursor-not-allowed items-center gap-2.5 rounded-md px-3 py-2 text-[13px] text-ink-sub opacity-60">
-                        {item.icon}
-                        {item.label}
-                        <span className="ml-auto rounded-full bg-canvas-sub px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-ink-sub">
-                          Soon
-                        </span>
-                      </span>
-                    </li>
-                  )
-                }
+        {/* Nav */}
+        <nav aria-label="Main navigation" className="flex-1 px-2">
+          <ul className="space-y-0.5">
+            {NAV_ITEMS.map((item) => {
+              if (item.disabled) {
                 return (
-                  <li key={item.to}>
-                    <NavLink
-                      to={item.to}
-                      end={item.to === '/'}
-                      className={({ isActive }) =>
-                        isActive
-                          ? 'flex items-center gap-2.5 rounded-md bg-trypan-light px-3 py-2 text-[13px] font-medium text-trypan'
-                          : 'flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] text-ink-sub transition-colors hover:bg-canvas-sub hover:text-ink'
-                      }
-                    >
+                  <li key={item.label}>
+                    <span className="flex cursor-not-allowed items-center gap-2.5 rounded-md px-3 py-2 text-[13px] text-white/35">
                       {item.icon}
                       {item.label}
-                    </NavLink>
+                      <span className="ml-auto rounded-full bg-white/8 px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-white/40">
+                        Soon
+                      </span>
+                    </span>
                   </li>
                 )
-              })}
-            </ul>
-          </nav>
-        </aside>
+              }
+              return (
+                <li key={item.to}>
+                  <NavLink
+                    to={item.to}
+                    end={item.to === '/'}
+                    className={({ isActive }) =>
+                      isActive
+                        ? 'flex items-center gap-2.5 rounded-md bg-trypan/35 px-3 py-2 text-[13px] font-medium text-white'
+                        : 'flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] text-white/55 transition-colors hover:bg-white/8 hover:text-white'
+                    }
+                  >
+                    {item.icon}
+                    {item.label}
+                  </NavLink>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+      </aside>
 
-        {/* Main content */}
-        <div className="ml-48 flex-1">
-          {error !== null && (
-            <div className="px-6 pt-4">
-              <p className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-                {error}
-              </p>
-            </div>
-          )}
-          <main>
-            <Outlet />
-          </main>
-        </div>
+      {/* Main content */}
+      <div className="ml-48 flex-1">
+        {error !== null && (
+          <div className="px-6 pt-4">
+            <p className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </p>
+          </div>
+        )}
+        <main>
+          <Outlet />
+        </main>
       </div>
-    </AppContext.Provider>
+    </div>
   )
 }

@@ -137,8 +137,8 @@ export function RadarChart({ domains, radarScores }: RadarChartProps): JSX.Eleme
       {/* Current (solid trypan blue) */}
       <polygon
         points={polygonPoints(currentScores)}
-        fill="rgba(37, 99, 235, 0.10)"
-        stroke="#2563EB"
+        fill="rgba(28, 5, 179, 0.10)"
+        stroke="#1C05B3"
         strokeWidth={2}
       />
 
