@@ -2,14 +2,12 @@
 // POST /api/exercises/quick/generate — generate 2 fresh quick exercises
 // for a domain using the fast model with structured output.
 
-import { isAuthenticated, unauthorizedResponse } from '../../../_shared/auth'
-import type { Env as AuthEnv } from '../../../_shared/auth'
 import { callStructured, MODEL_FAST } from '../../../_shared/anthropic'
 import type { Env as AnthropicEnv } from '../../../_shared/anthropic'
 import { jsonResponse } from '../../../_shared/types'
 import type { PagesFunction } from '../../../_shared/types'
 
-type Env = AnthropicEnv & AuthEnv
+type Env = AnthropicEnv
 
 // ---------------------------------------------------------------------------
 // Types
@@ -161,10 +159,6 @@ function parseGenerateRequest(value: unknown): GenerateRequest | null {
 // ---------------------------------------------------------------------------
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  if (!(await isAuthenticated(request, env))) {
-    return unauthorizedResponse()
-  }
-
   let body: unknown
   try {
     body = await request.json()

@@ -76,20 +76,18 @@ export interface UseAppStateResult {
   state: AppState | null
   loading: boolean
   error: string | null
-  isAuthenticated: boolean
   refetch: () => void
 }
 
 /**
- * Fetches /api/state on mount and exposes loading/error/auth flags.
- * refetch() re-runs the fetch (called after login and after submissions);
- * it keeps the previous state visible while the new one loads.
+ * Fetches /api/state on mount and exposes loading/error flags.
+ * refetch() re-runs the fetch (called after submissions); it keeps the
+ * previous state visible while the new one loads.
  */
 export function useAppState(): UseAppStateResult {
   const [state, setState] = useState<AppState | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [fetchCount, setFetchCount] = useState(0)
 
   const refetch = useCallback(() => {
@@ -106,11 +104,6 @@ export function useAppState(): UseAppStateResult {
         const response = await fetch('/api/state')
         if (cancelled) return
 
-        if (response.status === 401) {
-          setIsAuthenticated(false)
-          setState(null)
-          return
-        }
         if (!response.ok) {
           throw new Error(`Failed to load state (HTTP ${response.status})`)
         }
@@ -120,7 +113,6 @@ export function useAppState(): UseAppStateResult {
           throw new Error('Server returned state in an unexpected shape')
         }
         if (!cancelled) {
-          setIsAuthenticated(true)
           setState(data)
         }
       } catch (err) {
@@ -140,5 +132,5 @@ export function useAppState(): UseAppStateResult {
     }
   }, [fetchCount])
 
-  return { state, loading, error, isAuthenticated, refetch }
+  return { state, loading, error, refetch }
 }

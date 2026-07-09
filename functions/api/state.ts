@@ -3,15 +3,13 @@
 // Reads domains, exercise log, and meta from the data repo, computes the
 // current radar score per domain, and returns the full AppState.
 
-import { isAuthenticated, unauthorizedResponse } from '../_shared/auth'
-import type { Env as AuthEnv } from '../_shared/auth'
 import { readFile, userPath } from '../_shared/github'
 import type { Env as GitHubEnv } from '../_shared/github'
 import { jsonResponse } from '../_shared/types'
 import type { PagesFunction } from '../_shared/types'
 import type { EvidenceWeight } from '../../src/types'
 
-type Env = GitHubEnv & AuthEnv
+type Env = GitHubEnv
 
 // ---------------------------------------------------------------------------
 // Types
@@ -306,11 +304,7 @@ function recentActivity(exerciseLog: ExerciseEntry[]): ActivityEntry[] {
 // Handler
 // ---------------------------------------------------------------------------
 
-export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
-  if (!(await isAuthenticated(request, env))) {
-    return unauthorizedResponse()
-  }
-
+export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   try {
     const [domainsFile, logFile, metaFile] = await Promise.all([
       readFile(env, userPath(env, 'domains.json')),

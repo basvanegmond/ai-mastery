@@ -60,17 +60,9 @@ In Cloudflare Pages → your project → Settings → Environment variables, add
 | `GITHUB_DATA_PAT` | (from Step 3) | Secret |
 | `GITHUB_DATA_REPO` | `your-github-username/ai-mastery-data` | Variable |
 | `ANTHROPIC_API_KEY` | (from console.anthropic.com) | Secret |
-| `APP_PASSPHRASE` | (choose a strong passphrase) | Secret |
-| `AUTH_SIGNING_SECRET` | (32+ random characters) | Secret |
 | `DEFAULT_USER_ID` | `bas` | Variable |
 
 Add these for both "Production" and "Preview" environments.
-
-To generate a secure `AUTH_SIGNING_SECRET`:
-
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
 
 ## Step 6: Trigger a fresh deploy
 
@@ -83,7 +75,7 @@ After setting all secrets:
 
 Open your pages.dev URL and run through the Phase 1 verification checklist (see the "Verification" section in [prd-dev.md](prd-dev.md)):
 
-1. Fresh browser session → passphrase gate → dashboard loads real (seeded) data from `/api/state`
+1. Fresh browser session → dashboard loads real (seeded) data from `/api/state` directly, no gate
 2. Complete one Quick exercise per domain → confirm a real Anthropic API call happened and a commit landed on ai-mastery-data
 3. Complete one Full reflection → same check
 4. Open the app on a second device/browser → identical state, proving it's no longer tied to a claude.ai artifact
@@ -94,11 +86,6 @@ Open your pages.dev URL and run through the Phase 1 verification checklist (see 
 
 - Check that `users/bas/domains.json` exists in ai-mastery-data
 - Verify `GITHUB_DATA_REPO` is `owner/repo` format (e.g. `basvanegmond/ai-mastery-data`)
-
-**"Unauthorized" after correct passphrase**
-
-- Verify `APP_PASSPHRASE` and `AUTH_SIGNING_SECRET` are set in Cloudflare (not just local)
-- Check that both Production and Preview environments have the secrets
 
 **Exercise generation fails**
 

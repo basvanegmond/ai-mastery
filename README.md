@@ -11,7 +11,7 @@ It replaces a sandboxed single-file claude.ai Artifact with a real deployed app:
 | `ai-mastery` (this repo) | Application code. Auto-deploys to Cloudflare Pages on push. Static frontend + Pages Functions in `functions/api/`. |
 | `ai-mastery-data` (private) | JSON data store, accessed via the GitHub Contents API. Holds all user data under `users/<userId>/`. Every write is a git commit, so full progress history comes free. |
 
-The static frontend never talks to GitHub or the Anthropic API directly. All secrets (GitHub PAT, Anthropic key, auth secrets) live server-side in Cloudflare Pages, and all data and AI operations go through Pages Functions.
+The static frontend never talks to GitHub or the Anthropic API directly. All secrets (GitHub PAT, Anthropic key) live server-side in Cloudflare Pages, and all data and AI operations go through Pages Functions.
 
 See `docs/architecture.md` for the full architecture, data layout, and API surface.
 
@@ -36,9 +36,9 @@ Set in the Cloudflare Pages dashboard (or `wrangler secret put` / `.dev.vars` lo
 
 - `GITHUB_DATA_PAT` — fine-grained PAT scoped to the `ai-mastery-data` repo only (Contents: Read & write, Metadata: Read)
 - `ANTHROPIC_API_KEY` — Anthropic API key
-- `APP_PASSPHRASE` — shared passphrase for the auth gate
-- `AUTH_SIGNING_SECRET` — cookie signing secret
 - `DEFAULT_USER_ID` — set as a plain var in `wrangler.toml` (currently `bas`)
+
+There is no login gate — access control is the Cloudflare Pages deploy URL itself (unguessable subdomain, not indexed).
 
 ## Status
 

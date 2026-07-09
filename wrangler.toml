@@ -8,5 +8,3 @@ DEFAULT_USER_ID = "bas"
 # Secrets (set via dashboard or wrangler secret put):
 # GITHUB_DATA_PAT
 # ANTHROPIC_API_KEY
-# APP_PASSPHRASE
-# AUTH_SIGNING_SECRET

@@ -2,15 +2,13 @@
 // POST /api/exercises/full/submit — record a completed full exercise
 // (reflection + self-rating) in users/<user>/exercise-log.json.
 
-import { isAuthenticated, unauthorizedResponse } from '../../../_shared/auth'
-import type { Env as AuthEnv } from '../../../_shared/auth'
 import { readFile, writeFile, userPath } from '../../../_shared/github'
 import type { Env as GitHubEnv } from '../../../_shared/github'
 import { jsonResponse } from '../../../_shared/types'
 import type { PagesFunction } from '../../../_shared/types'
 import type { EvidenceWeight } from '../../../../src/types'
 
-type Env = GitHubEnv & AuthEnv
+type Env = GitHubEnv
 
 // ---------------------------------------------------------------------------
 // Types + constants
@@ -87,10 +85,6 @@ function parseSubmitRequest(value: unknown): FullSubmitRequest | null {
 // ---------------------------------------------------------------------------
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  if (!(await isAuthenticated(request, env))) {
-    return unauthorizedResponse()
-  }
-
   let body: unknown
   try {
     body = await request.json()

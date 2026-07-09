@@ -1,7 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { AppContext } from '../contexts/AppContext'
 import { useAppState } from '../hooks/useAppState'
-import { LoginForm } from './LoginForm'
 
 type NavItem =
   | { to: string; label: string; icon: JSX.Element; disabled?: false }
@@ -61,7 +60,7 @@ const NAV_ITEMS: NavItem[] = [
 ]
 
 export default function Layout(): JSX.Element {
-  const { state, loading, error, isAuthenticated, refetch } = useAppState()
+  const { state, loading, error, refetch } = useAppState()
 
   if (loading && state === null) {
     return (
@@ -75,24 +74,21 @@ export default function Layout(): JSX.Element {
     )
   }
 
-  if (!isAuthenticated) {
-    if (error !== null) {
-      return (
-        <div className="flex min-h-screen items-center justify-center bg-canvas-sub px-4">
-          <div className="text-center">
-            <p className="text-sm text-red-600">{error}</p>
-            <button
-              type="button"
-              onClick={refetch}
-              className="mt-3 rounded border border-edge px-3 py-2 text-sm text-ink-sub hover:bg-canvas"
-            >
-              Retry
-            </button>
-          </div>
+  if (state === null && error !== null) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-canvas-sub px-4">
+        <div className="text-center">
+          <p className="text-sm text-red-600">{error}</p>
+          <button
+            type="button"
+            onClick={refetch}
+            className="mt-3 rounded border border-edge px-3 py-2 text-sm text-ink-sub hover:bg-canvas"
+          >
+            Retry
+          </button>
         </div>
-      )
-    }
-    return <LoginForm onSuccess={refetch} />
+      </div>
+    )
   }
 
   return (

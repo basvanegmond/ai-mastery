@@ -22,17 +22,15 @@ Personal competency development tool: coaching system to move Bas from ~85th to 
 - `src/components/` — Shared UI components
 - `src/types/` — TypeScript types
 - `functions/api/` — Cloudflare Pages Functions (server-side only)
-- `functions/_shared/` — Shared modules for Functions (github.ts, anthropic.ts, auth.ts)
+- `functions/_shared/` — Shared modules for Functions (github.ts, anthropic.ts)
 
 ## Environment Secrets (set in Cloudflare Pages dashboard)
 - `GITHUB_DATA_PAT` — Fine-grained PAT scoped to ai-mastery-data repo only
 - `ANTHROPIC_API_KEY` — Anthropic API key
-- `APP_PASSPHRASE` — Shared passphrase for auth gate
-- `AUTH_SIGNING_SECRET` — Cookie signing secret
 - `DEFAULT_USER_ID` — Currently "bas"
 
 ## Architecture Rules
 - The static frontend NEVER calls GitHub directly — only Pages Functions do
 - Every write is a git commit on ai-mastery-data (full history comes free)
 - All AI generation uses structured outputs (JSON schema constrained)
-- Auth: single shared-passphrase cookie gate for v1
+- No auth gate — the deploy URL itself is the access control (unguessable Pages subdomain)

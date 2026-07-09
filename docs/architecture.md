@@ -93,7 +93,7 @@ Two shared modules everything depends on:
 - `functions/_shared/github.ts` — the retry-on-409 Contents API helper
 - `functions/_shared/anthropic.ts` — centralized model config + structured-output helper
 
-(`functions/_shared/auth.ts` handles the cookie gate.)
+No auth gate — the deploy URL itself is the access control (unguessable Pages subdomain, single user).
 
 ## Model Selection
 
@@ -113,8 +113,6 @@ Re-check these IDs against live Anthropic docs at build time rather than trustin
 | `DEFAULT_USER_ID` | plain var (`wrangler.toml`) | Data path prefix, currently `bas` |
 | `GITHUB_DATA_PAT` | secret | Fine-grained PAT, `ai-mastery-data` only |
 | `ANTHROPIC_API_KEY` | secret | Anthropic API |
-| `APP_PASSPHRASE` | secret | Auth gate passphrase |
-| `AUTH_SIGNING_SECRET` | secret | Cookie signing |
 
 ## SPA Routing
 
