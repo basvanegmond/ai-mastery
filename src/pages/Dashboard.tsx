@@ -1,8 +1,42 @@
+import { Link } from 'react-router-dom'
 import { DidYouKnow } from '../components/DidYouKnow'
 import { DomainCard } from '../components/DomainCard'
 import { RadarChart } from '../components/RadarChart'
 import { useApp } from '../contexts/AppContext'
 import type { AppState } from '../types'
+
+// ---------------------------------------------------------------------------
+// Assessment banner
+// ---------------------------------------------------------------------------
+
+function AssessmentBanner({ state }: { state: AppState }): JSX.Element {
+  const hasRealBaseline = state.domains.some((d) =>
+    d.baselineHistory.some((b) => b.source === 'baseline-assessment'),
+  )
+
+  return (
+    <Link
+      to="/intake"
+      className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-trypan/20 bg-trypan-light px-5 py-4 transition-colors hover:border-trypan/40"
+    >
+      <div>
+        <p className="text-[13px] font-semibold text-ink">
+          {hasRealBaseline
+            ? 'Retake your baseline assessment'
+            : 'Your scores are still estimates'}
+        </p>
+        <p className="mt-0.5 text-[12px] text-ink-sub">
+          {hasRealBaseline
+            ? 'Check how much your scores have moved since your last measured baseline.'
+            : 'Take the 15-minute assessment to replace the diagnostic guess with a real measurement.'}
+        </p>
+      </div>
+      <span className="shrink-0 rounded-lg bg-trypan px-4 py-2 text-[12px] font-medium text-white">
+        {hasRealBaseline ? 'Retake →' : 'Start →'}
+      </span>
+    </Link>
+  )
+}
 
 // ---------------------------------------------------------------------------
 // Stats
@@ -28,7 +62,7 @@ function RadarLegend(): JSX.Element {
     <div className="mt-4 flex justify-center gap-5 text-[10px] text-ink-sub">
       <span className="flex items-center gap-1.5">
         <svg width="16" height="3" viewBox="0 0 16 3" aria-hidden="true">
-          <line x1="0" y1="1.5" x2="16" y2="1.5" stroke="#2563EB" strokeWidth="2" />
+          <line x1="0" y1="1.5" x2="16" y2="1.5" stroke="#1C05B3" strokeWidth="2" />
         </svg>
         Current
       </span>
@@ -111,6 +145,9 @@ export default function Dashboard(): JSX.Element {
           value={state.stats.averageRating > 0 ? state.stats.averageRating.toFixed(1) : '—'}
         />
       </section>
+
+      {/* Zone 1.5: Assessment CTA */}
+      <AssessmentBanner state={state} />
 
       {/* Zone 2: Did You Know */}
       <DidYouKnow />
