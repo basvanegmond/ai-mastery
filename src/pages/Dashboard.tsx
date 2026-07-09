@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { DidYouKnow } from '../components/DidYouKnow'
 import { DomainCard } from '../components/DomainCard'
 import { RadarChart } from '../components/RadarChart'
 import { useApp } from '../contexts/AppContext'
 import type { AppState } from '../types'
-import { TIPS } from '../utils/domains'
 
 // ---------------------------------------------------------------------------
 // Stats
@@ -16,65 +15,6 @@ function StatTile({ label, value }: { label: string; value: string }): JSX.Eleme
         {value}
       </div>
       <div className="mt-2 text-[12px] text-ink-sub">{label}</div>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Tips strip
-// ---------------------------------------------------------------------------
-
-function TipsStrip(): JSX.Element {
-  const [index, setIndex] = useState(0)
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setIndex((prev) => (prev + 1) % TIPS.length)
-    }, 12000)
-    return () => clearInterval(id)
-  }, [])
-
-  const tip = TIPS[index]!
-  const prev = () => setIndex((i) => (i - 1 + TIPS.length) % TIPS.length)
-  const next = () => setIndex((i) => (i + 1) % TIPS.length)
-
-  return (
-    <div className="flex items-start gap-5 border-b border-edge py-5">
-      <span className="mt-0.5 shrink-0 text-[10px] font-medium uppercase tracking-widest text-ink-sub">
-        Did you know
-      </span>
-      <div className="flex min-w-0 flex-1 items-start gap-3">
-        <code className="mt-0.5 shrink-0 rounded bg-trypan-light px-1.5 py-0.5 font-mono text-[11px] font-medium text-trypan">
-          {tip.badge}
-        </code>
-        <div className="min-w-0">
-          <p className="text-[13px] font-medium text-ink">{tip.text}</p>
-          <p className="mt-1 text-[12px] leading-relaxed text-ink-sub">{tip.why}</p>
-        </div>
-      </div>
-      <div className="mt-0.5 flex shrink-0 items-center gap-1">
-        <button
-          type="button"
-          onClick={prev}
-          aria-label="Previous tip"
-          className="rounded p-1 text-ink-sub hover:text-ink"
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M8 2L4 6l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-        <span className="text-[10px] tabular-nums text-ink-sub">{index + 1}/{TIPS.length}</span>
-        <button
-          type="button"
-          onClick={next}
-          aria-label="Next tip"
-          className="rounded p-1 text-ink-sub hover:text-ink"
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      </div>
     </div>
   )
 }
@@ -172,8 +112,8 @@ export default function Dashboard(): JSX.Element {
         />
       </section>
 
-      {/* Zone 2: Tips strip */}
-      <TipsStrip />
+      {/* Zone 2: Did You Know */}
+      <DidYouKnow />
 
       {/* Zone 3: Domains LEFT, Radar RIGHT */}
       <section aria-label="Skill overview" className="mt-8 grid grid-cols-3 gap-10">

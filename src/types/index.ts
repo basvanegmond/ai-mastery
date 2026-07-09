@@ -66,3 +66,18 @@ export interface QuickExercise {
   options: ExerciseOption[]
   explanation?: string
 }
+
+export type TipLevel = 'beginner' | 'mid' | 'senior' | 'complex'
+
+export interface Tip {
+  id: string
+  badge: string
+  short: string
+  heading: string
+  what: string
+  when: string
+  why: string
+  domain: string
+  level: TipLevel
+  tags: string[]
+}

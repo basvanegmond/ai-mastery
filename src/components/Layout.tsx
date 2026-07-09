@@ -47,16 +47,6 @@ const NAV_ITEMS: NavItem[] = [
       </svg>
     ),
   },
-  {
-    label: 'Settings',
-    disabled: true,
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    ),
-  },
 ]
 
 export default function Layout(): JSX.Element {
@@ -121,9 +111,12 @@ export default function Layout(): JSX.Element {
                 if (item.disabled) {
                   return (
                     <li key={item.label}>
-                      <span className="flex cursor-not-allowed items-center gap-2.5 rounded-md px-3 py-2 text-[13px] text-ink-sub opacity-40">
+                      <span className="flex cursor-not-allowed items-center gap-2.5 rounded-md px-3 py-2 text-[13px] text-ink-sub opacity-60">
                         {item.icon}
                         {item.label}
+                        <span className="ml-auto rounded-full bg-canvas-sub px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-ink-sub">
+                          Soon
+                        </span>
                       </span>
                     </li>
                   )
