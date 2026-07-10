@@ -69,6 +69,8 @@ export interface QuickExercise {
 
 export type TipLevel = 'beginner' | 'mid' | 'senior' | 'complex'
 
+export type TipTool = 'Claude Chat' | 'Claude Code' | 'Claude Cowork' | 'Claude Design' | 'Other LLMs'
+
 export interface Tip {
   id: string
   badge: string
@@ -80,4 +82,5 @@ export interface Tip {
   domain: string
   level: TipLevel
   tags: string[]
+  tools: TipTool[]
 }

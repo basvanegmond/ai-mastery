@@ -109,7 +109,7 @@ export function DidYouKnow(): JSX.Element | null {
         </code>
         <span className="min-w-0 flex-1 truncate text-[13px] text-white/85">{tip.short}</span>
         <span className="flex shrink-0 items-center gap-1.5 text-[9px] uppercase tracking-widest text-white/40">
-          Learn more
+          <span className="hidden sm:inline">Learn more</span>
           <span
             className={`inline-block transition-transform duration-200 ${panelOpen ? 'rotate-180' : ''}`}
           >
@@ -120,9 +120,9 @@ export function DidYouKnow(): JSX.Element | null {
 
       {/* State 1: expanded panel */}
       {panelOpen && (
-        <div className="rounded-b-xl border border-t-0 border-white/10 bg-trypan px-5 pb-[18px]">
+        <div className="rounded-b-xl border border-t-0 border-white/10 bg-trypan px-4 pb-4 sm:px-5 sm:pb-[18px]">
           <div className="mb-4 h-px bg-white/10" />
-          <div className="grid grid-cols-3 items-start gap-4">
+          <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-3">
             <div>
               <div className="mb-1.5 text-[9px] font-bold uppercase tracking-wider text-white/40">
                 What it is
@@ -145,7 +145,7 @@ export function DidYouKnow(): JSX.Element | null {
               <div className="text-xs leading-relaxed text-white/65">{withInlineCode(tip.why)}</div>
             </div>
           </div>
-          <div className="mt-3.5 flex items-center justify-between border-t border-white/10 pt-3">
+          <div className="mt-3.5 flex flex-col gap-3 border-t border-white/10 pt-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -184,7 +184,7 @@ export function DidYouKnow(): JSX.Element | null {
       {/* State 2: fullscreen ambient overlay */}
       {fullscreen && (
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0D0B2B] px-20 py-16"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-y-auto bg-[#0D0B2B] px-6 py-16 sm:px-12 md:px-20"
           onClick={(e) => {
             if (e.target === e.currentTarget) setPaused((p) => !p)
           }}
@@ -198,18 +198,18 @@ export function DidYouKnow(): JSX.Element | null {
               e.stopPropagation()
               setFullscreen(false)
             }}
-            className="fixed right-7 top-6 rounded-lg border border-white/12 bg-white/8 px-3.5 py-1.5 text-xs text-white/50 hover:bg-white/14 hover:text-white"
+            className="fixed right-4 top-4 rounded-lg border border-white/12 bg-white/8 px-3 py-1.5 text-xs text-white/50 hover:bg-white/14 hover:text-white sm:right-7 sm:top-6"
           >
-            ✕ Exit ambient
+            ✕ Exit
           </button>
 
-          <div className="mb-12 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[2px] text-white/25">
-            <span className="h-px w-20 bg-white/8" />
+          <div className="mb-8 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[2px] text-white/25 sm:mb-12 sm:gap-3 sm:text-[11px]">
+            <span className="hidden h-px w-20 bg-white/8 sm:block" />
             AI Mastery · Did you know
-            <span className="h-px w-20 bg-white/8" />
+            <span className="hidden h-px w-20 bg-white/8 sm:block" />
           </div>
 
-          <div className="mb-9 rounded-xl border border-trypan/50 bg-trypan/40 px-5 py-2 font-mono text-[28px] font-bold text-[#9B8FFF]">
+          <div className="mb-6 rounded-xl border border-trypan/50 bg-trypan/40 px-4 py-1.5 font-mono text-lg font-bold text-[#9B8FFF] sm:mb-9 sm:px-5 sm:py-2 sm:text-[28px]">
             {tip.badge}
           </div>
 
@@ -218,7 +218,7 @@ export function DidYouKnow(): JSX.Element | null {
               e.stopPropagation()
               setPaused((p) => !p)
             }}
-            className="mb-6 max-w-3xl text-center text-[42px] font-bold leading-tight text-white"
+            className="mb-4 max-w-3xl text-center text-2xl font-bold leading-tight text-white sm:mb-6 sm:text-3xl md:text-[42px]"
           >
             {tip.short}
           </h2>
@@ -227,12 +227,23 @@ export function DidYouKnow(): JSX.Element | null {
               e.stopPropagation()
               setPaused((p) => !p)
             }}
-            className="mb-14 max-w-2xl text-center text-xl leading-relaxed text-white/50"
+            className="mb-5 max-w-2xl text-center text-base leading-relaxed text-white/50 sm:mb-6 sm:text-xl"
           >
             {tip.what}
           </p>
 
-          <div className="mb-12 flex items-center gap-2">
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-2 sm:mb-10">
+            {tip.tools.map((tool) => (
+              <span
+                key={tool}
+                className="rounded-full border border-white/15 bg-white/8 px-3 py-1 text-[11px] font-medium text-white/55"
+              >
+                {tool}
+              </span>
+            ))}
+          </div>
+
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-2 sm:mb-12">
             {tips.map((t, i) => (
               <div
                 key={t.id}

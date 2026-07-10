@@ -17,7 +17,7 @@ function AssessmentBanner({ state }: { state: AppState }): JSX.Element {
   return (
     <Link
       to="/intake"
-      className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-trypan/20 bg-trypan-light px-5 py-4 transition-colors hover:border-trypan/40"
+      className="mt-6 flex flex-col items-start gap-3 rounded-xl border border-trypan/20 bg-trypan-light px-4 py-4 transition-colors hover:border-trypan/40 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-5"
     >
       <div>
         <p className="text-[13px] font-semibold text-ink">
@@ -99,8 +99,8 @@ function activityThisWeek(state: AppState, domainId: string): number {
 
 function Skeleton(): JSX.Element {
   return (
-    <div className="px-8 py-8 space-y-8" aria-label="Loading dashboard">
-      <div className="grid grid-cols-4 gap-8 border-b border-edge pb-8">
+    <div className="space-y-6 px-4 py-6 md:space-y-8 md:px-8 md:py-8" aria-label="Loading dashboard">
+      <div className="grid grid-cols-2 gap-4 border-b border-edge pb-6 md:grid-cols-4 md:gap-8 md:pb-8">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="space-y-2">
             <div className="h-10 w-16 animate-pulse rounded bg-edge" />
@@ -109,8 +109,8 @@ function Skeleton(): JSX.Element {
         ))}
       </div>
       <div className="h-12 animate-pulse rounded bg-edge" />
-      <div className="grid grid-cols-3 gap-8">
-        <div className="col-span-2 grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:col-span-2">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="h-28 animate-pulse rounded-xl bg-edge" />
           ))}
@@ -133,10 +133,13 @@ export default function Dashboard(): JSX.Element {
   const gradedDomains = state.domains.filter((d) => d.graded)
 
   return (
-    <div className="px-8 py-8">
+    <div className="px-4 py-6 md:px-8 md:py-8">
 
       {/* Zone 1: Stats — open, no container */}
-      <section aria-label="Stats" className="grid grid-cols-4 gap-8 border-b border-edge pb-8">
+      <section
+        aria-label="Stats"
+        className="grid grid-cols-2 gap-4 border-b border-edge pb-6 md:grid-cols-4 md:gap-8 md:pb-8"
+      >
         <StatTile label="Exercises done" value={String(state.stats.exercisesDone)} />
         <StatTile label="Sessions this week" value={String(state.stats.sessionsThisWeek)} />
         <StatTile label="Domains improved" value={String(state.stats.domainsImproved)} />
@@ -152,11 +155,11 @@ export default function Dashboard(): JSX.Element {
       {/* Zone 2: Did You Know */}
       <DidYouKnow />
 
-      {/* Zone 3: Domains LEFT, Radar RIGHT */}
-      <section aria-label="Skill overview" className="mt-8 grid grid-cols-3 gap-10">
+      {/* Zone 3: Domains LEFT, Radar RIGHT (stacks on mobile) */}
+      <section aria-label="Skill overview" className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
 
         {/* Domain cards — col-span-2 on LEFT */}
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <p className="mb-4 text-[11px] font-medium uppercase tracking-widest text-ink-sub">
             Domains
           </p>
@@ -165,7 +168,7 @@ export default function Dashboard(): JSX.Element {
               No graded domains yet. Complete a baseline assessment to see your scores.
             </p>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {gradedDomains.map((domain) => (
                 <DomainCard
                   key={domain.id}

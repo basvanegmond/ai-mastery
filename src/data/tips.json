@@ -12,7 +12,16 @@
       "why": "Every added task pulls focus from the others. A 900-word prompt that mixes tasks usually fails not because it's long, but because it's divided.",
       "domain": "prompt-construction",
       "level": "beginner",
-      "tags": ["prompting", "basics", "clarity"]
+      "tags": [
+        "prompting",
+        "basics",
+        "clarity"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-002",
@@ -24,7 +33,17 @@
       "why": "'Respond in JSON' leaves the structure undefined. 'Respond as {name: string, score: number}' does not.",
       "domain": "prompt-construction",
       "level": "beginner",
-      "tags": ["prompting", "output", "schema", "basics"]
+      "tags": [
+        "prompting",
+        "output",
+        "schema",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-003",
@@ -36,7 +55,16 @@
       "why": "A role anchors vocabulary, assumptions, and the level of detail Claude reaches for. Without one, it defaults to a general assistant voice.",
       "domain": "prompt-construction",
       "level": "beginner",
-      "tags": ["prompting", "persona", "basics"]
+      "tags": [
+        "prompting",
+        "persona",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-004",
@@ -48,7 +76,16 @@
       "why": "The model learns from what you demonstrate, not just what you describe. Examples that cover the edges define behavior more precisely than any instruction can.",
       "domain": "prompt-construction",
       "level": "mid",
-      "tags": ["prompting", "examples", "edge-cases"]
+      "tags": [
+        "prompting",
+        "examples",
+        "edge-cases"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-005",
@@ -60,7 +97,16 @@
       "why": "Forcing reasoning before output catches errors the model would otherwise commit to silently. The reasoning is visible, so you can spot where it went wrong.",
       "domain": "prompt-construction",
       "level": "mid",
-      "tags": ["prompting", "reasoning", "chain-of-thought"]
+      "tags": [
+        "prompting",
+        "reasoning",
+        "chain-of-thought"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-006",
@@ -72,7 +118,16 @@
       "why": "Positive instructions leave gaps. Negative constraints close the specific gaps that your use case keeps falling into.",
       "domain": "prompt-construction",
       "level": "mid",
-      "tags": ["prompting", "constraints", "precision"]
+      "tags": [
+        "prompting",
+        "constraints",
+        "precision"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-007",
@@ -84,7 +139,16 @@
       "why": "Prose prompts blur where context ends and instructions begin. Tags make structure explicit and reduce ambiguity at the boundaries.",
       "domain": "prompt-construction",
       "level": "mid",
-      "tags": ["prompting", "structure", "system-prompts"]
+      "tags": [
+        "prompting",
+        "structure",
+        "system-prompts"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-008",
@@ -96,7 +160,16 @@
       "why": "Claude can see holes in instructions that you can't spot because you know what you meant. It's faster than trial and error.",
       "domain": "prompt-construction",
       "level": "senior",
-      "tags": ["prompting", "meta", "iteration"]
+      "tags": [
+        "prompting",
+        "meta",
+        "iteration"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-009",
@@ -108,7 +181,16 @@
       "why": "Claude is more likely to spot its own errors when explicitly asked to look for them than when asked to confirm they don't exist.",
       "domain": "prompt-construction",
       "level": "senior",
-      "tags": ["prompting", "quality", "adversarial"]
+      "tags": [
+        "prompting",
+        "quality",
+        "adversarial"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "pc-010",
@@ -120,7 +202,16 @@
       "why": "Regular mode gives you the statistically likely answer fast. Extended thinking gives you a more carefully worked-through one. Different tool, different price.",
       "domain": "prompt-construction",
       "level": "senior",
-      "tags": ["prompting", "reasoning", "opus", "extended-thinking"]
+      "tags": [
+        "prompting",
+        "reasoning",
+        "opus",
+        "extended-thinking"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-001",
@@ -132,7 +223,14 @@
       "why": "Old context from a different task bleeds into the current one. /clear stops that.",
       "domain": "context-engineering",
       "level": "beginner",
-      "tags": ["commands", "context", "basics"]
+      "tags": [
+        "commands",
+        "context",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-002",
@@ -144,7 +242,15 @@
       "why": "Every time you re-explain your stack or preferences, that's time you're not getting back. Write it once.",
       "domain": "context-engineering",
       "level": "beginner",
-      "tags": ["setup", "CLAUDE.md", "persistence", "basics"]
+      "tags": [
+        "setup",
+        "CLAUDE.md",
+        "persistence",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-003",
@@ -156,7 +262,14 @@
       "why": "Describing a file takes words and introduces ambiguity. @filename just gets there.",
       "domain": "context-engineering",
       "level": "beginner",
-      "tags": ["commands", "files", "basics"]
+      "tags": [
+        "commands",
+        "files",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-004",
@@ -168,7 +281,15 @@
       "why": "Manual CLAUDE.md creation is slow. /init gives you 80% of the file in seconds — you just fill in the gaps.",
       "domain": "context-engineering",
       "level": "beginner",
-      "tags": ["commands", "setup", "CLAUDE.md", "basics"]
+      "tags": [
+        "commands",
+        "setup",
+        "CLAUDE.md",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-005",
@@ -180,7 +301,14 @@
       "why": "Opening a new thread means re-explaining everything. /btw skips that.",
       "domain": "context-engineering",
       "level": "mid",
-      "tags": ["commands", "workflow", "efficiency"]
+      "tags": [
+        "commands",
+        "workflow",
+        "efficiency"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-006",
@@ -192,7 +320,14 @@
       "why": "Hitting the context limit forces a full reset. /compact lets you keep going while preserving the important decisions.",
       "domain": "context-engineering",
       "level": "mid",
-      "tags": ["commands", "context-window", "sessions"]
+      "tags": [
+        "commands",
+        "context-window",
+        "sessions"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-007",
@@ -204,7 +339,14 @@
       "why": "Starting cold means re-establishing context every time. /resume removes that overhead.",
       "domain": "context-engineering",
       "level": "mid",
-      "tags": ["commands", "sessions", "persistence"]
+      "tags": [
+        "commands",
+        "sessions",
+        "persistence"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-008",
@@ -216,7 +358,14 @@
       "why": "You stop repeating yourself. That's it.",
       "domain": "context-engineering",
       "level": "mid",
-      "tags": ["commands", "memory", "persistence"]
+      "tags": [
+        "commands",
+        "memory",
+        "persistence"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ce-009",
@@ -228,7 +377,16 @@
       "why": "Unplanned context accumulates noise. Every irrelevant file or stale turn is competing with what you actually need.",
       "domain": "context-engineering",
       "level": "senior",
-      "tags": ["context-window", "planning", "efficiency"]
+      "tags": [
+        "context-window",
+        "planning",
+        "efficiency"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "ce-010",
@@ -240,7 +398,15 @@
       "why": "Exploring a codebase file by file is slow and misses the structure. A map gives Claude (and you) a shared mental model before the work starts.",
       "domain": "context-engineering",
       "level": "senior",
-      "tags": ["skills", "codebase", "analysis", "gsd"]
+      "tags": [
+        "skills",
+        "codebase",
+        "analysis",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "oe-001",
@@ -252,7 +418,15 @@
       "why": "AI writing patterns are recognizable. They undermine credibility in professional contexts even when the content is correct.",
       "domain": "output-evaluation",
       "level": "beginner",
-      "tags": ["skills", "writing", "quality", "basics"]
+      "tags": [
+        "skills",
+        "writing",
+        "quality",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "oe-002",
@@ -264,7 +438,15 @@
       "why": "Code quality degrades gradually. A score gives you something concrete to track and defend against.",
       "domain": "output-evaluation",
       "level": "beginner",
-      "tags": ["skills", "code-quality", "metrics", "basics"]
+      "tags": [
+        "skills",
+        "code-quality",
+        "metrics",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "oe-003",
@@ -276,7 +458,15 @@
       "why": "AI-generated code often passes lint and tests but misses edge cases or security issues that a second pass catches.",
       "domain": "output-evaluation",
       "level": "beginner",
-      "tags": ["skills", "code-review", "quality", "basics"]
+      "tags": [
+        "skills",
+        "code-review",
+        "quality",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "oe-004",
@@ -288,7 +478,17 @@
       "why": "Confident-sounding wrong answers are the most expensive kind. Evidence is cheap.",
       "domain": "output-evaluation",
       "level": "beginner",
-      "tags": ["verification", "quality", "discipline", "basics"]
+      "tags": [
+        "verification",
+        "quality",
+        "discipline",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "oe-005",
@@ -300,7 +500,15 @@
       "why": "Tests written after the fact often test what the code does, not what it should do. Tests written first test intent.",
       "domain": "output-evaluation",
       "level": "mid",
-      "tags": ["testing", "TDD", "quality"]
+      "tags": [
+        "testing",
+        "TDD",
+        "quality"
+      ],
+      "tools": [
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "oe-006",
@@ -312,7 +520,17 @@
       "why": "Claude can apply criteria more consistently than human spot-checks, especially across large outputs.",
       "domain": "output-evaluation",
       "level": "mid",
-      "tags": ["evaluation", "LLM-judge", "quality", "iteration"]
+      "tags": [
+        "evaluation",
+        "LLM-judge",
+        "quality",
+        "iteration"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "oe-007",
@@ -324,7 +542,15 @@
       "why": "Broken deploys that look fine to CI but break visually go unnoticed until users report them. Canary catches them first.",
       "domain": "output-evaluation",
       "level": "mid",
-      "tags": ["skills", "deployment", "monitoring", "visual-testing"]
+      "tags": [
+        "skills",
+        "deployment",
+        "monitoring",
+        "visual-testing"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "oe-008",
@@ -336,7 +562,14 @@
       "why": "Refactors that mix structural and behavioral changes are where bugs hide. The discipline of keeping them separate makes regressions obvious.",
       "domain": "output-evaluation",
       "level": "mid",
-      "tags": ["skills", "refactoring", "code-quality"]
+      "tags": [
+        "skills",
+        "refactoring",
+        "code-quality"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "oe-009",
@@ -348,7 +581,16 @@
       "why": "Without criteria, you're judging outputs by feeling. With criteria, you're judging them by standards you can also share with collaborators.",
       "domain": "output-evaluation",
       "level": "senior",
-      "tags": ["evaluation", "criteria", "quality"]
+      "tags": [
+        "evaluation",
+        "criteria",
+        "quality"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "oe-010",
@@ -360,7 +602,15 @@
       "why": "Performance regressions are invisible until they're bad. Benchmarks make them visible at the commit level.",
       "domain": "output-evaluation",
       "level": "senior",
-      "tags": ["skills", "performance", "web-vitals", "CI"]
+      "tags": [
+        "skills",
+        "performance",
+        "web-vitals",
+        "CI"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "fd-001",
@@ -372,7 +622,15 @@
       "why": "Destructive commands that run silently are unrecoverable. One confirmation step costs nothing and saves everything.",
       "domain": "failure-diagnosis",
       "level": "beginner",
-      "tags": ["skills", "safety", "destructive-commands", "basics"]
+      "tags": [
+        "skills",
+        "safety",
+        "destructive-commands",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "fd-002",
@@ -384,7 +642,16 @@
       "why": "Fixes for bugs you can't reproduce often fix the wrong thing, or fix nothing and appear to work.",
       "domain": "failure-diagnosis",
       "level": "beginner",
-      "tags": ["debugging", "discipline", "basics"]
+      "tags": [
+        "debugging",
+        "discipline",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "fd-003",
@@ -396,7 +663,16 @@
       "why": "Summaries lose the specific details (line numbers, internal function names, exact error types) that distinguish the real cause from the apparent one.",
       "domain": "failure-diagnosis",
       "level": "beginner",
-      "tags": ["debugging", "error-handling", "basics"]
+      "tags": [
+        "debugging",
+        "error-handling",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "fd-004",
@@ -408,7 +684,16 @@
       "why": "The most embarrassing debugging sessions end with a missing .env file. The obvious checks take 30 seconds and are wrong surprisingly often.",
       "domain": "failure-diagnosis",
       "level": "beginner",
-      "tags": ["debugging", "environment", "basics"]
+      "tags": [
+        "debugging",
+        "environment",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "fd-005",
@@ -420,7 +705,15 @@
       "why": "Random fixes for unexplained bugs create new bugs. Systematic investigation finds the actual cause.",
       "domain": "failure-diagnosis",
       "level": "mid",
-      "tags": ["skills", "debugging", "systematic", "investigation"]
+      "tags": [
+        "skills",
+        "debugging",
+        "systematic",
+        "investigation"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "fd-006",
@@ -432,7 +725,15 @@
       "why": "Starting a debugging session from scratch after a context reset is expensive. Persisted state means you don't re-investigate what you already ruled out.",
       "domain": "failure-diagnosis",
       "level": "mid",
-      "tags": ["skills", "debugging", "persistence", "gsd"]
+      "tags": [
+        "skills",
+        "debugging",
+        "persistence",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "fd-007",
@@ -444,7 +745,16 @@
       "why": "Symptom fixes accumulate as technical debt. Root cause fixes prevent the symptom from recurring in other places.",
       "domain": "failure-diagnosis",
       "level": "mid",
-      "tags": ["debugging", "root-cause", "technical-debt"]
+      "tags": [
+        "debugging",
+        "root-cause",
+        "technical-debt"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "fd-008",
@@ -456,7 +766,15 @@
       "why": "Security issues found in review cost hours. Security issues found in production cost careers.",
       "domain": "failure-diagnosis",
       "level": "senior",
-      "tags": ["skills", "security", "OWASP", "audit"]
+      "tags": [
+        "skills",
+        "security",
+        "OWASP",
+        "audit"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "fd-009",
@@ -468,7 +786,15 @@
       "why": "OWASP catches common vulnerabilities. CSO-level review catches architectural and systemic risk patterns that individual checks miss.",
       "domain": "failure-diagnosis",
       "level": "senior",
-      "tags": ["skills", "security", "threat-modeling", "STRIDE"]
+      "tags": [
+        "skills",
+        "security",
+        "threat-modeling",
+        "STRIDE"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "fd-010",
@@ -480,7 +806,17 @@
       "why": "Injection attacks on LLMs are the new SQL injection. They're real, being exploited, and most developers aren't thinking about them yet.",
       "domain": "failure-diagnosis",
       "level": "senior",
-      "tags": ["security", "LLM", "injection", "RAG"]
+      "tags": [
+        "security",
+        "LLM",
+        "injection",
+        "RAG"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "ts-001",
@@ -492,7 +828,16 @@
       "why": "Using Opus for everything is expensive and slow. Using Haiku for everything misses nuance. Switching deliberately is a skill.",
       "domain": "tool-selection",
       "level": "beginner",
-      "tags": ["commands", "models", "cost", "basics"]
+      "tags": [
+        "commands",
+        "models",
+        "cost",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code"
+      ]
     },
     {
       "id": "ts-002",
@@ -504,7 +849,15 @@
       "why": "Wrong model = wrong speed/quality trade-off. Haiku gives wrong answers on hard problems. Opus is 5-10x more expensive than needed for simple tasks.",
       "domain": "tool-selection",
       "level": "beginner",
-      "tags": ["models", "cost", "basics"]
+      "tags": [
+        "models",
+        "cost",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code"
+      ]
     },
     {
       "id": "ts-003",
@@ -516,7 +869,15 @@
       "why": "Setup issues are frustrating to diagnose manually. /doctor surfaces them in seconds.",
       "domain": "tool-selection",
       "level": "beginner",
-      "tags": ["commands", "setup", "diagnostics", "basics"]
+      "tags": [
+        "commands",
+        "setup",
+        "diagnostics",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ts-004",
@@ -528,7 +889,16 @@
       "why": "Claude's knowledge has a cutoff. @web extends it to today without breaking your workflow.",
       "domain": "tool-selection",
       "level": "mid",
-      "tags": ["commands", "search", "web", "real-time"]
+      "tags": [
+        "commands",
+        "search",
+        "web",
+        "real-time"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code"
+      ]
     },
     {
       "id": "ts-005",
@@ -540,7 +910,16 @@
       "why": "Every manual copy-paste is a workflow you can eliminate. MCP makes Claude an active participant in your toolchain, not just a text box.",
       "domain": "tool-selection",
       "level": "mid",
-      "tags": ["MCP", "integrations", "tools", "workflow"]
+      "tags": [
+        "MCP",
+        "integrations",
+        "tools",
+        "workflow"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code"
+      ]
     },
     {
       "id": "ts-006",
@@ -552,7 +931,14 @@
       "why": "A 5-minute plan review can save a 2-hour wrong-direction execution.",
       "domain": "tool-selection",
       "level": "mid",
-      "tags": ["commands", "planning", "workflow"]
+      "tags": [
+        "commands",
+        "planning",
+        "workflow"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ts-007",
@@ -564,7 +950,15 @@
       "why": "If you're doing a 20-file refactor and Claude asks permission on every write, you'll lose your mind. Toggle this on, go do something else, come back.",
       "domain": "tool-selection",
       "level": "mid",
-      "tags": ["shortcuts", "auto-accept", "autonomous", "workflow"]
+      "tags": [
+        "shortcuts",
+        "auto-accept",
+        "autonomous",
+        "workflow"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ts-008",
@@ -576,7 +970,15 @@
       "why": "Pre-built MCP servers cover common tools. Custom tools cover your specific systems. The combination makes Claude able to act in almost any environment.",
       "domain": "tool-selection",
       "level": "senior",
-      "tags": ["API", "tool-use", "agentic", "custom-tools"]
+      "tags": [
+        "API",
+        "tool-use",
+        "agentic",
+        "custom-tools"
+      ],
+      "tools": [
+        "Other LLMs"
+      ]
     },
     {
       "id": "ts-009",
@@ -588,7 +990,16 @@
       "why": "The productivity gain from giving Claude direct access to your internal tools is significant. Manual bridging doesn't scale.",
       "domain": "tool-selection",
       "level": "senior",
-      "tags": ["MCP", "custom-server", "integrations", "advanced"]
+      "tags": [
+        "MCP",
+        "custom-server",
+        "integrations",
+        "advanced"
+      ],
+      "tools": [
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "ts-010",
@@ -600,7 +1011,14 @@
       "why": "A 10-minute Opus session can cost as much as 10 hours of Haiku. Cost awareness shapes how you architect workflows.",
       "domain": "tool-selection",
       "level": "senior",
-      "tags": ["commands", "cost", "optimization"]
+      "tags": [
+        "commands",
+        "cost",
+        "optimization"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-001",
@@ -612,7 +1030,15 @@
       "why": "Without hooks, you find type errors when the task is done. With hooks, Claude fixes them as it goes.",
       "domain": "agentic-architecture",
       "level": "beginner",
-      "tags": ["hooks", "automation", "setup", "basics"]
+      "tags": [
+        "hooks",
+        "automation",
+        "setup",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-002",
@@ -624,7 +1050,15 @@
       "why": "Recovery from a bad autonomous run is much faster when you have a clear restore point.",
       "domain": "agentic-architecture",
       "level": "beginner",
-      "tags": ["skills", "safety", "git", "recovery"]
+      "tags": [
+        "skills",
+        "safety",
+        "git",
+        "recovery"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-003",
@@ -636,7 +1070,15 @@
       "why": "Projects without upfront structure accumulate undocumented decisions that slow down every future session.",
       "domain": "agentic-architecture",
       "level": "beginner",
-      "tags": ["skills", "project-setup", "gsd", "basics"]
+      "tags": [
+        "skills",
+        "project-setup",
+        "gsd",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-004",
@@ -648,7 +1090,14 @@
       "why": "Plans catch design problems before they become code problems. A good plan also makes execution much faster.",
       "domain": "agentic-architecture",
       "level": "mid",
-      "tags": ["skills", "planning", "workflow"]
+      "tags": [
+        "skills",
+        "planning",
+        "workflow"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-005",
@@ -660,7 +1109,15 @@
       "why": "Execution without a plan drifts. Execution against a plan stays on track and makes it obvious when something is deviating.",
       "domain": "agentic-architecture",
       "level": "mid",
-      "tags": ["skills", "execution", "planning", "workflow"]
+      "tags": [
+        "skills",
+        "execution",
+        "planning",
+        "workflow"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-006",
@@ -672,7 +1129,15 @@
       "why": "Pre-ship checklists get skipped when you're busy. Automation doesn't.",
       "domain": "agentic-architecture",
       "level": "mid",
-      "tags": ["skills", "deployment", "git", "workflow"]
+      "tags": [
+        "skills",
+        "deployment",
+        "git",
+        "workflow"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-007",
@@ -684,7 +1149,15 @@
       "why": "Execution without a verified plan often completes the wrong thing. The verification loop catches misalignment before code is written.",
       "domain": "agentic-architecture",
       "level": "senior",
-      "tags": ["skills", "planning", "verification", "gsd"]
+      "tags": [
+        "skills",
+        "planning",
+        "verification",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-008",
@@ -696,7 +1169,15 @@
       "why": "Stashing and context-switching between branches is slow and error-prone. Worktrees eliminate both.",
       "domain": "agentic-architecture",
       "level": "senior",
-      "tags": ["skills", "git", "parallel", "branches"]
+      "tags": [
+        "skills",
+        "git",
+        "parallel",
+        "branches"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-009",
@@ -708,7 +1189,15 @@
       "why": "The overhead of running each phase manually adds up. Autonomous mode collapses it when the task is clear enough.",
       "domain": "agentic-architecture",
       "level": "senior",
-      "tags": ["skills", "autonomous", "gsd", "advanced"]
+      "tags": [
+        "skills",
+        "autonomous",
+        "gsd",
+        "advanced"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "aa-010",
@@ -720,7 +1209,15 @@
       "why": "Merging and walking away is how broken deploys go unnoticed for hours. Land-and-deploy closes that gap.",
       "domain": "agentic-architecture",
       "level": "complex",
-      "tags": ["skills", "deployment", "CI", "production"]
+      "tags": [
+        "skills",
+        "deployment",
+        "CI",
+        "production"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-001",
@@ -732,7 +1229,14 @@
       "why": "Fresh context means focused attention. A subagent reading a file starts with no assumptions from your session.",
       "domain": "multi-agent-orchestration",
       "level": "beginner",
-      "tags": ["subagents", "basics", "context-isolation"]
+      "tags": [
+        "subagents",
+        "basics",
+        "context-isolation"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-002",
@@ -744,7 +1248,16 @@
       "why": "Sequential execution of independent tasks is pure waste. Parallelism collapses wall-clock time.",
       "domain": "multi-agent-orchestration",
       "level": "beginner",
-      "tags": ["parallel", "efficiency", "basics"]
+      "tags": [
+        "parallel",
+        "efficiency",
+        "basics"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "ma-003",
@@ -756,7 +1269,15 @@
       "why": "One agent doing five things sequentially is 5x slower and accumulates context pollution. Five agents doing one thing each is faster and cleaner.",
       "domain": "multi-agent-orchestration",
       "level": "mid",
-      "tags": ["skills", "subagents", "parallel", "orchestration"]
+      "tags": [
+        "skills",
+        "subagents",
+        "parallel",
+        "orchestration"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-004",
@@ -768,7 +1289,15 @@
       "why": "A single long session accumulates fatigue and context drift. Fresh agents per task maintain consistent quality across the whole project.",
       "domain": "multi-agent-orchestration",
       "level": "mid",
-      "tags": ["skills", "subagents", "TDD", "quality"]
+      "tags": [
+        "skills",
+        "subagents",
+        "TDD",
+        "quality"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-005",
@@ -780,7 +1309,15 @@
       "why": "Parallel work without state management creates confusion about where each stream is. Workstreams give each track a clean home.",
       "domain": "multi-agent-orchestration",
       "level": "mid",
-      "tags": ["skills", "parallel", "state-management", "gsd"]
+      "tags": [
+        "skills",
+        "parallel",
+        "state-management",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-006",
@@ -792,7 +1329,15 @@
       "why": "Large codebases are too connected to understand by reading files. A graph makes structure visible and relationships traceable.",
       "domain": "multi-agent-orchestration",
       "level": "senior",
-      "tags": ["skills", "codebase", "knowledge-graph", "analysis"]
+      "tags": [
+        "skills",
+        "codebase",
+        "knowledge-graph",
+        "analysis"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-007",
@@ -804,7 +1349,15 @@
       "why": "Checking status across multiple phases manually wastes time. gsd-manager collapses it into one view.",
       "domain": "multi-agent-orchestration",
       "level": "senior",
-      "tags": ["skills", "orchestration", "dashboard", "gsd"]
+      "tags": [
+        "skills",
+        "orchestration",
+        "dashboard",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-008",
@@ -816,7 +1369,15 @@
       "why": "Manual audit-fix cycles are interrupted and incomplete. Autonomous pipelines finish what they start.",
       "domain": "multi-agent-orchestration",
       "level": "senior",
-      "tags": ["skills", "autonomous", "audit", "gsd"]
+      "tags": [
+        "skills",
+        "autonomous",
+        "audit",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "ma-009",
@@ -828,7 +1389,17 @@
       "why": "Assuming agents share context is the most common multi-agent bug. They don't. You have to wire it.",
       "domain": "multi-agent-orchestration",
       "level": "senior",
-      "tags": ["subagents", "state", "architecture", "patterns"]
+      "tags": [
+        "subagents",
+        "state",
+        "architecture",
+        "patterns"
+      ],
+      "tools": [
+        "Claude Chat",
+        "Claude Code",
+        "Other LLMs"
+      ]
     },
     {
       "id": "ma-010",
@@ -840,7 +1411,15 @@
       "why": "Different AI tools have different strengths. Sharing a browser session lets you route tasks to the right tool without manual context transfer.",
       "domain": "multi-agent-orchestration",
       "level": "complex",
-      "tags": ["skills", "multi-ai", "browser", "collaboration"]
+      "tags": [
+        "skills",
+        "multi-ai",
+        "browser",
+        "collaboration"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-001",
@@ -852,7 +1431,15 @@
       "why": "Docs written after the fact are written by someone who already forgot the details. Docs written right after shipping are accurate.",
       "domain": "business-value-translation",
       "level": "beginner",
-      "tags": ["skills", "documentation", "release", "basics"]
+      "tags": [
+        "skills",
+        "documentation",
+        "release",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-002",
@@ -864,7 +1451,16 @@
       "why": "Ideas that don't get captured don't get acted on. Capture takes 30 seconds.",
       "domain": "business-value-translation",
       "level": "beginner",
-      "tags": ["skills", "ideas", "capture", "workflow", "basics"]
+      "tags": [
+        "skills",
+        "ideas",
+        "capture",
+        "workflow",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-003",
@@ -876,7 +1472,16 @@
       "why": "Working without a status check means you might pick up the wrong thing. gsd-progress makes the right next action obvious.",
       "domain": "business-value-translation",
       "level": "beginner",
-      "tags": ["skills", "status", "workflow", "gsd", "basics"]
+      "tags": [
+        "skills",
+        "status",
+        "workflow",
+        "gsd",
+        "basics"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-004",
@@ -888,7 +1493,15 @@
       "why": "It's faster to kill a bad idea in 20 minutes of hard questions than after 3 weeks of building.",
       "domain": "business-value-translation",
       "level": "mid",
-      "tags": ["skills", "ideation", "validation", "YC"]
+      "tags": [
+        "skills",
+        "ideation",
+        "validation",
+        "YC"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-005",
@@ -900,7 +1513,15 @@
       "why": "Single-perspective research has blind spots. Five lenses expose trade-offs and contradictions you'd otherwise miss.",
       "domain": "business-value-translation",
       "level": "mid",
-      "tags": ["skills", "research", "analysis", "multi-perspective"]
+      "tags": [
+        "skills",
+        "research",
+        "analysis",
+        "multi-perspective"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-006",
@@ -912,7 +1533,15 @@
       "why": "Teams that don't retrospect repeat the same problems. Written retros that track trends surface patterns that weekly conversations miss.",
       "domain": "business-value-translation",
       "level": "mid",
-      "tags": ["skills", "retrospective", "velocity", "team"]
+      "tags": [
+        "skills",
+        "retrospective",
+        "velocity",
+        "team"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-007",
@@ -924,7 +1553,15 @@
       "why": "Technical artifacts (PLAN.md, git log) aren't readable by stakeholders. A summary bridges the gap without losing accuracy.",
       "domain": "business-value-translation",
       "level": "mid",
-      "tags": ["skills", "documentation", "stakeholders", "gsd"]
+      "tags": [
+        "skills",
+        "documentation",
+        "stakeholders",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-008",
@@ -936,7 +1573,16 @@
       "why": "Unmanaged issue queues lose trust. Regular triage keeps the signal-to-noise ratio high.",
       "domain": "business-value-translation",
       "level": "senior",
-      "tags": ["skills", "GitHub", "issues", "triage", "gsd"]
+      "tags": [
+        "skills",
+        "GitHub",
+        "issues",
+        "triage",
+        "gsd"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-009",
@@ -948,7 +1594,15 @@
       "why": "Most implementation mistakes are identifiable before a line of code is written. Four lenses catch four different failure modes.",
       "domain": "business-value-translation",
       "level": "senior",
-      "tags": ["skills", "planning", "review", "multi-lens"]
+      "tags": [
+        "skills",
+        "planning",
+        "review",
+        "multi-lens"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     },
     {
       "id": "bv-010",
@@ -960,7 +1614,15 @@
       "why": "Engineering reviews catch implementation problems. CEO review catches the wrong problem being solved well.",
       "domain": "business-value-translation",
       "level": "complex",
-      "tags": ["skills", "product", "strategy", "founder-mode"]
+      "tags": [
+        "skills",
+        "product",
+        "strategy",
+        "founder-mode"
+      ],
+      "tools": [
+        "Claude Code"
+      ]
     }
   ]
 }

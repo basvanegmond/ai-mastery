@@ -5,6 +5,7 @@ const ALL_TIPS = (tipsData as { tips: Tip[] }).tips
 
 const LEVEL_ORDER: TipLevel[] = ['beginner', 'mid', 'senior', 'complex']
 const WEAK_DOMAIN_COUNT = 3
+const MAX_TIPS = 10
 
 function levelForScore(score: number): TipLevel {
   if (score < 3.0) return 'beginner'
@@ -18,6 +19,13 @@ function stretchLevel(level: TipLevel): TipLevel {
   return LEVEL_ORDER[Math.min(next, LEVEL_ORDER.length - 1)]!
 }
 
+/** Caps a tip list to MAX_TIPS, sampling evenly across it rather than truncating. */
+function cap(tips: Tip[]): Tip[] {
+  if (tips.length <= MAX_TIPS) return tips
+  const step = tips.length / MAX_TIPS
+  return Array.from({ length: MAX_TIPS }, (_, i) => tips[Math.floor(i * step)]!)
+}
+
 /**
  * Picks tips weighted toward the user's weakest graded domains, one level
  * above their current grade in each — a stretch tip, not a repeat of what
@@ -29,7 +37,7 @@ export function selectTips(
   radarScores: Record<string, number>,
 ): Tip[] {
   const graded = domains.filter((d) => d.graded && radarScores[d.id] !== undefined)
-  if (graded.length === 0) return ALL_TIPS
+  if (graded.length === 0) return cap(ALL_TIPS)
 
   const weakest = [...graded]
     .sort((a, b) => (radarScores[a.id] ?? 0) - (radarScores[b.id] ?? 0))
@@ -40,9 +48,9 @@ export function selectTips(
   )
 
   const matched = ALL_TIPS.filter((tip) => targets.get(tip.domain) === tip.level)
-  if (matched.length >= 3) return matched
+  if (matched.length >= 3) return cap(matched)
 
   // Not enough exact-level matches — widen to any level within the weak domains.
   const domainOnly = ALL_TIPS.filter((tip) => targets.has(tip.domain))
-  return domainOnly.length >= 3 ? domainOnly : ALL_TIPS
+  return cap(domainOnly.length >= 3 ? domainOnly : ALL_TIPS)
 }

@@ -52,11 +52,36 @@ const NAV_ITEMS: NavItem[] = [
   },
 ]
 
+function SyncDot({ loading, error }: { loading: boolean; error: string | null }): JSX.Element {
+  return (
+    <span
+      className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+        error !== null ? 'bg-red-400' : loading ? 'bg-amber-400' : 'bg-emerald-400'
+      }`}
+      aria-hidden="true"
+    />
+  )
+}
+
 export default function Layout({ loading, error }: LayoutProps): JSX.Element {
   return (
-    <div className="flex min-h-screen bg-canvas-sub">
-      {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 flex w-48 flex-col bg-sidebar">
+    <div className="min-h-screen bg-canvas-sub">
+      {/* Mobile top bar */}
+      <div className="flex items-center gap-2.5 border-b border-white/6 bg-sidebar px-4 py-3 md:hidden">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-gradient-to-br from-trypan to-[#0053EC] text-[10px] font-extrabold text-white">
+          AI
+        </div>
+        <span className="text-[13px] font-semibold text-white/90">AI Mastery</span>
+        <div className="ml-auto flex items-center gap-1.5">
+          <SyncDot loading={loading} error={error} />
+          <span className="text-[10px] text-white/35">
+            {error !== null ? 'sync error' : loading ? 'syncing' : 'synced'}
+          </span>
+        </div>
+      </div>
+
+      {/* Desktop sidebar */}
+      <aside className="hidden md:fixed md:inset-y-0 md:left-0 md:flex md:w-48 md:flex-col md:bg-sidebar">
         {/* Logo + wordmark + sync */}
         <div className="flex items-center gap-2.5 px-4 pt-5 pb-4">
           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-gradient-to-br from-trypan to-[#0053EC] text-[10px] font-extrabold text-white">
@@ -67,12 +92,7 @@ export default function Layout({ loading, error }: LayoutProps): JSX.Element {
               AI Mastery
             </span>
             <div className="mt-0.5 flex items-center gap-1.5">
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${
-                  error !== null ? 'bg-red-400' : loading ? 'bg-amber-400' : 'bg-emerald-400'
-                }`}
-                aria-hidden="true"
-              />
+              <SyncDot loading={loading} error={error} />
               <span className="text-[10px] text-white/35">
                 {error !== null ? 'sync error' : loading ? 'syncing' : 'synced'}
               </span>
@@ -119,9 +139,9 @@ export default function Layout({ loading, error }: LayoutProps): JSX.Element {
       </aside>
 
       {/* Main content */}
-      <div className="ml-48 flex-1">
+      <div className="pb-16 md:ml-48 md:pb-0">
         {error !== null && (
-          <div className="px-6 pt-4">
+          <div className="px-4 pt-4 md:px-6">
             <p className="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </p>
@@ -131,6 +151,30 @@ export default function Layout({ loading, error }: LayoutProps): JSX.Element {
           <Outlet />
         </main>
       </div>
+
+      {/* Mobile bottom tab bar */}
+      <nav
+        aria-label="Main navigation"
+        className="fixed inset-x-0 bottom-0 z-20 flex border-t border-edge bg-canvas md:hidden"
+      >
+        {NAV_ITEMS.filter((item): item is NavItem & { to: string; disabled?: false } => !item.disabled).map(
+          (item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) =>
+                `flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] ${
+                  isActive ? 'text-trypan' : 'text-ink-sub'
+                }`
+              }
+            >
+              {item.icon}
+              {item.label}
+            </NavLink>
+          ),
+        )}
+      </nav>
     </div>
   )
 }
