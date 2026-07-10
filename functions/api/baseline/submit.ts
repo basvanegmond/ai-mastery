@@ -28,6 +28,22 @@ interface Domain {
   baselineHistory: BaselineEntry[]
 }
 
+// ---------------------------------------------------------------------------
+// Seed defaults (mirrors state.ts DEFAULT_DOMAINS)
+// Used when domains.json does not yet exist in the data repo.
+// ---------------------------------------------------------------------------
+
+const DEFAULT_DOMAINS: Domain[] = [
+  { id: 'prompt-construction', name: 'Prompt Construction', description: 'Front-load clarity, scope intent precisely, eliminate iterative correction loops', target: 4.0, graded: true, baselineHistory: [{ score: 3.5, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'context-engineering', name: 'Context Engineering', description: "Decide what's in the context window: what to include, exclude, and sequence for the task at hand", target: 4.0, graded: true, baselineHistory: [{ score: 2.0, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'output-evaluation', name: 'Output Evaluation', description: 'Challenge AI outputs, surface assumptions, pressure-test logic', target: 4.0, graded: true, baselineHistory: [{ score: 2.5, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'agentic-architecture', name: 'Agentic Architecture', description: 'Design agent systems: orchestrators, sub-agents, tool calls, failure modes', target: 4.0, graded: true, baselineHistory: [{ score: 1.5, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'tool-selection', name: 'Tool Selection', description: 'Deliberate mental model for when each tool wins and why', target: 3.8, graded: true, baselineHistory: [{ score: 2.0, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'failure-diagnosis', name: 'Failure Diagnosis', description: 'Narrate what went wrong without outsourcing the thinking', target: 3.5, graded: true, baselineHistory: [{ score: 2.0, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'multi-agent-orchestration', name: 'Multi-Agent Orchestration', description: 'State management, routing logic, session persistence, escalation handling', target: 3.5, graded: true, baselineHistory: [{ score: 1.0, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+  { id: 'business-value-translation', name: 'Business Value Translation', description: 'Move from capability to a board-ready value thesis', target: 4.3, graded: true, baselineHistory: [{ score: 3.0, timestamp: '2025-05-01T00:00:00Z', source: 'diagnostic-estimate' }] },
+]
+
 interface SubmitRequest {
   scores: Record<string, number>
 }
@@ -97,22 +113,23 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const path = userPath(env, 'domains.json')
     const existing = await readFile(env, path)
-    if (existing === null) {
-      return jsonResponse({ error: 'domains.json not found — seed data before submitting a baseline' }, 500)
-    }
 
-    let domains: unknown[]
-    try {
-      const content: unknown = JSON.parse(existing.content)
-      if (!Array.isArray(content)) throw new Error('not an array')
-      domains = content
-    } catch {
-      return jsonResponse({ error: 'domains.json is corrupt' }, 500)
+    let domains: Domain[]
+    if (existing === null) {
+      domains = DEFAULT_DOMAINS
+    } else {
+      try {
+        const content: unknown = JSON.parse(existing.content)
+        if (!Array.isArray(content)) throw new Error('not an array')
+        domains = content.filter(isDomain)
+        if (domains.length === 0) domains = DEFAULT_DOMAINS
+      } catch {
+        return jsonResponse({ error: 'domains.json is corrupt' }, 500)
+      }
     }
 
     const timestamp = new Date().toISOString()
     const updated: Domain[] = domains.map((raw) => {
-      if (!isDomain(raw)) return raw as Domain
       const score = parsed.scores[raw.id]
       if (score === undefined) return raw
       return {
@@ -129,7 +146,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       path,
       JSON.stringify(updated, null, 2),
       'baseline: intake assessment results',
-      existing.sha,
+      existing?.sha,
       true,
     )
 

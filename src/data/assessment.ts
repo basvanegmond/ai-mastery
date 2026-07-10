@@ -21,416 +21,416 @@ export const ASSESSMENT: AssessmentDomainSet[] = [
     questions: [
       {
         id: 'pc-1',
-        text: 'You need Claude to produce consistent JSON output across all runs — same fields, same structure. Which approach is most reliable?',
+        text: 'Your chain-of-thought prompt is accurate but inflating token costs at high volume. You need to preserve accuracy. What is the most targeted architectural fix?',
         options: [
-          'Ask "please respond in JSON format" at the end of the prompt',
-          'Specify the exact schema with field names, types, and an example output',
-          'Use a larger model which is better at following format instructions',
-          'Set temperature to 0 to reduce variability',
-        ],
-        correct: 1,
-        explanation:
-          'Telling Claude to "respond in JSON" leaves the structure open. An actual schema with an example removes the guesswork.',
-        missInsight:
-          'Model size and temperature affect consistency at the margins, but the real gap is usually an underspecified schema — the model is guessing at structure you never actually defined.',
-      },
-      {
-        id: 'pc-2',
-        text: 'Your prompt works on simple cases but fails on edge cases. What do you try first?',
-        options: [
-          'Lengthen the main instruction with more detail',
-          'Add 2-3 few-shot examples that specifically cover the failing edge cases',
-          'Split the prompt into a chain of smaller prompts',
-          'Lower the temperature to make outputs more deterministic',
-        ],
-        correct: 1,
-        explanation:
-          'Examples that show the edge cases do more than extra instructions. The model picks up what you demonstrate, not just what you describe.',
-        missInsight:
-          'More instruction text or a lower temperature can polish an already-working prompt, but neither teaches the model what an edge case actually looks like — only a concrete example does that.',
-      },
-      {
-        id: 'pc-3',
-        text: "A colleague shows you their prompt. It's 900 words. It still doesn't work. What's probably wrong?",
-        options: [
-          'The prompt is simply too long',
-          'Role definition is missing at the start',
-          'Multiple unrelated tasks are mixed into a single instruction',
-          'It needs more examples',
+          'Set temperature to 0 — deterministic outputs reduce unnecessary elaboration',
+          'Append "respond concisely" to the instruction — this typically halves CoT length while preserving accuracy',
+          'Route inputs through a lightweight classifier first; send only complex cases to the CoT prompt',
+          'Truncate outputs at a token limit and post-process the answer out of partial reasoning',
         ],
         correct: 2,
         explanation:
-          "Long prompts usually fail because they're asking for several things at once. Each task pulls focus away from the others.",
+          'The root problem is applying heavy reasoning universally. A classifier that routes simple inputs to a cheaper path keeps quality on hard cases without paying the CoT cost across the board.',
         missInsight:
-          'Length by itself rarely breaks a prompt. What breaks it is asking for three different outcomes in one breath — the model has to split attention across tasks that were never separated.',
+          'Temperature and truncation reduce output size but do not reduce thinking — they risk cutting reasoning that was needed. "Be concise" can help at the margins but does not fix the structural issue of invoking CoT on inputs that do not require it.',
+      },
+      {
+        id: 'pc-2',
+        text: 'A long system prompt (1,200 tokens) produces great results on simple tasks but drifts on complex ones. All the instructions are correct. What is the most likely cause of the drift?',
+        options: [
+          'Complex tasks consume more reasoning tokens, crowding out the system prompt in the window',
+          'The model averages long sets of instructions rather than following any one precisely',
+          'The context limit is being approached, causing the model to truncate the system prompt internally',
+          'Instructions placed in the middle of a long prompt are systematically underweighted compared to those at the top and bottom',
+        ],
+        correct: 3,
+        explanation:
+          'LLMs exhibit a "lost-in-the-middle" effect — content near the start and end of a long prompt is attended to most reliably. Critical rules buried in the middle of a 1,200-token system prompt are effectively invisible on complex tasks that demand more of the model.',
+        missInsight:
+          'Reasoning crowding and context truncation would typically degrade all tasks, not just complex ones. The "averaging" hypothesis is not how attention actually works. The structural diagnosis is positional: important instructions in the middle of long prompts are the graveyard.',
+      },
+      {
+        id: 'pc-3',
+        text: 'You need the model to always output valid JSON but cannot use a JSON-enforcing API parameter. Which prompting technique is most reliably effective?',
+        options: [
+          'Seed the assistant turn with the opening brace — begin your prefill with \'{\' so the model must complete a valid JSON token sequence',
+          'Embed the JSON schema in the system prompt and ask the model to validate its own output before returning it',
+          'Use a two-step chain: generate the content, then format it into JSON in a second call',
+          'Repeat the output format instruction at the very end of the user message as a final reminder',
+        ],
+        correct: 0,
+        explanation:
+          'Seeding the response with \'{\' is the most reliable constraint available without a structured-output parameter — the model is forced to complete a valid JSON token sequence rather than choosing whether to produce JSON at all.',
+        missInsight:
+          'Self-validation often produces a confident restatement rather than a real check. A two-step chain adds latency and a second opportunity for drift. End-of-prompt reminders help but do not force the structure. Seeding the actual output token removes the choice entirely.',
       },
     ],
     masteryInsight:
-      'Solid instincts here: schema over vague instructions, examples over more description, one task per prompt. The failure modes that trip up most people at this stage are already off your list.',
+      'You are approaching prompt construction at the architectural level — routing by complexity instead of tuning globally, diagnosing position effects in long prompts, and constraining output structure at the token level rather than through instruction alone.',
   },
   {
     domainId: 'context-engineering',
     questions: [
       {
         id: 'ce-1',
-        text: "You're deep into a coding session. The first hour was great. Now Claude's answers are getting vague and generic. What's going on?",
+        text: 'You are building a RAG pipeline with a fixed budget of 10 retrieved chunks. Which ordering of chunks in the context window produces the best model performance?',
         options: [
-          'The model has learned your bad habits',
-          'Context window is filling with stale earlier conversation turns',
-          'You need to switch to a more capable model',
-          'The system prompt is too long',
+          'Highest-similarity chunk first, descending by relevance — the model processes sequentially and benefits from the most relevant content up front',
+          'Interleave high- and low-similarity chunks to give the model contrast between relevant and irrelevant material',
+          'Most relevant chunk first AND last, with less-relevant chunks in the middle — exploit the model\'s attention peaks at both ends',
+          'Chronological order if documents have timestamps; similarity order otherwise',
         ],
-        correct: 1,
+        correct: 2,
         explanation:
-          "The early turns are filling up the window and drowning out what you're working on now. Use /clear or summarize the old context before continuing.",
+          'The "lost-in-the-middle" phenomenon means models pay the most attention to content near the beginning and end of a long context. Placing your most relevant chunk in both positions maximises the chance it influences the output.',
         missInsight:
-          "A model doesn't accumulate habits between turns, and swapping models won't fix a window that's full of stale context — clearing or compacting it will.",
+          'Similarity-descending order front-loads the best material but buries it under less-relevant content — the model\'s attention tapers off precisely where the remaining relevant chunks sit. The U-shape placement directly exploits the attention pattern rather than fighting it.',
       },
       {
         id: 'ce-2',
-        text: 'You want Claude to write new code that matches the style of your existing codebase. What actually works?',
+        text: 'A multi-turn coding session worked well for the first hour. Now answers are getting vague and unhelpful. Nothing changed in the system prompt or model. What is the highest-signal first move?',
         options: [
-          'Tell Claude to "match the existing style" in each prompt',
-          'Paste 2-3 representative code samples into the system prompt as style reference',
-          'Use the same Claude session throughout the refactor without clearing',
-          'Ask Claude to describe the style first, then proceed',
+          'Switch to a larger model — degrading quality over a session often signals the current model is near its reasoning ceiling',
+          'Audit what is actually filling the window — if it is mostly stale assistant turns, compact or prune them before deciding whether to restart',
+          'Restart the session with the original task description to restore a clean context',
+          'Ask the model to summarise what it knows so far to reset its working understanding',
         ],
         correct: 1,
         explanation:
-          'Telling Claude to "match the style" is vague. Showing it 2-3 real examples from your codebase is not.',
+          'Restarting discards potentially useful early context. Switching models does not fix a window full of stale reasoning. Auditing what is in the window first tells you whether targeted compaction or a full restart is the right call — and often targeted compaction recovers quality without losing the first hour of productive context.',
         missInsight:
-          'A description of style is still an abstraction the model has to guess at. Real samples in context give it something concrete to pattern-match against.',
+          'A model summary is itself generated from the degraded context and tends to inherit its problems. Restarting is sometimes correct but is the blunt instrument — the diagnostic move is understanding what is crowding the window before deciding how to address it.',
       },
       {
         id: 'ce-3',
-        text: 'What does "context engineering" mean in practice — distinct from prompt writing?',
+        text: 'You need to analyse an 80k-token document in a 128k context window. What arrangement of instruction, few-shot examples, and document maximises performance?',
         options: [
-          'Choosing which model to use for a given task',
-          'Deciding what information to include, exclude, and sequence in the context window to achieve the goal',
-          'Writing longer, more detailed prompts',
-          'Optimizing your API costs by reducing token usage',
+          'Document first, then instruction and examples — the model reads sequentially and needs the document as foundation before it can act on instructions',
+          'Instruction, document, examples — the standard pattern for retrieval-augmented generation',
+          'Examples first, instruction, document — examples prime the model\'s behaviour before it encounters the document',
+          'Instruction, examples, document — the model reads the entire document through the lens of an already-established task framing and example patterns',
         ],
-        correct: 1,
+        correct: 3,
         explanation:
-          "Context engineering is deciding what's in the window: what to include, what to leave out, and in what order. It's a different skill from writing the prompt itself.",
+          'When a long document dominates the context, the model cannot revisit earlier content after reading it. Placing both the instruction and examples before the document means every token of reading is guided by the established task framing from the start.',
         missInsight:
-          "Model choice and cost optimization are real considerations, but they're not what the term refers to — this is specifically about curating what's actually sitting in the window.",
+          'Document-first means the model processes 80k tokens before receiving its task — it reads without a lens. Examples-instruction-document separates the priming from the task definition. The instruction-examples-document sequence gives the model its complete operating context before it encounters the material it must analyse.',
       },
     ],
     masteryInsight:
-      "This is the domain most people don't know they're missing, and you're already thinking about it correctly: what's in the window matters as much as what you ask for.",
+      'You are engineering context deliberately — exploiting attention patterns in retrieval ordering, diagnosing window composition before reaching for blunt restarts, and sequencing instruction and material so the model reads with its full operating context already in place.',
   },
   {
     domainId: 'output-evaluation',
     questions: [
       {
         id: 'oe-1',
-        text: 'Claude hands you a market analysis with a specific, confident-sounding statistic embedded in it. What do you do before using it?',
+        text: 'Claude produces an analysis containing twelve claims. Eleven are specific and verifiable. One is an unfalsifiable assertion: "this approach tends to work well in practice." Where should your verification effort focus first?',
         options: [
-          'Trust it — specific numbers read as more credible than vague ones',
-          'Verify the specific claim against a real source before using it',
-          "Ask Claude to double-check its own work and go with what it says",
-          'Rewrite the sentence to sound more cautious and move on',
+          'On the unfalsifiable assertion — it cannot be audited but carries the same rhetorical weight as the facts around it, and is where subtle bias or sycophancy hides',
+          'Evenly across all twelve claims — selective spot-checking introduces bias into what you examine',
+          'On the two or three claims that most directly support the headline recommendation',
+          'On whichever claims feel most surprising or counter-intuitive given your domain knowledge',
         ],
-        correct: 1,
+        correct: 0,
         explanation:
-          "A specific, confident number is exactly the kind of claim worth verifying — specificity reads as credibility, but it isn't evidence of accuracy.",
+          'Verifiable facts can be checked and corrected if wrong. An unfalsifiable assertion shapes the framing and conclusion and cannot be audited — it needs to be named and either removed or replaced with a falsifiable claim.',
         missInsight:
-          "Asking a model to double-check itself often just produces a more confident restatement of the same claim, not independent verification. Softening the wording doesn't fix an unverified fact either.",
+          'Surprising claims are worth checking, and load-bearing claims are high-leverage, but both approaches operate only in the falsifiable space. The unfalsifiable assertion is the one place where no amount of verification effort can give you a clean answer — it has to be structurally challenged, not verified.',
       },
       {
         id: 'oe-2',
-        text: "An output gives you two recommendations that quietly contradict each other — one says move fast, the other says proceed cautiously. What's the right move?",
+        text: 'You ask Claude to compare two strategies. It clearly favours Strategy A. You push back: "Are you sure B isn\'t better?" It reverses to favour Strategy B. What is the right response?',
         options: [
-          'Go with whichever recommendation sounds more actionable',
-          'Name the contradiction directly and ask for it to be resolved explicitly',
-          'Blend both into a softened middle-ground recommendation yourself',
-          'Ignore it — minor inconsistencies are normal in AI output',
+          'Probe Strategy B with equal scepticism — if it holds up under pressure it may genuinely be better',
+          'Treat the reversal as a sycophancy signal and re-run the comparison with neutral framing to get an independent read',
+          'Average the two positions — the oscillation indicates the strategies are genuinely close in merit',
+          'Accept Strategy A as the more reliable answer since the initial response was less influenced by your input',
         ],
         correct: 1,
         explanation:
-          'Naming the contradiction forces a real resolution. Picking a side or quietly blending both just hides the tension instead of resolving it.',
+          'A reversal under pushback without new information is a sycophancy signal. Probing the reversed position continues to work from a sycophantically-derived premise. The correct move is to re-frame the prompt and get a clean comparison uncontaminated by your expressed preference.',
         missInsight:
-          "Picking the more 'actionable-sounding' option or blending both yourself papers over a real disagreement in the reasoning — the contradiction is a signal worth surfacing, not smoothing over.",
+          'Probing B sounds rigorous but you are now pressure-testing a position the model adopted to agree with you, not because the evidence warranted it. Oscillation does not mean the gap is small — it means the model is tracking your approval. The fix is a clean re-prompt, not deeper interrogation of the second position.',
       },
       {
         id: 'oe-3',
-        text: 'You ask Claude to review a document for issues. It comes back with: "No significant issues found." What now?',
+        text: 'You need to evaluate a 3,000-word AI-written report for accuracy but cannot check every claim. Which strategy gives the highest signal per minute?',
         options: [
-          "Accept it — a clean review is good news",
-          "Push for specifics: what was checked, and what would a flaw have looked like",
-          'Have a second AI tool review it as a sanity check',
-          'Plan to always do a fully manual review from now on',
+          'Read the conclusion first — if the conclusion is sound, the supporting evidence is usually sound too',
+          'Sample the five most specific numerical claims and verify each one directly',
+          'Identify the two or three load-bearing premises the entire argument depends on and audit those',
+          'Check citations and sources — correct references indicate the underlying content is reliable',
         ],
-        correct: 1,
+        correct: 2,
         explanation:
-          "\"No issues found\" without any description of what was actually checked is unfalsifiable. Asking what would count as a problem is how you find out if the review was real.",
+          'Every argument has a small number of premises that the conclusion structurally depends on. Auditing those collapses the most risk fastest: if a load-bearing premise falls, the conclusion falls regardless of how well-supported the secondary points are.',
         missInsight:
-          "A second tool or a manual pass are reasonable long-term habits, but they don't address the immediate problem: you still don't know what the first review actually checked for.",
+          'Numerical claims are verifiable, but a wrong number in a non-load-bearing point does not sink the argument. Correct citations can still support a misleading synthesis. Working backwards from the conclusion to its dependencies — not the other way around — is the highest-leverage evaluation path.',
       },
     ],
     masteryInsight:
-      "You don't take confident-sounding output at face value — you push on specificity, name contradictions instead of smoothing them over, and ask what a real check actually looked like. That's the core discipline of this domain.",
+      'You are evaluating AI output at the structural level — auditing the unfalsifiable rather than just the verifiable, recognising sycophancy signals in reversals, and working backwards from conclusions to their load-bearing premises rather than checking facts opportunistically.',
   },
   {
     domainId: 'agentic-architecture',
     questions: [
       {
         id: 'aa-1',
-        text: "You're designing a workflow where an orchestrator agent can delegate parts of a task to specialist sub-agents. What should decide whether a piece of work gets delegated?",
+        text: 'Your agent workflow can resume from checkpoints after partial failures. One step sends an external email. What property must that step have for the architecture to be correct?',
         options: [
-          'Delegate as much as possible — more agents signals a more sophisticated system',
-          'Delegate when the task is genuinely independent or needs different context/expertise than the orchestrator has',
-          'Delegate only tasks the orchestrator would otherwise take the longest to do',
-          'Delegate everything except the final output step',
+          'It should run last so that partial reruns triggered earlier in the workflow cannot reach it',
+          'It should check agent memory to confirm whether it already ran before executing',
+          'It should be wrapped in error handling that suppresses failures so the workflow does not stall on transient issues',
+          'It must be idempotent — the same email must be safe to trigger multiple times without duplicate sends',
         ],
-        correct: 1,
+        correct: 3,
         explanation:
-          "Delegation should track real independence or expertise mismatch, not task count or duration. Splitting work that doesn't need splitting just adds coordination overhead.",
+          'When workflows can rerun from checkpoints, any step with external side effects must be idempotent. Memory checks rely on memory being reliable in a partially-failed state. "Run last" only works if the checkpoint is always before this step. Idempotency is the structural guarantee that makes the step safe regardless of how many times the workflow reruns.',
         missInsight:
-          "More sub-agents isn't more sophisticated if the work didn't actually need splitting — it just adds handoffs, and each handoff is a place things can go wrong silently.",
+          'Memory-check approaches are brittle in partial-failure scenarios — the memory may itself be incomplete or inconsistent. Run-last assumes a specific checkpoint structure. Error suppression hides failures rather than preventing duplicates. The design contract is idempotency: this step must produce the same outcome whether called once or five times.',
       },
       {
         id: 'aa-2',
-        text: 'In a multi-step agent workflow, one sub-agent fails partway through, but the orchestrator continues on to the next step anyway without noticing. What is the actual architectural gap?',
+        text: 'An agent browsing a website to collect scoped data unexpectedly discovers it has access to an admin panel — an access control bug on the site. What should it do?',
         options: [
-          "The sub-agent needs to be replaced with a more reliable model",
-          "There's no verification step confirming a sub-agent's output before the orchestrator proceeds",
-          "The workflow needs more logging",
-          "The task should never have been delegated in the first place",
+          'Stop immediately and surface the discovery to the human operator before any further action',
+          'Continue collecting only the originally scoped data and log the admin panel discovery for review later',
+          'Close the browser tab containing the admin panel and continue with the original task — accessing it would be out of scope',
+          'Make one non-destructive read in the admin panel to assess what data is accessible, then stop and report',
         ],
-        correct: 1,
+        correct: 0,
         explanation:
-          "The gap isn't the sub-agent's competence or the delegation decision — it's that nothing checks the handoff. A failed step should stop the chain or trigger a fallback, not pass through silently.",
+          'An agent that discovers an unexpected privilege escalation must stop entirely and escalate to human review. Continuing — even within the original scope — means operating in an environment whose integrity is now unknown. You do not know what else may be misconfigured.',
         missInsight:
-          "Swapping models or logging more detail doesn't fix a workflow that has no verification gate — the orchestrator needs to actually confirm the output is usable before moving on, every time.",
+          'Closing the tab and continuing treats the discovery as incidental. Logging it for later accepts that the current run may continue in a compromised environment. A single "safe" read still constitutes acting on an unauthorised access path. The correct response to discovering an unexpected capability is always a full stop before any further action.',
       },
       {
         id: 'aa-3',
-        text: "You're deciding whether a business process needs a genuine multi-agent system or would be better served by one well-scoped agent. What's the deciding factor?",
+        text: 'You are designing an agent that can take both reversible and irreversible actions. What confirmation pattern gives the best balance of safety and usability?',
         options: [
-          'Whether the process feels complex enough to justify multiple agents',
-          'Whether there are genuinely independent or specialized work streams that benefit from separation',
-          'Whether a single agent would take too long to run',
-          'Whether the team wants to show off a more advanced architecture',
+          'Require confirmation before every action so the human always knows what the agent is about to do',
+          'Classify actions by reversibility upfront and require explicit confirmation only for irreversible ones',
+          'Log all actions in real time so that any action can be audited or rolled back if needed',
+          'Run the agent in shadow mode during rollout, reviewing the full action plan before enabling live execution',
         ],
         correct: 1,
         explanation:
-          'Multi-agent design earns its complexity when there are real independent or specialized streams of work. "Feels complex" or "takes a while" are not the same thing as needing separation.',
+          'Requiring confirmation for every action makes the agent unusable in practice. Logging and shadow mode are useful for testing and forensics but do not prevent irreversible actions at runtime. Surgically placed gates — only at the boundary of irreversibility — preserve usability while protecting where it actually matters.',
         missInsight:
-          "Runtime and perceived complexity are the wrong signals — plenty of long, complex tasks are still best handled by one well-scoped agent with the right tools, not a fleet of them.",
+          'All-or-nothing confirmation is safe in theory but collapses into confirmation fatigue or abandonment in practice. Logging gives you a record of what happened, not a gate on what is about to happen. Shadow mode is a rollout strategy, not a production safety pattern. The right abstraction is reversibility classification applied as the gate criterion.',
       },
     ],
     masteryInsight:
-      "You're making delegation decisions on the right basis: real independence and expertise mismatch, not agent count for its own sake, and you know a missing verification gate when you see one.",
+      'You are designing agentic systems with the right safety primitives in place — idempotency for side-effecting steps, full stops on unexpected capabilities, and reversibility-based confirmation gates rather than blanket permission or blanket friction.',
   },
   {
     domainId: 'tool-selection',
     questions: [
       {
         id: 'ts-1',
-        text: "You have a quick one-off text edit and, separately, a six-step workflow spanning multiple files. How should model choice differ between the two?",
+        text: 'You built a tiered routing system: simple tasks → small model, medium → mid-tier, complex → flagship. In production, the mid-tier performs disappointingly on "medium" tasks. What is the most likely root cause?',
         options: [
-          'Use the most capable model for both, for consistency',
-          'Match the model tier to the task — fast/cheap for the quick edit, more capable for the multi-step work',
-          'Use the cheapest model for both to control cost',
-          'Let the tool auto-select the model without reviewing the choice',
+          'The classifier routes too many tasks to the mid tier — it is overloaded with inputs that should be simple',
+          'The mid-tier model underperforms on this domain relative to its benchmark scores',
+          'The definitions of simple, medium, and complex were set by intuition rather than measured task characteristics, making the boundaries inconsistent',
+          'Medium tasks have higher output variance, which makes mid-tier performance look worse on average',
         ],
-        correct: 1,
+        correct: 2,
         explanation:
-          "Using the same tier for everything is either wasteful (overkill on the simple task) or risky (underpowered on the complex one). Deliberately matching tier to task is the actual skill.",
+          'Routing hierarchies degrade when tier boundaries are defined vaguely. If "medium" means whatever does not feel simple or hard, routing will be inconsistent and the mid tier will receive a noisy mix. The fix is empirical: define thresholds by measuring actual task properties, not by feel.',
         missInsight:
-          "Defaulting to always-most-capable or always-cheapest skips the judgment call entirely — the cost and quality trade-off is different for a one-line edit than for a six-step orchestration.",
+          'A misclassifying router or a weak model are possible but secondary. The most common failure in multi-tier routing is that the tiers themselves were never operationally defined — they are intuitions about complexity, not measured categories with clear decision boundaries.',
       },
       {
         id: 'ts-2',
-        text: 'A repetitive business task (say, scheduling) needs to actually take action — not just draft a suggestion. What kind of tool should you reach for?',
+        text: 'A colleague proposes using an AI tool to flag potentially unfavourable contract clauses before legal review. What is the most important question to answer before deploying it?',
         options: [
-          'A general chat assistant, since it can describe what to do',
-          'A tool with real action capability (API/integration access), since drafting alone leaves the work undone',
-          'Whichever tool is already open',
-          "It doesn't matter as long as the output text is correct",
+          'Whether the model has been trained on legal documents — domain coverage drives recall on specialised content',
+          'Whether the flagging rate will be low enough that legal review is not overwhelmed with false positives',
+          'Whether the organisation has an enterprise API agreement that covers this business use case',
+          'Whether a missed unfavourable clause (false negative) or an unnecessary flag (false positive) is the more costly error in this context',
         ],
-        correct: 1,
+        correct: 3,
         explanation:
-          "If the task requires action, a tool that can only describe the action leaves you doing the actual work by hand. Match the tool's capability to whether the task needs drafting or doing.",
+          'The error cost asymmetry is the deployment decision. If missing a clause causes a bad contract, you need high recall even at the cost of more false positives. If false positives overwhelm reviewers, precision matters more. This determines the operating threshold, the calibration target, and whether AI augmentation is net-positive here at all.',
         missInsight:
-          "A well-written draft doesn't complete a task that requires action — convenience or output quality doesn't substitute for whether the tool can actually execute the step.",
+          'Domain training and API agreements are real concerns but downstream from the fundamental question. Volume concerns about false positives address one side of the asymmetry. The question that determines whether and how to deploy is which type of error is more expensive — that shapes everything else.',
       },
       {
         id: 'ts-3',
-        text: 'A colleague uses the exact same AI tool for every task regardless of what the task actually needs. What does that reveal about their mental model?',
+        text: 'You are choosing between (A) one powerful agent with all tools enabled, and (B) multiple specialised agents each with a minimal tool set. When does option B win on architectural grounds?',
         options: [
-          "That they've found an efficient default and stuck with it",
-          "That they don't have deliberate criteria for when one tool wins over another",
-          "That the tool they use must be unusually capable",
-          "Nothing — tool choice rarely matters much either way",
+          'When minimising blast radius matters — narrow tool access limits how far a single mistake can propagate through the system',
+          'When the task requires more parallelism than a single agent can provide within its context window',
+          'When governance policies restrict multi-tool access to a single agent identity',
+          'When API costs for a fully-equipped agent exceed the budget allocated to the workflow',
         ],
-        correct: 1,
+        correct: 0,
         explanation:
-          "Using one tool for everything usually means there's no explicit model of when each tool is the right fit — not that the tool happens to be right for every job.",
+          'The minimal footprint principle is a safety argument: a single agent with all tools enabled can make a mistake anywhere in the system. Specialised agents with narrow tool sets constrain the failure surface by design — errors are localised because the tools available are localised.',
         missInsight:
-          "'It works most of the time' isn't the same as tool selection — the tell is the absence of any criteria for when a different tool would clearly perform better.",
+          'Parallelism, governance, and cost are all valid reasons, but they are operational concerns, not architectural ones. The architectural argument for option B is blast radius: you want mistakes to be local, and narrow tool access enforces that structurally rather than through policy or monitoring.',
       },
     ],
     masteryInsight:
-      "You're matching tool and model choice to what the task actually needs — tier to complexity, action capability to whether the task requires action. That's a deliberate mental model, not a default.",
+      'You are making tool and model decisions from first principles — operational routing thresholds set by measurement, error cost asymmetry as the deployment criterion, and minimal footprint as a structural safety property rather than a cost optimisation.',
   },
   {
     domainId: 'failure-diagnosis',
     questions: [
       {
         id: 'fd-1',
-        text: 'An automated report pipeline produced a broken output overnight. You want to fix it. What do you do first?',
+        text: 'An AI pipeline runs 1,000 times per day and produces wrong outputs about 2% of the time. No individual run looks obviously different from a correct one. How do you isolate the failing cases systematically?',
         options: [
-          'Rerun it and hope it works this time',
-          'Reproduce the failure with the same inputs and confirm you can trigger it reliably',
-          'Add error handling that suppresses the failure so the pipeline keeps running',
-          'Escalate to the vendor immediately',
+          'Lower the quality threshold and flag any run scoring below 4/5 — review those for patterns',
+          'Build a golden-set evaluator: define correct reference outputs and score all runs against them automatically',
+          'Log all inputs and outputs, then search for patterns in the runs that human reviewers later mark as wrong',
+          'Prompt the model to self-assess confidence on each run and flag those it marks as uncertain',
         ],
         correct: 1,
         explanation:
-          "A fix for a failure you can't reliably reproduce is a guess. Confirming the exact conditions that trigger it is what makes the fix that follows actually address the cause.",
+          'A golden-set evaluator is the correct instrument at this scale — it creates an automated, consistent signal for what counts as wrong without requiring human review of every run. Without this, you are pattern-hunting in noise rather than measuring a defined failure mode.',
         missInsight:
-          "Rerunning and hoping, or suppressing the symptom, both skip the step that actually tells you what's wrong — you're patching around an unknown rather than fixing a known cause.",
+          'Human-review-then-search is slow and does not scale to 1,000 daily runs. Self-assessed confidence is unreliable — models are often confidently wrong. Threshold-lowering creates a proxy signal but not a definition of failure. A reference-output evaluator turns a pattern-hunting problem into a measurement problem.',
       },
       {
         id: 'fd-2',
-        text: 'Claude gives you a factually wrong answer. Someone suggests: "just re-prompt with \'are you sure?\'" Is that a real fix?',
+        text: 'A prompt worked reliably for three months. Last week it started failing on a subset of inputs. Nothing in your code or configuration changed. What is the most likely explanation?',
         options: [
-          "Yes — it's a fast, reliable way to correct wrong answers",
-          "No — re-prompting for confidence doesn't address why it was wrong, it just produces a differently-confident answer",
-          "Yes, but only works for factual questions specifically",
-          "No — the only real fix is switching to a different model",
+          'A background model update from the provider changed inference behaviour on this prompt',
+          'Accumulated session context from long-running conversations degraded the prompt\'s effectiveness over time',
+          'The input distribution shifted — inputs that now fail are structurally different from the ones that have always passed',
+          'The prompt crossed an undocumented length threshold that increases the model\'s parsing error rate',
         ],
-        correct: 1,
+        correct: 2,
         explanation:
-          '"Are you sure?" prompts the model to reconsider its confidence, not to re-derive the answer from better information. It can flip a wrong answer to a different wrong answer just as easily as a right one.',
+          'When code and config have not changed but failures appear on a subset of inputs, input distribution shift is the first hypothesis: what you are sending has changed in character. Model updates are less common and would typically affect a broader range of inputs immediately, not a specific subset.',
         missInsight:
-          "The apparent fix doesn't touch the actual cause — whatever made the first answer wrong (bad assumption, missing context, stale information) is still there after a confidence check.",
+          'Model updates do happen but providers usually announce breaking changes and they tend to affect all inputs, not a specific subset. Session context drift requires long-running sessions with accumulated history. A specific subset of failures pointing to no code change is the signature of data drift — the inputs themselves changed.',
       },
       {
         id: 'fd-3',
-        text: 'An agent workflow occasionally skips a step. Someone adds a hardcoded retry, and the symptom stops showing up. Is this resolved?',
+        text: 'You are debugging an agent that occasionally "skips" a step. Adding logging reveals the step IS being called but produces empty output. The next step silently treats empty as "no action needed." What is the actual root bug?',
         options: [
-          'Yes — the symptom is gone, so the problem is fixed',
-          "No — this likely suppressed the symptom without addressing why the step was skipped, and it can resurface elsewhere",
-          "Yes, as long as it hasn't recurred in about a week",
-          "No, but only because retries are always a bad pattern",
+          'The step implementation is flawed — it sometimes produces empty output when it should not',
+          'Logging was absent, which masked the failure and made it look like a skip rather than an empty-output event',
+          'A race condition in the orchestration layer sometimes calls the step before its dependencies are ready',
+          'The downstream step\'s empty-handling logic is the bug — it should treat unexpected empty output as an error, not a valid no-op',
         ],
-        correct: 1,
+        correct: 3,
         explanation:
-          "A retry that hides the symptom isn't the same as understanding why the step gets skipped. The underlying cause is still there and can show up in a different form later.",
+          'The step producing empty output is a symptom. The root bug is the downstream assumption that empty equals a valid no-op. Resilient pipelines treat unexpected empty output from upstream steps as an error signal, not a valid state. The fix there — not in the step — closes the failure mode regardless of what upstream produces.',
         missInsight:
-          "Absence of the symptom for a while isn't evidence the cause is gone — and the objection isn't to retries generally, it's to using one as a substitute for actually knowing why the failure happens.",
+          'Fixing the upstream step treats the symptom — you still have a pipeline where empty passes through silently. Even if this step stops producing empty, any future step that does will propagate the same way. The systemic fix is enforcing that unexpected empty output is an error at every handoff, making the pipeline intolerant of silent failures by design.',
       },
     ],
     masteryInsight:
-      "You're not settling for a fix that just makes the symptom go away — reproducing failures, distinguishing a real fix from a confidence check, and telling suppression apart from resolution are the right instincts here.",
+      'You are diagnosing failures at the structural level — building measurement infrastructure rather than hunting patterns, suspecting data drift before code changes, and identifying the silent-empty-handler as the root bug rather than the upstream step that produced it.',
   },
   {
     domainId: 'multi-agent-orchestration',
     questions: [
       {
         id: 'ma-1',
-        text: 'Two agents in a workflow need to share information from earlier steps. What has to happen for that to actually work?',
+        text: 'An orchestrator dispatches five sub-agents in parallel. Two fail. It retries them using the original inputs — not the updated state that the three successful agents already produced. What category of bug is this?',
         options: [
-          "Nothing extra — agents in the same workflow share context automatically",
-          "The state has to be explicitly passed or persisted between them",
-          "They need to run in the same terminal session",
-          "One agent needs to be given admin privileges over the other",
-        ],
-        correct: 1,
-        explanation:
-          "Agents don't share a context window by default. Anything one needs from another has to be deliberately written somewhere and read back — a file, a return value, a shared store.",
-        missInsight:
-          "Assuming shared context is the most common multi-agent bug there is — running things in the same session or granting broader permissions doesn't create a data pathway that doesn't otherwise exist.",
-      },
-      {
-        id: 'ma-2',
-        text: 'A long-running multi-agent workflow needs to be able to resume if it gets interrupted partway through. What does that require?',
-        options: [
-          'Persisting intermediate state or checkpoints so it can pick up where it left off',
-          "Making sure the workflow always completes within one uninterrupted session",
-          "Re-running the entire workflow from scratch every time",
-          "Nothing specific — most orchestration tools handle this automatically",
+          'State staleness — the retry inputs are stale because successful agent outputs were not fed back before the retry was issued',
+          'Idempotency failure — the successful agents should not have modified shared state before all five agents completed',
+          'Race condition — the retried agents and the successful ones are competing for access to the same shared resource',
+          'Deadlock — the retried agents are waiting for outputs that the three successful agents have already consumed',
         ],
         correct: 0,
         explanation:
-          'Resumability is a design choice, not a default. Without checkpointed state, an interruption means starting over, which gets expensive fast on long workflows.',
+          'The orchestrator is retrying with stale inputs — it did not incorporate the successful agents\' outputs into the inputs for the failed agents\' retry. This is a state synchronisation bug: partial-success retry logic must explicitly gather intermediate state before issuing retries.',
         missInsight:
-          "Hoping for an uninterrupted run or accepting a full restart both dodge the actual design question — and this isn't automatic behavior in most orchestration setups, it has to be built in.",
+          'Idempotency, race conditions, and deadlocks are real concerns but describe different failure modes. The scenario specifically describes stale inputs on retry — the orchestrator\'s retry logic did not account for the state changes already produced by the successful agents, which is the canonical partial-success retry failure.',
       },
       {
-        id: 'ma-3',
-        text: 'A workflow needs to hand off to a human when confidence is low or the stakes are high. How should that escalation trigger be designed?',
+        id: 'ma-2',
+        text: 'Agent B always depends on Agent A\'s output. A sometimes produces partial results before it has finished. How do you prevent B from acting on incomplete output?',
         options: [
-          "Let the agent decide when it feels uncertain and escalate then",
-          "Define explicit, concrete conditions for escalation upfront, rather than relying on the agent to self-assess",
-          "Escalate everything, to be safe",
-          "Skip escalation design — handle exceptions as they come up",
+          'Add a time delay between A and B long enough for A to consistently finish before B starts',
+          'Define a completion contract for A — a schema with required fields — that B validates before proceeding',
+          'Have B poll the size of A\'s output and wait if it is below a minimum threshold',
+          'Run A and B in separate queues so B is only triggered when A\'s queue entry is fully consumed',
         ],
         correct: 1,
         explanation:
-          "Relying on an agent to know when it's uncertain is unreliable — confident-sounding wrong answers are exactly the failure mode escalation is meant to catch. Concrete, predefined triggers close that gap.",
+          'A completion contract — a defined schema with required fields — gives B an explicit, enforceable gate: it proceeds only when A has produced a structurally complete output. This is a semantic definition of "done," not a timing assumption.',
         missInsight:
-          "Self-assessed uncertainty is not a dependable signal, and escalating everything just defeats the purpose of automation — the actual skill is defining specific conditions in advance.",
+          'Delays and size thresholds are timing-based guards that break when A\'s execution time or output size varies — both of which will happen in production. Queue consumption signals job completion at the infrastructure level, not semantic completeness at the data level. A schema contract defines what "done" actually means for B\'s purposes, which is the only definition that matters.',
+      },
+      {
+        id: 'ma-3',
+        text: 'A human-in-the-loop escalation triggers when agent confidence drops below 0.7. In production, 40% of tasks are being escalated — far above the expected 5%. What is the most likely root cause?',
+        options: [
+          'The confidence threshold is too high — 0.7 is aggressive and catches tasks that the agent handles correctly',
+          'The agents were trained on different data than what they encounter in production, causing systematically low confidence scores',
+          'The confidence score reflects the model\'s self-assessed uncertainty, which is miscalibrated and does not correspond reliably to actual task difficulty',
+          'The escalation rate is correct — the production task set is simply harder than the design assumptions predicted',
+        ],
+        correct: 2,
+        explanation:
+          'LLM self-assessed confidence scores are frequently miscalibrated — a model expressing 0.65 confidence may be correct 90% of the time, or wrong 60% of the time. Using raw self-reported confidence as an escalation threshold without calibration against actual accuracy is the design gap that produces this pattern.',
+        missInsight:
+          'Threshold tuning and training distribution mismatch are real possibilities but secondary. The fundamental issue is that model-reported confidence is not a reliable probability estimate without calibration — treating it as one is what produces a 40% escalation rate from an expected 5%. The fix is calibration, not threshold adjustment.',
       },
     ],
     masteryInsight:
-      "You're treating state-sharing, resumability, and escalation as deliberate design decisions rather than assumptions the system will just handle — that's exactly the discipline this domain is testing for.",
+      'You are designing multi-agent systems with the right failure primitives — state synchronisation in partial-success retries, semantic completion contracts instead of timing guards, and calibration-first thinking about confidence signals rather than naive threshold tuning.',
   },
   {
     domainId: 'business-value-translation',
     questions: [
       {
         id: 'bv-1',
-        text: "You're presenting AI-driven productivity gains to a board. Should you lead with the technical capability or the business outcome?",
+        text: 'An AI tool raised your team\'s throughput 35%. Leadership asks for the ROI. What is the most credible framing?',
         options: [
-          'Lead with the technical capability — it establishes credibility first',
-          'Lead with the business outcome — the capability is supporting detail',
-          'Split time evenly between both from the start',
-          "It doesn't matter as long as both are mentioned somewhere",
+          'Multiply hours saved by the fully-loaded hourly cost and present as hard savings',
+          'Present a three-scenario range — conservative, base, and optimistic — to show confidence bounds on the estimate',
+          'Describe the gain as a productivity improvement and let leadership connect it to financial outcomes',
+          'Tie the throughput gain to its downstream business impact — what work that could not be done before can now get done, and what is that worth to the business',
         ],
-        correct: 1,
+        correct: 3,
         explanation:
-          "A board is evaluating outcomes, not architecture. Leading with capability makes them do the translation work themselves — leading with outcome does it for them.",
+          'Hours-saved times rate produces a compelling-looking number that a finance team will immediately deflate: "Did you reduce headcount, or just make people less busy?" The credible ROI frame connects throughput to what newly unlocked capacity is actually used for — new revenue, faster delivery, or avoided hires.',
         missInsight:
-          "Technical detail can support the case, but opening with it puts the burden of translating 'so what does this mean for us' on the audience instead of on you.",
+          'Scenario ranges are honest but still hours-focused, which is the wrong unit for a board conversation. Leaving the translation to leadership puts the hard work on the audience. Hours-times-rate counts time saved but not value created. The board-level frame is what the capacity is used for, not how much of it was freed.',
       },
       {
         id: 'bv-2',
-        text: "You've cut a task from 2 hours to 20 minutes using AI. How do you turn that into a board-ready value statement?",
+        text: 'A sceptical executive says: "We tried AI tools two years ago and they did not work. Why is this different?" What is the strongest response?',
         options: [
-          'State the time saved and let them draw their own conclusions',
-          'Connect it to a business metric that matters to them — cost, capacity, or speed-to-market',
-          'Emphasize how advanced the underlying technology is',
-          'Compare it to what competitors are probably doing',
+          'Name the specific capability gap that caused the previous failure and show concrete evidence that gap is now closed',
+          'Acknowledge the concern and offer a small pilot to rebuild confidence incrementally before committing to a larger rollout',
+          'Point to the broader market — most competitors are now deploying similar tools with demonstrable results',
+          'Explain that AI capabilities have improved substantially since then and this generation of tools is categorically more capable',
         ],
-        correct: 1,
+        correct: 0,
         explanation:
-          "Time saved is a means, not the value itself. Translating it into cost, capacity, or speed-to-market is what makes it legible as a business result rather than a productivity anecdote.",
+          'The strongest response addresses the specific failure — was it hallucination, integration complexity, adoption resistance, or cost? Naming exactly what was wrong then and showing specific evidence it is resolved makes the objection lose its force. Generic "AI has improved" is the same argument vendors made two years ago.',
         missInsight:
-          "Raw time saved and technical sophistication both stop short of the translation step — the board needs the number connected to something they already track.",
+          '"AI has improved" is exactly what the sceptic expects to hear and will not move them — it was the vendor argument the last time too. A pilot is cautious but does not address the past failure. Competitor references shift the question to social proof rather than answering whether the specific problem was solved. Only naming the failure and its closure turns the sceptic\'s evidence against them.',
       },
       {
         id: 'bv-3',
-        text: 'A skeptical stakeholder asks: "How do we know this isn\'t just hype?" What is the strongest response?',
+        text: 'You need to help a CEO choose between three AI initiatives: (A) saves 200 hours/month in ops, (B) reduces customer churn by 0.5%, (C) accelerates a key product feature by 6 weeks. What framing gives the clearest basis for a decision?',
         options: [
-          'Point to industry trends showing broad AI adoption',
-          'Point to specific, measured evidence — before/after data on your own outcomes',
-          'Express confidence that the results speak for themselves',
-          "Note that most competitors are already using similar tools",
+          'Present all three options with their metrics and let the CEO decide based on strategic priorities you may not be aware of',
+          'Convert B and C into revenue-equivalent terms, let A compete as cost savings, then recommend based on the company\'s current OKRs',
+          'Lead with option A — it is the most concrete and measurable, which makes it the easiest to defend',
+          'Lead with option C — time-to-market acceleration is typically the highest-leverage strategic variable',
         ],
         correct: 1,
         explanation:
-          "Industry trends and competitor behavior are context, not proof. Specific, measured evidence from your own before/after results is what actually answers the skepticism.",
+          'Leaving the options in different units (hours, churn rate, weeks) hands the CEO an apples-to-oranges comparison. Converting B and C into a common financial currency, letting A compete on cost, then recommending based on what the company is actually optimising for — that is the professional translation move.',
         missInsight:
-          "General enthusiasm or 'everyone else is doing it' arguments are exactly the kind of response that reads as hype — concrete, specific evidence is what distinguishes a real case from one.",
+          'Presenting all three without conversion puts the translation burden on the audience. Defaulting to A (measurable) or C (time-to-market feels strategic) reflects the presenter\'s bias, not the company\'s priorities. The move that earns credibility is creating a common unit and recommending based on what the business is actually optimising for right now.',
       },
     ],
     masteryInsight:
-      "You're translating capability into outcome by default — leading with what matters to the audience, tying results to metrics they track, and backing claims with specific evidence instead of general enthusiasm.",
+      'You are translating AI value into the language of business decisions — connecting throughput gains to downstream impact rather than cost hours, naming specific past failures to address scepticism, and converting heterogeneous options into a common currency before recommending.',
   },
 ]
 
