@@ -4,6 +4,7 @@ pages_build_output_dir = "dist"
 
 [vars]
 DEFAULT_USER_ID = "bas"
+GITHUB_DATA_REPO = "basvanegmond/ai-mastery-data"
 
 # Secrets (set via dashboard or wrangler secret put):
 # GITHUB_DATA_PAT

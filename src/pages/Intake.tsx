@@ -12,6 +12,7 @@ import {
   scoreFromCorrectCount,
 } from '../utils/assessment'
 import type { AnsweredQuestion } from '../utils/assessment'
+import { submitDomainScore } from '../utils/baselineSubmit'
 import { getDomainColor, scoreToGrade } from '../utils/domains'
 
 type Screen = 'welcome' | 'question' | 'summary' | 'results'
@@ -47,8 +48,7 @@ export default function Intake(): JSX.Element {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [domainAnswers, setDomainAnswers] = useState<AnsweredQuestion[]>([])
   const [results, setResults] = useState<DomainResult[]>([])
-  const [submitting, setSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [saveStatus, setSaveStatus] = useState<Record<string, 'saving' | 'saved' | 'error'>>({})
 
   const resultScores = useMemo(() => {
     const scores: Record<string, number> = {}
@@ -57,34 +57,9 @@ export default function Intake(): JSX.Element {
   }, [results])
 
   useEffect(() => {
-    if (screen !== 'results' || results.length === 0) return
-    let cancelled = false
-
-    async function submit(): Promise<void> {
-      setSubmitting(true)
-      setSubmitError(null)
-      try {
-        const response = await fetch('/api/baseline/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scores: resultScores }),
-        })
-        if (!response.ok) throw new Error(`Save failed (HTTP ${response.status})`)
-        if (!cancelled) refetch()
-      } catch (err) {
-        if (!cancelled) {
-          setSubmitError(err instanceof Error ? err.message : 'Failed to save your results')
-        }
-      } finally {
-        if (!cancelled) setSubmitting(false)
-      }
-    }
-
-    void submit()
-    return () => {
-      cancelled = true
-    }
-  }, [screen])
+    if (screen !== 'results') return
+    refetch()
+  }, [screen, refetch])
 
   if (state === null || runs.length === 0) {
     return (
@@ -114,8 +89,14 @@ export default function Intake(): JSX.Element {
     // Domain complete — compute and store its result, show summary.
     const correctCount = domainAnswers.filter((a) => a.correct).length
     const score = scoreFromCorrectCount(correctCount, domainAnswers.length)
+    const domainId = currentRun.domain.id
     setResults((prev) => [...prev, { domain: currentRun.domain, answered: domainAnswers, score }])
     setScreen('summary')
+
+    setSaveStatus((prev) => ({ ...prev, [domainId]: 'saving' }))
+    void submitDomainScore(domainId, score).then((ok) => {
+      setSaveStatus((prev) => ({ ...prev, [domainId]: ok ? 'saved' : 'error' }))
+    })
   }
 
   function goNextDomain(): void {
@@ -165,7 +146,10 @@ export default function Intake(): JSX.Element {
         )}
         <button
           type="button"
-          onClick={() => navigate('/')}
+          onClick={() => {
+            if (results.length > 0) refetch()
+            navigate('/')
+          }}
           className="shrink-0 rounded-lg border border-white/10 px-2.5 py-1.5 text-xs text-white/40 hover:bg-white/8 hover:text-white/70 sm:px-3"
         >
           Exit
@@ -384,6 +368,13 @@ export default function Intake(): JSX.Element {
                 ))}
               </div>
 
+              {saveStatus[lastResult.domain.id] === 'error' && (
+                <p className="mb-4 text-[11px] text-amber-600">
+                  Couldn't save this score after a few tries — your local results are fine, but your dashboard
+                  may not reflect it yet.
+                </p>
+              )}
+
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
                 <span className="text-[11px] text-ink-sub">
                   {domainIdx < runs.length - 1
@@ -407,10 +398,19 @@ export default function Intake(): JSX.Element {
                 <h2 className="mb-1.5 text-xl font-extrabold text-ink sm:text-2xl">Your AI Mastery Baseline</h2>
                 <p className="text-[13px] text-ink-sub">
                   Done. Here's where you stand across all {runs.length} domains.
-                  {submitting && ' Saving your results…'}
-                  {submitError !== null && (
-                    <span className="text-red-600"> {submitError}</span>
-                  )}
+                  {Object.values(saveStatus).some((s) => s === 'saving') && ' Saving your last result…'}
+                  {!Object.values(saveStatus).some((s) => s === 'saving') &&
+                    results.some((r) => saveStatus[r.domain.id] === 'error') && (
+                      <span className="text-amber-600">
+                        {' '}
+                        Couldn't save:{' '}
+                        {results
+                          .filter((r) => saveStatus[r.domain.id] === 'error')
+                          .map((r) => r.domain.name)
+                          .join(', ')}
+                        .
+                      </span>
+                    )}
                 </p>
               </div>
 

@@ -28,6 +28,7 @@ Personal competency development tool: coaching system to move Bas from ~85th to 
 - `GITHUB_DATA_PAT` — Fine-grained PAT scoped to ai-mastery-data repo only
 - `ANTHROPIC_API_KEY` — Anthropic API key
 - `DEFAULT_USER_ID` — Currently "bas"
+- `GITHUB_DATA_REPO` — "basvanegmond/ai-mastery-data" (also in wrangler.toml as a plain var)
 
 ## Architecture Rules
 - The static frontend NEVER calls GitHub directly — only Pages Functions do
